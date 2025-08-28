@@ -1,115 +1,196 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// Life Game React + Firebase + Dashboard 프로젝트
 
-const scenarios = [
+// 1️⃣ src/firebase.js
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBUKwD2oMtcpMClaNHDNhHoG1ogBYu623k",
+  authDomain: "plan-a1107.firebaseapp.com",
+  projectId: "plan-a1107",
+  storageBucket: "plan-a1107.firebasestorage.app",
+  messagingSenderId: "1071905265794",
+  appId: "1:1071905265794:web:2e7b46032bbe8ac7f97c9b"
+};
+
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+
+
+// 2️⃣ src/CardData.js
+export const cards = [
   {
-    title: "중학교 입학!",
-    description: "새로운 환경에서 나는 어떤 선택을 할까?",
-    choices: [
-      { text: "새 친구에게 먼저 말을 건다", effects: { 인간관계: +2 } },
-      { text: "조용히 지켜본다", effects: { 지식: +1 } },
-    ],
+    id: 1,
+    text: "중학교 입학",
+    options: [
+      { text: "친구 만들기", effect: { 인간관계: +10 } },
+      { text: "공부 열심히", effect: { 지식: +10 } }
+    ]
   },
   {
-    title: "시험 기간, 친구가 놀자고 한다!",
-    description: "나는 어떤 선택을 할까?",
-    choices: [
-      { text: "같이 논다", effects: { 인간관계: +2, 지식: -1 } },
-      { text: "거절하고 공부한다", effects: { 지식: +2, 인간관계: -1 } },
-    ],
-  },
+    id: 2,
+    text: "첫 시험",
+    options: [
+      { text: "공부 열심히", effect: { 지식: +10 } },
+      { text: "놀기", effect: { 인간관계: +5, 지식: -5 } }
+    ]
+  }
 ];
 
-export default function LifeGame() {
-  const [step, setStep] = useState(0);
+
+// 3️⃣ src/components/Card.jsx
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function Card({ card, onSelect }) {
+  return (
+    <motion.div 
+      initial={{ rotateY: 90, opacity: 0 }}
+      animate={{ rotateY: 0, opacity: 1 }}
+      exit={{ rotateY: -90, opacity: 0 }}
+      className="bg-white p-6 rounded-lg shadow-md m-4"
+    >
+      <h2 className="text-xl font-bold mb-4">{card.text}</h2>
+      {card.options.map((opt, idx) => (
+        <button key={idx} className="block bg-pink-300 px-4 py-2 m-2 rounded hover:bg-pink-400" onClick={() => onSelect(opt)}>
+          {opt.text}
+        </button>
+      ))}
+    </motion.div>
+  );
+}
+
+
+// 4️⃣ src/components/StatsBar.jsx
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function StatsBar({ stats }) {
+  return (
+    <div className="flex justify-around mb-4">
+      {Object.entries(stats).map(([key, value]) => (
+        <motion.div key={key} animate={{ scale: [1, 1.2, 1] }} className="text-center">
+          <p className="font-bold">{key}</p>
+          <p>{value}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+
+// 5️⃣ src/components/EndScreen.jsx
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function EndScreen({ stats, onRestart }) {
+  return (
+    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-center p-6">
+      <h1 className="text-2xl font-bold mb-4">🎉 게임 종료 🎉</h1>
+      <div className="mb-4">
+        {Object.entries(stats).map(([key, value], idx) => <p key={idx}>{key}: {value}</p>)}
+      </div>
+      <button className="bg-pink-300 px-6 py-2 rounded hover:bg-pink-400" onClick={onRestart}>다시 시작</button>
+    </motion.div>
+  );
+}
+
+
+// 6️⃣ src/App.jsx
+import React, { useState } from 'react';
+import Card from './components/Card';
+import StatsBar from './components/StatsBar';
+import EndScreen from './components/EndScreen';
+import { cards } from './CardData';
+import { db } from './firebase';
+import { collection, addDoc } from 'firebase/firestore';
+
+export default function App() {
+  const [currentCard, setCurrentCard] = useState(0);
   const [stats, setStats] = useState({ 지식: 0, 체력: 0, 인간관계: 0, 재능: 0 });
-  const [showEnding, setShowEnding] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
-  const current = scenarios[step];
-
-  const handleChoice = (effects) => {
+  const handleSelect = async (option) => {
     const newStats = { ...stats };
-    for (let key in effects) newStats[key] += effects[key];
+    for (let key in option.effect) {
+      newStats[key] += option.effect[key];
+    }
     setStats(newStats);
 
-    if (step + 1 < scenarios.length) {
-      setStep(step + 1);
+    if (currentCard + 1 < cards.length) {
+      setCurrentCard(currentCard + 1);
     } else {
-      setShowEnding(true);
+      setGameOver(true);
+      await addDoc(collection(db, 'studentRecords'), {
+        stats: newStats,
+        timestamp: new Date()
+      });
     }
   };
 
+  const restartGame = () => {
+    setStats({ 지식: 0, 체력: 0, 인간관계: 0, 재능: 0 });
+    setCurrentCard(0);
+    setGameOver(false);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-100 to-yellow-100 flex flex-col items-center justify-center p-6">
-      <h1 className="text-3xl font-bold mb-4">🌟 인생 역전! 라이프 카드 게임</h1>
+    <div className="min-h-screen bg-pink-50 flex flex-col items-center justify-center">
+      <h1 className="text-3xl font-bold mb-6">인생 역전! 라이프 카드 게임</h1>
+      <StatsBar stats={stats} />
+      {gameOver ? (
+        <EndScreen stats={stats} onRestart={restartGame} />
+      ) : (
+        <Card card={cards[currentCard]} onSelect={handleSelect} />
+      )}
+    </div>
+  );
+}
 
-      {/* 능력치 표시 */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-2 gap-4 mb-6"
-      >
-        {Object.entries(stats).map(([k, v]) => (
-          <motion.div
-            key={k}
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 0.4 }}
-            className="bg-white shadow-md rounded-2xl px-4 py-2 text-center"
-          >
-            {k}: {v}
-          </motion.div>
-        ))}
-      </motion.div>
 
-      <AnimatePresence mode="wait">
-        {!showEnding ? (
-          <motion.div
-            key={step}
-            initial={{ opacity: 0, rotateY: 90 }}
-            animate={{ opacity: 1, rotateY: 0 }}
-            exit={{ opacity: 0, rotateY: -90 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="w-80 bg-white shadow-2xl rounded-2xl">
-              <CardContent className="p-6 text-center">
-                <h2 className="text-xl font-bold mb-2">{current.title}</h2>
-                <p className="mb-4">{current.description}</p>
-                {current.choices.map((c, i) => (
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} key={i}>
-                    <Button
-                      onClick={() => handleChoice(c.effects)}
-                      className="w-full mb-2 rounded-xl"
-                    >
-                      {c.text}
-                    </Button>
-                  </motion.div>
-                ))}
-              </CardContent>
-            </Card>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="ending"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="bg-white p-8 rounded-3xl shadow-xl text-center max-w-md"
-          >
-            <h2 className="text-2xl font-bold mb-4">🎉 나의 인생 결말!</h2>
-            <p className="mb-4">너의 선택이 모여 이런 이야기가 되었어!</p>
-            <ul className="text-left list-disc ml-6 mb-6">
-              {Object.entries(stats).map(([k, v]) => (
-                <li key={k}>
-                  {k}: {v}점
-                </li>
-              ))}
-            </ul>
-            <Button onClick={() => window.location.reload()}>다시 하기</Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+// 7️⃣ src/Dashboard.jsx
+import React, { useEffect, useState } from 'react';
+import { db } from './firebase';
+import { collection, getDocs } from 'firebase/firestore';
+
+export default function Dashboard() {
+  const [records, setRecords] = useState([]);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const querySnapshot = await getDocs(collection(db, 'studentRecords'));
+      setRecords(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    };
+    fetchRecords();
+  }, []);
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">학생 기록 대시보드</h1>
+      <table className="min-w-full bg-white border">
+        <thead>
+          <tr>
+            <th className="border px-4 py-2">ID</th>
+            <th className="border px-4 py-2">지식</th>
+            <th className="border px-4 py-2">체력</th>
+            <th className="border px-4 py-2">인간관계</th>
+            <th className="border px-4 py-2">재능</th>
+            <th className="border px-4 py-2">날짜</th>
+          </tr>
+        </thead>
+        <tbody>
+          {records.map(record => (
+            <tr key={record.id} className="text-center">
+              <td className="border px-4 py-2">{record.id}</td>
+              <td className="border px-4 py-2">{record.stats.지식}</td>
+              <td className="border px-4 py-2">{record.stats.체력}</td>
+              <td className="border px-4 py-2">{record.stats.인간관계}</td>
+              <td className="border px-4 py-2">{record.stats.재능}</td>
+              <td className="border px-4 py-2">{record.timestamp.toDate().toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
