@@ -3,55 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>인생 역전! 라이프 카드 게임 & 대시보드</title>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<title>나를 찾아 떠나는 모험</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-body { font-family:'Nanum Pen Script', cursive; background:#ffe4e1; margin:0; padding:0; display:flex; flex-direction:column; align-items:center;}
-h1,h2{ text-align:center; }
-.card { background:#fff; border-radius:12px; padding:20px; margin:20px; width:300px; box-shadow:0 4px 8px rgba(0,0,0,0.2); transition: transform 0.3s; }
-.card:hover { transform: scale(1.05); }
-button { margin:5px; padding:10px 15px; border:none; border-radius:8px; background:#ff69b4; color:#fff; cursor:pointer; transition:0.2s;}
-button:hover { background:#ff85c1; }
-.stats { display:flex; justify-content:space-around; width:80%; margin:10px 0; }
-.stat-bar { width:100px; height:20px; background:#ddd; border-radius:10px; overflow:hidden; }
-.stat-fill { height:100%; background:#ff69b4; transition: width 0.5s;}
-#endScreen, #dashboard { display:none; text-align:center; margin-top:20px; width:90%; max-width:800px;}
-table { width:100%; border-collapse:collapse; margin-top:10px;}
-th,td { border:1px solid #ccc; padding:5px; text-align:center;}
+body {
+  margin:0; padding:0;
+  font-family: 'Press Start 2P', cursive;
+  background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center fixed;
+  background-size: cover;
+  color: #f0f8ff;
+}
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+h1 {
+  text-align:center;
+  font-size:2em;
+  color:#ffd700;
+  text-shadow: 2px 2px 5px #000;
+}
+.card {
+  background: rgba(0,0,0,0.75);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 0 25px #000;
+  animation: fadeIn 1s ease;
+}
+button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 0.8em;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: linear-gradient(90deg,#ff8c00,#ffd700);
+  color: #000;
+  font-family: 'Press Start 2P', cursive;
+  transition: transform 0.2s;
+}
+button:hover { transform: scale(1.05);}
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+.stat-bar {
+  width: 22%;
+  background: rgba(255,255,255,0.3);
+  border-radius: 5px;
+  height: 15px;
+  overflow: hidden;
+}
+.stat-bar-inner {
+  height: 100%;
+  background: #7CFC00;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(50px);}
+  to {opacity:1; transform: translateY(0);}
+}
 </style>
 </head>
 <body>
-<h1>🎮 인생 역전! 라이프 카드 게임</h1>
-
-<div class="stats">
-  <div>지식<div class="stat-bar"><div id="knowledge" class="stat-fill"></div></div></div>
-  <div>체력<div class="stat-bar"><div id="fitness" class="stat-fill"></div></div></div>
-  <div>친구<div class="stat-bar"><div id="friendship" class="stat-fill"></div></div></div>
-  <div>재능<div class="stat-bar"><div id="talent" class="stat-fill"></div></div></div>
+<div class="container">
+  <h1>🗺️ 나를 찾아 떠나는 모험 🗺️</h1>
+  <div class="stats" id="stats">
+    <div>
+      지식
+      <div class="stat-bar"><div class="stat-bar-inner" id="knowledge" style="width:0%"></div></div>
+    </div>
+    <div>
+      체력
+      <div class="stat-bar"><div class="stat-bar-inner" id="fitness" style="width:0%"></div></div>
+    </div>
+    <div>
+      우정
+      <div class="stat-bar"><div class="stat-bar-inner" id="friendship" style="width:0%"></div></div>
+    </div>
+    <div>
+      재능
+      <div class="stat-bar"><div class="stat-bar-inner" id="talent" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div id="cardContainer"></div>
 </div>
 
-<div id="cardContainer"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-<div id="endScreen">
-  <h2>🎉 나만의 엔딩 🎉</h2>
-  <p id="endText"></p>
-  <button onclick="showDashboard()">관리자 대시보드 보기</button>
-</div>
-
-<div id="dashboard">
-  <h2>📊 관리자 대시보드</h2>
-  <table id="recordsTable">
-    <thead>
-      <tr>
-        <th>시간</th><th>카드</th><th>선택</th><th>지식</th><th>체력</th><th>친구</th><th>재능</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-<script>
+// Firebase 설정
 const firebaseConfig = {
   apiKey: "AIzaSyBUKwD2oMtcpMClaNHDNhHoG1ogBYu623k",
   authDomain: "plan-a1107.firebaseapp.com",
@@ -60,89 +106,90 @@ const firebaseConfig = {
   messagingSenderId: "1071905265794",
   appId: "1:1071905265794:web:2e7b46032bbe8ac7f97c9b"
 };
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-const cards = [
-  { id:1, text:"첫 시험이 다가왔어요. 친구가 놀자고 합니다.", choices:[{text:"함께 논다", effects:{knowledge:-5, friendship:10}},{text:"공부한다", effects:{knowledge:10, friendship:-5}}]},
-  { id:2, text:"동아리 선택의 날이에요.", choices:[{text:"운동 동아리", effects:{fitness:10}},{text:"독서 동아리", effects:{knowledge:10}}]}
-];
+// 캐릭터 능력치
+let stats = { knowledge:0, fitness:0, friendship:0, talent:0 };
 
-let stats = { knowledge:50, fitness:50, friendship:50, talent:50 };
+// 카드 데이터 (25단계 샘플, 선택지 3~5개)
+const cards = [];
+for(let i=1;i<=25;i++){
+  const choices = [];
+  const numChoices = Math.floor(Math.random()*3)+3; // 3~5개 선택지
+  for(let j=0;j<numChoices;j++){
+    choices.push({
+      text:`선택 ${j+1}`,
+      stats:{
+        knowledge: Math.floor(Math.random()*3),
+        fitness: Math.floor(Math.random()*3),
+        friendship: Math.floor(Math.random()*3),
+        talent: Math.floor(Math.random()*3)
+      }
+    });
+  }
+  cards.push({
+    id:i,
+    title:`퀘스트 ${i}`,
+    desc:`전사 캐릭터가 모험 중 퀘스트 ${i}에 도전합니다.`,
+    choices: choices
+  });
+}
+
 let currentCard = 0;
 
-function updateStats(){
-  document.getElementById("knowledge").style.width = stats.knowledge+"%";
-  document.getElementById("fitness").style.width = stats.fitness+"%";
-  document.getElementById("friendship").style.width = stats.friendship+"%";
-  document.getElementById("talent").style.width = stats.talent+"%";
+// 능력치 업데이트
+function updateStats() {
+  document.getElementById('knowledge').style.width = Math.min(stats.knowledge*4,100) + '%';
+  document.getElementById('fitness').style.width = Math.min(stats.fitness*4,100) + '%';
+  document.getElementById('friendship').style.width = Math.min(stats.friendship*4,100) + '%';
+  document.getElementById('talent').style.width = Math.min(stats.talent*4,100) + '%';
 }
 
-function showCard(){
+// 카드 표시
+function showCard() {
   if(currentCard >= cards.length){
-    showEnd();
+    document.getElementById('cardContainer').innerHTML = `<h2 style="text-align:center; font-size:1.5em;">모험 종료! 최종 능력치</h2>
+    <pre style="background: rgba(0,0,0,0.7); padding:20px; border-radius:10px; font-size:0.6em;">${JSON.stringify(stats,null,2)}</pre>
+    <p style="text-align:center;">새로고침하면 다시 모험 가능!</p>`;
     return;
   }
-  const cardContainer = document.getElementById("cardContainer");
-  cardContainer.innerHTML = "";
-  const card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML = `<p>${cards[currentCard].text}</p>`;
-  cards[currentCard].choices.forEach((choice, index)=>{
-    const btn = document.createElement("button");
-    btn.innerText = choice.text;
-    btn.onclick = ()=>selectChoice(index);
-    card.appendChild(btn);
-  });
-  cardContainer.appendChild(card);
+  const card = cards[currentCard];
+  const container = document.getElementById('cardContainer');
+  container.innerHTML = `
+    <div class="card">
+      <h2 style="font-size:1.2em;">🗡️ ${card.title}</h2>
+      <p>${card.desc}</p>
+      ${card.choices.map((c,i)=>`<button onclick="choose(${i})">${c.text}</button>`).join('')}
+    </div>
+  `;
 }
 
-function selectChoice(choiceIndex){
-  const choice = cards[currentCard].choices[choiceIndex];
-  for(let key in choice.effects){
-    stats[key] = Math.min(Math.max(stats[key]+choice.effects[key],0),100);
+// 선택 처리
+window.choose = async function(idx){
+  const choice = cards[currentCard].choices[idx];
+  for(const key in choice.stats){
+    stats[key] += choice.stats[key];
   }
   updateStats();
-  db.collection("gameRecords").add({
-    cardId: cards[currentCard].id,
-    choice: choice.text,
-    stats: {...stats},
-    timestamp: new Date()
-  });
+  // Firestore 저장
+  try{
+    await addDoc(collection(db,'gameRecords'),{
+      cardId: cards[currentCard].id,
+      choice: choice.text,
+      stats: {...stats},
+      timestamp: Date.now()
+    });
+  }catch(e){
+    console.error("Firestore 저장 오류:", e);
+  }
   currentCard++;
   showCard();
 }
 
-function showEnd(){
-  document.getElementById("cardContainer").style.display="none";
-  document.getElementById("endScreen").style.display="block";
-  document.getElementById("endText").innerText = 
-    `최종 능력치 - 지식:${stats.knowledge}, 체력:${stats.fitness}, 친구:${stats.friendship}, 재능:${stats.talent}`;
-}
-
-function showDashboard(){
-  document.getElementById("endScreen").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-  const tbody = document.querySelector("#recordsTable tbody");
-  tbody.innerHTML = "";
-  db.collection("gameRecords").orderBy("timestamp","desc").get().then(snapshot=>{
-    snapshot.forEach(doc=>{
-      const data = doc.data();
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${data.timestamp.toDate().toLocaleString()}</td>
-                      <td>${data.cardId}</td>
-                      <td>${data.choice}</td>
-                      <td>${data.stats.knowledge}</td>
-                      <td>${data.stats.fitness}</td>
-                      <td>${data.stats.friendship}</td>
-                      <td>${data.stats.talent}</td>`;
-      tbody.appendChild(tr);
-    });
-  });
-}
-
-updateStats();
+// 초기 시작
 showCard();
+updateStats();
 </script>
 </body>
 </html>
