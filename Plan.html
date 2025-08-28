@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>인생 역전! 라이프 카드 게임</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#fff7fb; --card:#ffffff; --text:#222; --muted:#6b7280;
+--p1:#93c5fd; --p2:#86efac; --p3:#fca5a5; --p4:#fbcfe8; --accent:#a78bfa;
+--shadow:0 10px 20px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+body{font-family:'Jua',sans-serif;background:linear-gradient(135deg,#fef6ff,#f0f9ff);color:var(--text);margin:0}
+.wrap{max-width:960px;margin:30px auto;padding:16px}
+header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.title{font-size:28px}
+.subtitle{color:var(--muted);font-size:16px}
+.board{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0 16px}
+.stat{background:#fafafa;border-radius:14px;padding:10px}
+.stat h4{margin:0 0 6px;font-size:14px;display:flex;align-items:center;gap:6px}
+.bar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+.fill{height:100%;width:0%;transition:width .4s ease}
+.K{background:var(--p1)} .S{background:var(--p2)} .R{background:var(--p3)} .T{background:var(--p4)}
+.card{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:18px;margin:8px 0}
+.card h3{margin:0 0 8px;font-size:22px}
+.choices{display:grid;gap:10px}
+button.choice{border:0;border-radius:14px;padding:12px 14px;background:#f1f5f9;cursor:pointer;text-align:left;transition:.15s}
+button.choice:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(0,0,0,.08)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{border:0;border-radius:12px;padding:10px 12px;background:var(--accent);color:white;cursor:pointer;box-shadow:var(--shadow)}
+.muted{background:#e5e7eb;color:#111}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.log{background:#ffffff;border-radius:16px;box-shadow:var(--shadow);padding:12px;max-height:240px;overflow:auto}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;margin-right:6px;color:#111;background:#eef2ff}
+.ending{font-size:20px}
+.dream{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:12px}
+.dream input,.dream textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;font-family:inherit}
+.tag{display:inline-block;background:#ecfeff;border:1px solid #cffafe;padding:4px 8px;border-radius:999px;margin:4px 4px 0 0;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div>
+<div class="title">🃏 인생 역전! 라이프 카드 게임</div>
+<div class="subtitle">카드를 선택하며 나만의 인생 스토리를 만들어 보자!</div>
+</div>
+<div class="controls">
+localStorage.removeItem('lifeGameDreams
