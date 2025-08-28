@@ -1,123 +1,240 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>🗺️ 모험: 나를 찾아 떠나는 여정 (완성판)</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Uncial+Antiqua&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>✨ 다중지능 탐험 RPG (Final Mix)</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{ --gold:#ffd166; --accent:#e07a00; --card:#071028aa; --glass: rgba(255,255,255,0.03);} *{box-sizing:border-box}
-body{margin:0;font-family:'Noto Sans KR','Jua',sans-serif;background:linear-gradient(180deg,#041023 0%,#071226 60%);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
-.wrap{width:100%;max-width:1200px}
-.header{display:flex;align-items:center;gap:16px;margin-bottom:14px}
-.title{font-family:'Uncial Antiqua';font-size:34px;color:var(--gold);text-shadow:0 2px 8px rgba(0,0,0,0.6)}
-.subtitle{font-family:'Jua';opacity:0.9}
-.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.35));border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,0.6);border:1px solid rgba(255,215,102,0.06)}
-.layout{display:flex;gap:18px}
-.left{width:360px}
-.right{flex:1}
-/* 캐릭터 한줄 */
-.char-row{display:flex;gap:10px;overflow-x:auto;padding:8px 4px}
-.char{flex:0 0 auto;width:130px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(0,0,0,0.2));text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,0.03);transition:transform .18s, box-shadow .18s}
-.char:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.6),0 0 18px rgba(255,215,102,0.06)}
-.char .emoji{font-size:44px}
-.char .name{color:var(--gold);font-weight:800}
-.char .tag{opacity:0.9;font-size:0.86rem}
-.char.selected{box-shadow:0 0 30px rgba(255,197,66,0.28);outline:2px solid rgba(255,215,102,0.06);transform:translateY(-8px)}
-/* 입력 */
-label{display:block;color:var(--gold);font-weight:700;margin-bottom:6px}
-input[type=text]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-bottom:10px}
-.row-btns{display:flex;gap:8px}
-.btn{display:inline-flex;gap:8px;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(90deg,#8b5e3c,#6b4226);color:#fff;font-weight:800;box-shadow:0 8px 20px rgba(107,66,38,0.18)}
-.btn.secondary{background:transparent;border:1px solid rgba(255,215,102,0.12);box-shadow:none}
-.small{padding:8px 10px;font-size:0.9rem}
-/* 게임 영역 */
-.hero{display:flex;gap:12px;align-items:center}
-.hero-emoji{font-size:64px;padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,215,102,0.06), rgba(0,0,0,0.2));border:1px solid rgba(255,215,102,0.06)}
-.hero h3{margin:0;color:var(--gold)}
-.quest{margin-top:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.2));border:1px solid rgba(255,255,255,0.03)}
-.quest-text{font-size:1.05rem;line-height:1.6}
-.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
-.option{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.16));cursor:pointer;border:1px solid rgba(255,255,255,0.03);transition:transform .12s,box-shadow .12s}
-.option:hover{transform:translateY(-6px);box-shadow:0 18px 30px rgba(0,0,0,0.6)}
-.option .label{font-weight:800}
-.option .hint{display:block;opacity:0.85;margin-top:6px}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.stat{background:var(--glass);padding:8px;border-radius:8px;text-align:center}
-.bar{height:10px;background:rgba(255,255,255,0.04);border-radius:6px;margin-top:8px;overflow:hidden}
-.bar-inner{height:100%;background:linear-gradient(90deg,var(--gold),var(--accent));width:0%;transition:width .6s}
-/* 결과 */
-.result{padding:16px;text-align:center}
-.career-cards{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
-.career{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.18));padding:10px;border-radius:10px;min-width:220px;border:1px solid rgba(255,215,102,0.06)}
-/* responsive */
-@media(max-width:900px){.layout{flex-direction:column}.left{width:100%}.options{grid-template-columns:1fr}.char{width:calc(25% - 8px)}}
+    :root {
+        --primary-gold: #ffd700;
+        --dark-bg: #0c0a18;
+        --card-bg: rgba(22, 18, 48, 0.85);
+        --border-color: rgba(255, 215, 0, 0.2);
+    }
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        font-family: 'Noto Sans KR', sans-serif;
+        background: url('https://img.freepik.com/free-vector/gradient-mountain-landscape_52683-77407.jpg') no-repeat center center fixed;
+        background-size: cover;
+        background-color: var(--dark-bg);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 900px;
+        margin: auto;
+        text-align: center;
+    }
+
+    h1 {
+        font-family: 'Jua', sans-serif;
+        font-size: 2.8em;
+        color: var(--primary-gold);
+        text-shadow: 0 0 15px var(--primary-gold), 0 0 5px #000;
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    /* --- 캐릭터 선택 화면 --- */
+    .character-selection-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+        padding: 20px;
+    }
+    .character-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: 20px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+    .character-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 30px var(--primary-gold);
+    }
+    .character-card .emoji { font-size: 5rem; }
+    .character-card .name { font-family: 'Jua'; font-size: 1.5rem; color: var(--primary-gold); margin: 10px 0 5px; }
+    .character-card .tag { font-size: 0.9rem; opacity: 0.8; }
+    
+    /* --- 유저 정보 입력 --- */
+    .user-info-panel {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 40px;
+        border: 1px solid var(--border-color);
+        display: none; /* Initially hidden */
+    }
+    .user-info-panel input {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background: rgba(0,0,0,0.3);
+        color: #fff;
+        font-size: 1rem;
+    }
+    label { font-weight: 700; color: var(--primary-gold); font-size: 1.1rem; }
+    .btn {
+        padding: 15px 20px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(45deg, #DA70D6, #8A2BE2);
+        color: white;
+        font-family: 'Jua', sans-serif;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px #DA70D6;
+    }
+
+    /* --- 메인 게임 화면 --- */
+    .game-screen { display: none; }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .stat-item {
+        background: rgba(0,0,0,0.5);
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 0.9em;
+    }
+    .stat-bar {
+        width: 100%; background: rgba(255,255,255,0.2);
+        border-radius: 5px; height: 10px; margin-top: 5px; overflow: hidden;
+    }
+    .stat-bar-inner {
+        height: 100%;
+        background: linear-gradient(90deg, #1E90FF, var(--primary-gold));
+        width: 0%;
+        transition: width 0.6s ease;
+    }
+    .game-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 30px;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 1s ease;
+    }
+    #hero-display { margin-bottom: 20px; }
+    #hero-emoji { font-size: 6rem; animation: float 3s ease-in-out infinite; }
+    #quest-title {
+        font-family: 'Jua', sans-serif;
+        font-size: 1.8rem;
+        color: var(--primary-gold);
+        margin: 0 0 15px;
+    }
+    #quest-text {
+        font-size: 1.2rem;
+        min-height: 80px;
+        line-height: 1.6;
+        border-left: 3px solid var(--primary-gold);
+        padding-left: 15px;
+        text-align: left;
+    }
+    #choices-container {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    .choice-btn {
+        padding: 15px;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        cursor: pointer;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        transition: all 0.2s;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUpFadeIn 0.5s forwards;
+    }
+    .choice-btn:hover { background: var(--primary-gold); color: #000; }
+    
+    /* --- 결과 화면 --- */
+    .result-card { text-align: left; }
+    .result-card h3 { color: var(--primary-gold); border-bottom: 2px solid var(--primary-gold); padding-bottom: 10px; }
+    .result-card .career-cards { display: flex; gap: 15px; margin-top: 20px; justify-content: center; }
+    .result-card .career { flex: 1; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; text-align: center; }
+
+    /* --- 애니메이션 --- */
+    @keyframes glow { from { text-shadow: 0 0 10px var(--primary-gold), 0 0 5px #000; } to { text-shadow: 0 0 25px var(--primary-gold), 0 0 5px #000; } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUpFadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media(max-width: 768px) {
+        h1 { font-size: 2rem; }
+        .character-selection-grid { grid-template-columns: 1fr 1fr; }
+        .stats-grid { grid-template-columns: 1fr 1fr; }
+        #choices-container { grid-template-columns: 1fr; }
+    }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header"><div class="title">나를 찾아 떠나는 모험</div><div class="subtitle">RPG 스타일 다중지능 탐색기</div></div>
-  <div class="card layout">
-    <div class="left">
-      <div style="margin-bottom:10px" class="card">
-        <label>반</label>
-        <input id="input-class" type="text" placeholder="예: 1학년 3반" />
-        <label>이름</label>
-        <input id="input-name" type="text" placeholder="예: 김민지" />
-        <label>모험가 선택</label>
-        <div id="char-row" class="char-row" aria-hidden="false">
-          <div class="char" data-id="prince"><div class="emoji">🤴</div><div class="name">용감한 왕자</div><div class="tag">리더십 · 언어</div></div>
-          <div class="char" data-id="princess"><div class="emoji">👸</div><div class="name">지혜로운 공주</div><div class="tag">공감 · 음악</div></div>
-          <div class="char" data-id="warrior"><div class="emoji">⚔️</div><div class="name">강인한 전사</div><div class="tag">신체 · 용기</div></div>
-          <div class="char" data-id="wizard"><div class="emoji">🔮</div><div class="name">신비한 마법사</div><div class="tag">논리 · 지식</div></div>
-        </div>
-        <div style="margin-top:10px" class="row-btns">
-          <button id="btn-start" class="btn">▶ 모험 시작</button>
-          <button id="btn-reset" class="btn secondary small">초기화</button>
-        </div>
-      </div>
 
-      <div id="result-panel" class="card" style="margin-top:12px;display:none">
-        <div class="result" id="result-content">
-          <h3 id="result-title" style="color:var(--gold)"></h3>
-          <div id="result-text" style="margin-top:8px"></div>
-          <div class="career-cards" id="career-cards"></div>
-          <div style="margin-top:12px"><button id="btn-restart" class="btn">🔄 다시 모험하기</button></div>
-        </div>
-      </div>
-    </div>
+<div class="container">
+    <h1 id="main-title">✨ 다중지능 탐험 RPG ✨</h1>
 
-    <div class="right">
-      <div id="game-card" class="card" style="min-height:320px">
-        <div id="pre-game">
-          <div style="font-weight:800;color:var(--gold);font-size:1.1rem">모험 안내</div>
-          <p style="margin-top:8px;opacity:0.9">각 캐릭터마다 20개의 스토리형 퀘스트가 준비되어 있습니다. 선택을 통해 당신의 다중지능(가드너)을 측정하고, 최종적으로 1·2순위를 제시합니다. 사운드와 간단한 연출을 더해 게임 느낌을 살렸습니다.</p>
-        </div>
-
-        <div id="game-area" style="display:none">
-          <div class="hero">
-            <div id="hero-emoji" class="hero-emoji">🧭</div>
-            <div>
-              <h3 id="hero-name">모험가</h3>
-              <div id="hero-sub" style="opacity:0.9">직업을 선택하고 시작하세요.</div>
+    <div id="character-selection-screen">
+        <div class="character-selection-grid">
+            <div class="character-card" data-id="prince" data-emoji="🤴" data-name="용감한 왕자" data-tag="리더십 · 언어">
+                <div class="emoji">🤴</div><div class="name">용감한 왕자</div><div class="tag">리더십 · 언어</div>
             </div>
-          </div>
-          <div class="quest" id="quest-box">
-            <div id="quest-text" class="quest-text">퀘스트가 표시됩니다.</div>
-            <div id="options" class="options"></div>
-            <div id="stats" class="stats-grid"></div>
-          </div>
+            <div class="character-card" data-id="princess" data-emoji="👸" data-name="지혜로운 공주" data-tag="공감 · 음악">
+                <div class="emoji">👸</div><div class="name">지혜로운 공주</div><div class="tag">공감 · 음악</div>
+            </div>
+            <div class="character-card" data-id="warrior" data-emoji="⚔️" data-name="강인한 전사" data-tag="신체 · 용기">
+                <div class="emoji">⚔️</div><div class="name">강인한 전사</div><div class="tag">신체 · 용기</div>
+            </div>
+            <div class="character-card" data-id="wizard" data-emoji="🔮" data-name="신비한 마법사" data-tag="논리 · 지식">
+                <div class="emoji">🔮</div><div class="name">신비한 마법사</div><div class="tag">논리 · 지식</div>
+            </div>
         </div>
-      </div>
-
-      <div style="margin-top:12px;color:rgba(255,255,255,0.86)" class="card">
-        <details>
-          <summary style="cursor:pointer;color:var(--gold);font-weight:800">게임 설명</summary>
-          <div style="padding-top:8px">선택지는 A~D로 표시됩니다. 각 선택은 다중지능 점수에 가중치를 더합니다. 모든 퀘스트를 완료하면 상위 2개 지능이 결과로 제공됩니다. 사운드는 브라우저 WebAudio로 생성합니다.</div>
-        </details>
-      </div>
     </div>
-  </div>
+
+    <div id="user-info-screen" class="user-info-panel">
+        <h2 id="selected-char-title" style="color:var(--primary-gold);"></h2>
+        <label for="input-class">반</label>
+        <input id="input-class" type="text" placeholder="예: 1학년 3반" />
+        <label for="input-name">이름</label>
+        <input id="input-name" type="text" placeholder="예: 김민지" />
+        <button id="btn-start" class="btn">▶ 모험 시작</button>
+    </div>
+
+    <div id="game-screen" class="game-screen">
+        <div class="stats-grid" id="stats-grid"></div>
+        <div id="game-card" class="game-card"></div>
+    </div>
 </div>
 
 <script>
@@ -128,539 +245,179 @@ function playClick(){ if(!audioCtx) return; const o = audioCtx.createOscillator(
 function playFanfare(){ if(!audioCtx) return; const notes=[660,880,990,1320]; let t=audioCtx.currentTime; notes.forEach((n,i)=>{ const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='triangle'; o.frequency.setValueAtTime(n,t + i*0.12); g.gain.setValueAtTime(0.0001,t + i*0.12); g.gain.exponentialRampToValueAtTime(0.16,t + i*0.12 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001,t + i*0.12 + 0.26); o.connect(g); g.connect(audioCtx.destination); o.start(t + i*0.12); o.stop(t + i*0.12 + 0.28); }); }
 function playSuccess(){ if(!audioCtx) return; const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(440,audioCtx.currentTime); g.gain.setValueAtTime(0.0001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.08,audioCtx.currentTime+0.001); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.12); }
 
-/* ====== 퀘스트 데이터 (각 캐릭터 20문항, 서사적 문체, 개연성 유지) ====== */
+/* ====== 퀘스트 데이터 (각 캐릭터 20문항, 서사적 문체, 개연성 유지) - 수정 없이 그대로 유지 ====== */
 function q(t,a,b,c,d){ return {text:t, options:[a,b,c,d]}; }
 function opt(text,effects){ return {t:text,e:effects}; }
-
 const quests = {
-  prince: [
-    q('성의 먼지 쌓인 서고에서 발견한 한 통의 편지. 왕의 글씨는 흔들리지만, 끝에 "빛을 따라라"라는 단서가 적혀있다. 당신은 어디서부터 단서를 찾겠는가?',
-      opt('글 속 단어의 반복과 문장 구조를 꼼꼼히 분석해 숨은 의미를 찾는다',{linguistic:14}),
-      opt('편지의 얼룩과 접힌 자국을 살펴 실제 현장 상황을 유추한다',{naturalist:8,spatial:6}),
-      opt('편지의 수신자와 연관 인물들의 기록을 추적해 맥락을 만든다',{interpersonal:12,logical:6}),
-      opt('편지에 적힌 장소로 직접 발걸음을 옮겨 현장을 확인한다',{bodily:12,spatial:6})
-    ),
-    q('마을 시장에는 전설을 아는 노인이 있다. 그는 왕의 편지가 말하는 "빛"이 북쪽 숲의 고목에서 나온다고 속삭인다. 당신은 어떻게 행동하는가?',
-      opt('노인의 이야기를 끝까지 경청하고 추가 단서를 얻어 지도에 표시한다',{interpersonal:12,linguistic:6}),
-      opt('노인이 말한 고목의 위치를 먼저 찾아가 관찰한다',{naturalist:14,spatial:6}),
-      opt('노인의 말이 맞는지 주변 기록과 비교해 검증한다',{logical:12,linguistic:6}),
-      opt('동료를 모아 즉시 탐험대를 조직해 출발한다',{bodily:12,interpersonal:6})
-    ),
-    q('숲길에서 작은 문양이 새겨진 돌을 발견했다. 문양은 고대의 별자리와 닮았다. 당신은 무엇을 하겠는가?',
-      opt('문양을 글로 옮겨 의미를 해석한다',{linguistic:12,spatial:4}),
-      opt('문양의 패턴을 눈으로 추적해 별자리 대응을 찾아낸다',{spatial:14}),
-      opt('돌의 재질과 주변 식생을 살펴 이 돌이 놓인 이유를 추정한다',{naturalist:12,logical:4}),
-      opt('동행들과 논의해 집단적인 해석을 시도한다',{interpersonal:12})
-    ),
-    q('밤이 찾아오고, 숲 가장자리에서 이상한 울림이 들린다. 울림은 규칙적인 패턴으로 이어진다. 어떻게 반응할까?',
-      opt('울림의 리듬을 기록해 반복 구조를 찾아 해독한다',{musical:14,logical:4}),
-      opt('불을 만들고 안전한 야영지를 만들어 대피한다',{bodily:12,spatial:4}),
-      opt('울림의 소리가 나는 곳을 조용히 찾아 관찰한다',{naturalist:10,spatial:6}),
-      opt('동행자들의 불안을 달래고 협력체계를 유지한다',{interpersonal:14})
-    ),
-    q('고목 가까이에서 오래된 비문을 찾았다. 글자는 닳았지만, 핵심 단어 몇 개는 읽힌다. 다음 행동은?',
-      opt('남아있는 단어들을 엮어 전체 문맥을 추리한다',{linguistic:14}),
-      opt('문자의 형식과 도안으로 제작 시기를 추정한다',{logical:10,naturalist:6}),
-      opt('주변에서 유사 문자를 가진 유물을 찾는다',{spatial:12,naturalist:6}),
-      opt('지역 고아원 아이들과 이야기를 나눠 전설을 듣는다',{interpersonal:12})
-    ),
-    q('당신은 고목 안에서 소형의 열쇠를 발견했다. 열쇠에는 작고 복잡한 장식이 새겨져 있다. 어떻게 다룰까?',
-      opt('열쇠의 문양을 꼼꼼히 스케치해 기록한다',{linguistic:10,spatial:8}),
-      opt('열쇠를 품에 넣고, 더 많은 단서를 찾기 위해 주변을 탐색한다',{bodily:12}),
-      opt('지역 학자에게 열쇠를 보여 감정을 살핀다',{interpersonal:12,logical:6}),
-      opt('열쇠의 금속 성분을 간이 검사해 기원을 추정한다',{naturalist:10,logical:6})
-    ),
-    q('수로가 막혀 마을의 식수가 위험해졌다. 당신이 우선해야 할 일은?',
-      opt('수로의 흐름과 구조를 분석해 우회로를 만든다',{logical:12,spatial:8}),
-      opt('사람들을 조직해 임시로 물을 나르게 한다',{interpersonal:14,bodily:6}),
-      opt('수로 주변의 식물 상태를 파악해 오염원 여부를 확인한다',{naturalist:12}),
-      opt('신속히 현장을 뛰어다니며 구조를 돕는다',{bodily:14})
-    ),
-    q('마을 광장에서 노래와 이야기를 듣게 된다. 그 속에서 왕관에 대한 또 다른 암시가 나왔다. 당신은?',
-      opt('이야기의 가사와 단어를 세밀하게 기록한다',{linguistic:12,musical:6}),
-      opt('이야기를 전한 이의 표정과 행동에서 추가 단서를 읽어낸다',{interpersonal:12}),
-      opt('가사에 나온 지형을 직접 찾아 대조한다',{spatial:12}),
-      opt('노래의 멜로디를 분석해 단서의 리듬을 찾는다',{musical:12,logical:4})
-    ),
-    q('밤중에 성으로 돌아가자 국경 수비대가 당신을 심문한다. 어떻게 신뢰를 얻을까?',
-      opt('편지와 발견물을 조리 있게 설명해 신뢰를 얻는다',{linguistic:14,interpersonal:6}),
-      opt('수비대의 우려를 이해하고 공감하며 대화한다',{interpersonal:16}),
-      opt('주변 증거를 모아 과학적으로 논증한다',{logical:12}),
-      opt('수비대를 설득해 동행을 허락받는다',{linguistic:10,interpersonal:8})
-    ),
-    q('왕이 당신에게 시험을 낸다. "성의 안전과 백성의 행복, 어느 쪽을 우선하겠는가?" 당신의 답은?',
-      opt('백성의 행복을 우선해 정책을 제시한다',{interpersonal:16,linguistic:6}),
-      opt('국가의 안전을 먼저 확보하는 계획을 말한다',{logical:14,bodily:6}),
-      opt('균형을 맞춘 타협안을 제시한다',{logical:12,interpersonal:10}),
-      opt('문화와 교육 강화로 장기적 행복을 꾀한다',{linguistic:12,intrapersonal:6})
-    ),
-    q('왕국 외곽의 폐허에서 고대 장치가 작동한다. 장치의 해법을 찾기 위해 당신은?',
-      opt('장치의 문양과 기계적 연결을 분석한다',{logical:14,spatial:6}),
-      opt('장치를 직접 조작해 반응을 관찰한다',{bodily:12}),
-      opt('장치에서 나는 소리를 기록해 패턴을 찾아낸다',{musical:12}),
-      opt('장치 주변의 식생을 조사해 기능을 유추한다',{naturalist:12})
-    ),
-    q('여정 도중 한 아이가 길을 잃었다고 달려온다. 아이를 도우려면?',
-      opt('아이의 부모와 상황을 대화로 파악해 연결한다',{interpersonal:14}),
-      opt('아이와 함께 움직이며 잔해에서 흔적을 찾아 이동경로를 추정한다',{spatial:12,bodily:6}),
-      opt('아이의 말투와 행동에서 집 근처의 특징을 유추한다',{linguistic:12,interpersonal:6}),
-      opt('주변 자연의 흔적을 따라 아이의 행방을 찾는다',{naturalist:12})
-    ),
-    q('왕실 회의에서 고대 언어를 복원할 필요가 생겼다. 당신은 어떻게 기여하겠는가?',
-      opt('남은 문장들을 조합해 의미를 추정하고 보고한다',{linguistic:16}),
-      opt('기호와 패턴을 기반으로 체계적 규칙을 제안한다',{logical:12,spatial:6}),
-      opt('현장에서 채집한 표본을 학자들과 공유한다',{naturalist:12}),
-      opt('회담을 조정하며 의견을 중재한다',{interpersonal:12})
-    ),
-    q('당신의 결단으로 오래된 축제가 부활하려 한다. 축제의 핵심은 무엇으로 할까?',
-      opt('글과 이야기로 민심을 모은다',{linguistic:14}),
-      opt('공연과 노래로 사람들의 마음을 일으킨다',{musical:14}),
-      opt('체육과 연습으로 단결을 다진다',{bodily:12,interpersonal:6}),
-      opt('자연과 함께하는 행사로 지역을 보존한다',{naturalist:12,spatial:6})
-    ),
-    q('왕관의 마지막 장소가 드러났다. 신전 문 앞, 네 가지 기념물이 놓여있다. 당신은 어떤 방식으로 시험을 풀 것인가?',
-      opt('문자의 뜻을 해석해 올바른 답을 제시한다',{linguistic:16}),
-      opt('물리적 구조와 문양을 맞춰 작동시키는 방법을 찾는다',{logical:14,spatial:6}),
-      opt('소리의 울림을 재현해 봉인을 푼다',{musical:14}),
-      opt('주변의 식물과 동물 반응을 이용해 힌트를 얻는다',{naturalist:14})
-    ),
-    q('왕관을 손에 넣은 순간, 신전이 흔들린다. 탈출로를 찾는 가장 현명한 방법은?',
-      opt('신전 구조를 빠르게 그려 안전한 경로를 계획한다',{spatial:14,logical:6}),
-      opt('동행자들을 인솔해 질서 있게 대피시킨다',{interpersonal:16}),
-      opt('민첩하게 장애물을 피하며 선두에서 길을 연다',{bodily:14}),
-      opt('자신의 내면을 가다듬어 공포를 극복한다',{intrapersonal:14})
-    ),
-    q('왕국으로 돌아온 당신, 백성들의 신뢰를 얻기 위해 첫 공적인 행동은?',
-      opt('자신의 모험과 배운 교훈을 편지로 기록해 공개한다',{linguistic:14}),
-      opt('도시 재건 프로젝트를 직접 지휘한다',{logical:12,bodily:8}),
-      opt('모두가 참여하는 축제를 열어 화합을 도모한다',{interpersonal:14,musical:6}),
-      opt('환경 보존 계획을 발표한다',{naturalist:12,spatial:6})
-    ),
-    q('왕위를 계승받은 당신, 이웃 나라와 분쟁이 생겼다. 어떻게 해결하겠는가?',
-      opt('외교 문서를 작성해 평화적 해결을 제안한다',{linguistic:14,interpersonal:6}),
-      opt('분쟁 지역의 자원을 분석해 상호 이익이 되는 협상안을 만든다',{logical:14}),
-      opt('상대국 대표와 직접 만나 신뢰를 쌓고 대화로 푼다',{interpersonal:16}),
-      opt('국경 지역의 방어 훈련을 강화하여 힘의 균형을 맞춘다',{bodily:12})
-    ),
-    q('가뭄으로 고통받는 백성들을 위해 어떤 정책을 우선시하겠는가?',
-      opt('관개 수로 건설 계획을 설계하고 효율적인 물 분배 시스템을 만든다',{logical:14,spatial:8}),
-      opt('가뭄에 강한 작물을 연구하고 보급하는 장기 계획을 발표한다',{naturalist:14}),
-      opt('공동 우물을 파는 작업에 직접 참여하여 백성들을 독려한다',{bodily:12,interpersonal:8}),
-      opt('모든 백성의 의견을 수렴하여 가장 시급한 지역부터 지원한다',{interpersonal:16,linguistic:6})
-    ),
-    q('모험의 여정을 마친 당신. 자신의 경험을 어떻게 기록하고 남기겠는가?',
-      opt('한 권의 책으로 집필하여 왕실 도서관에 보관한다',{linguistic:16}),
-      opt('음악가와 협력하여 장대한 서사시 노래를 만든다',{musical:14}),
-      opt('나의 여정을 통해 배운 리더십에 대해 조용히 성찰하는 시간을 갖는다',{intrapersonal:16}),
-      opt('후대를 위한 리더십 훈련 프로그램을 직접 만든다',{interpersonal:12,bodily:6})
-    )
-  ],
-
-  princess: [
-    q('어릴 적 비밀스럽게 보관한 지도가 당신의 손에 돌아왔다. "영원의 빛"을 찾기 위한 여정이 시작된다. 첫 발은?',
-      opt('지도의 기호와 단어를 천천히 해독한다',{linguistic:14}),
-      opt('지도의 구체적 지형을 실제로 확인하러 나선다',{spatial:14}),
-      opt('마을의 노인들에게 전설을 직접 듣는다',{interpersonal:12}),
-      opt('식생과 계절 변화를 고려해 위치를 추정한다',{naturalist:12})
-    ),
-    q('고요의 정원에 들어서자, 마음의 불안이 스멀거린다. 당신은 어떻게 중심을 잡나?',
-      opt('깊은 호흡과 명상으로 마음을 가다듬는다',{intrapersonal:16}),
-      opt('정원의 식물 소리를 귀 기울여 조화의 패턴을 찾는다',{musical:14}),
-      opt('정원의 구조를 읽어 안전한 길을 찾아 걷는다',{spatial:12,logical:6}),
-      opt('정원 주민들과 대화를 나눠 힌트를 얻는다',{interpersonal:12})
-    ),
-    q('빛의 호수 앞, 잔물결이 사람들의 감정을 비춘다. 건너려면?',
-      opt('사람들의 이야기를 듣고 그들의 두려움을 덜어준다',{interpersonal:14}),
-      opt('마음을 들여다보며 자신의 진실을 마주한다',{intrapersonal:14}),
-      opt('수면의 파장과 바람을 계산해 안전한 루트를 찾는다',{logical:12,spatial:6}),
-      opt('식물 줄기로 작은 뗏목을 만들어 건넌다',{naturalist:14,bodily:6})
-    ),
-    q('별의 신전, 크리스탈은 희미하게 빛난다. 무엇으로 빛을 되살릴까?',
-      opt('오래된 노래를 불러 크리스탈을 정화한다',{musical:16,linguistic:6}),
-      opt('크리스탈의 표면 문자를 해독해 고대 주문을 읊는다',{linguistic:14,logical:6}),
-      opt('자발적 희생의 마음으로 진심을 전한다',{intrapersonal:16,interpersonal:6}),
-      opt('자연의 기운을 모아 에너지를 주입한다',{naturalist:14})
-    ),
-    q('신전의 문이 닫히고, 동료들과 갇혔다. 침착하게 탈출하려면?',
-      opt('모두의 목소리를 모아 최선의 계획을 세운다',{interpersonal:14,logical:6}),
-      opt('종이에 경로를 그려 구조적 해법을 찾는다',{spatial:14}),
-      opt('벽의 문양을 통해 숨겨진 통로를 유추한다',{linguistic:12,spatial:6}),
-      opt('자신의 직감으로 출구를 직감한다',{intrapersonal:14})
-    ),
-    q('마을 아이들이 당신의 이야기를 듣고 싶어한다. 어떤 방식으로 전할까?',
-      opt('옛이야기를 서사시로 엮어 들려준다',{linguistic:14,musical:6}),
-      opt('자장가와 따뜻한 선율로 아이들을 달랜다',{musical:16,interpersonal:8}),
-      opt('신나는 춤과 노래로 아이들을 참여시킨다',{musical:16,bodily:6}),
-      opt('즉흥 연주로 아이들과 교감한다',{musical:14,interpersonal:10})
-    ),
-    q('왕국 외교 미션, 당신은 상대국 대표에게 어떤 제안을 하겠는가?',
-      opt('상대 문화에 대한 서신과 예술 교류를 제안한다',{linguistic:12,interpersonal:10}),
-      opt('공동 연구와 기술교류를 제안한다',{logical:12,spatial:6}),
-      opt('문화행사와 음악으로 친목을 쌓자 제안한다',{musical:12,interpersonal:8}),
-      opt('직접 만나 대화를 통해 신뢰를 쌓는다',{interpersonal:14})
-    ),
-    q('어두운 동굴, 갑작스런 붕괴. 동료들이 위태롭다. 우선순위는?',
-      opt('안전한 위치로 신속히 이동시킨다',{bodily:16,spatial:6}),
-      opt('붕괴 패턴을 분석해 다음 위험을 예측한다',{logical:12,musical:6}),
-      opt('동료들의 감정을 다독이며 함께 탈출한다',{interpersonal:14}),
-      opt('내면의 불안을 제어하며 침착하게 상황을 지휘한다',{intrapersonal:16})
-    ),
-    q('빛의 진원지에 다다랐으나 네 갈래 길이 있다. 당신은 어떻게 길을 고르나?',
-      opt('지도의 작은 기호를 대조해 옳은 길을 택한다',{spatial:14,linguistic:6}),
-      opt('동행들의 불안을 달래며 다 같이 상의해 결정한다',{interpersonal:14}),
-      opt('직감적으로 조용한 길을 택해 들어선다',{intrapersonal:14}),
-      opt('주변 식물의 생장 방향을 보고 길의 안전성을 판단한다',{naturalist:14})
-    ),
-    q('신전 앞의 마지막 의식. 당신은 어떤 말로 빛을 불러오겠는가?',
-      opt('옛 가사와 시를 조합한 연설을 바친다',{linguistic:16}),
-      opt('멜로디를 연주해 크리스탈을 공명시킨다',{musical:16}),
-      opt('진솔한 고백으로 에너지를 모은다',{intrapersonal:16}),
-      opt('자연의 기운을 불러와 조화를 이룬다',{naturalist:16})
-    ),
-    q('영원의 빛을 찾은 당신. 그 힘을 어디에 가장 먼저 사용하겠는가?',
-      opt('상처받은 사람들의 마음을 치유하는 노래를 부른다',{musical:14,interpersonal:8}),
-      opt('왕국의 훼손된 자연을 되살리는 데 사용한다',{naturalist:16}),
-      opt('빛의 힘을 분석하여 원리를 기록으로 남긴다',{logical:14,linguistic:6}),
-      opt('내면의 성장을 위해 그 힘을 조용히 받아들인다',{intrapersonal:16})
-    ),
-    q('왕국에 돌아온 당신에게 사람들이 지혜를 구한다. 어떻게 답하겠는가?',
-      opt('각자의 이야기를 경청하고, 맞춤형 조언을 해준다',{interpersonal:16}),
-      opt('지혜를 담은 비유적인 이야기나 시를 들려준다',{linguistic:14}),
-      opt('모두가 스스로 답을 찾을 수 있도록 명상법을 가르쳐준다',{intrapersonal:14}),
-      opt('함께 정원을 가꾸며 자연의 순리에서 답을 찾게 한다',{naturalist:12,interpersonal:6})
-    ),
-    q('당신의 지혜를 시기하는 세력이 나타났다. 어떻게 대처하겠는가?',
-      opt('그들의 주장을 논리적으로 반박하는 글을 발표한다',{linguistic:12,logical:8}),
-      opt('그들을 직접 만나 오해를 풀고, 그들의 마음을 이해하려 노력한다',{interpersonal:16}),
-      opt('나의 행동과 결과로 스스로 증명될 때까지 묵묵히 나의 길을 간다',{intrapersonal:14}),
-      opt('그들의 마음을 움직일 수 있는 감동적인 음악회를 연다',{musical:14})
-    ),
-    q('전쟁으로 상처입은 이웃 나라를 돕기로 했다. 어떤 방법이 최선일까?',
-      opt('마음을 위로하는 구호 물품과 음악가들을 보낸다',{interpersonal:12,musical:10}),
-      opt('효율적인 재건을 위한 도시 계획도를 그려서 전달한다',{spatial:14,logical:6}),
-      opt('그들의 문화를 존중하는 마음을 담은 외교 서신을 보낸다',{linguistic:12,interpersonal:8}),
-      opt('자원봉사단을 꾸려 직접 복구 작업에 동참한다',{bodily:12,interpersonal:8})
-    ),
-    q('당신의 이야기가 후세에 어떻게 기억되길 바라는가?',
-      opt('위대한 지도자가 아닌, 따뜻한 친구로 기억되길 바란다',{interpersonal:16}),
-      opt('세상의 조화를 가져온 지혜로운 중재자로 기억되길 바란다',{intrapersonal:14,linguistic:6}),
-      ('마음을 치유한 아름다운 예술가로 기억되길 바란다',{musical:14}),
-      opt('자연을 사랑하고 지킨 수호자로 기억되길 바란다',{naturalist:14})
-    ),
-    q('마을의 아이들이 서로 다투고 있다. 당신은 어떻게 중재하는가?',
-      opt('각자의 입장을 들어보고 공평한 해결책을 제시한다.', {interpersonal:14, logical:6}),
-      opt('다툼을 주제로 한 연극을 만들어 스스로 깨닫게 한다.', {linguistic:12, spatial:6}),
-      opt('모두 함께 할 수 있는 협동 놀이를 제안한다.', {bodily:12, interpersonal:8}),
-      opt('다툼의 원인을 조용히 관찰한 후, 근본적인 문제를 해결한다.', {intrapersonal:14, naturalist:6})
-    ),
-    q('당신이 통치하는 왕국에 새로운 예술 사조가 등장했다. 당신의 반응은?',
-      opt('예술가들을 궁으로 초대하여 그들의 작품에 대해 이야기를 나눈다.',{interpersonal:14, linguistic:8}),
-      opt('새로운 예술을 장려하기 위한 지원 정책을 수립한다.', {logical:12}),
-      opt('직접 새로운 형태의 악기를 배우거나 그림을 그려본다.', {musical:10, bodily:8}),
-      opt('이 예술이 백성들의 마음에 어떤 영향을 미치는지 성찰한다.', {intrapersonal:14})
-    ),
-    q('오랜 가뭄 끝에 비가 내린다. 이 순간을 어떻게 기념하겠는가?',
-      opt('비를 주제로 한 시를 짓고 백성들 앞에서 낭독한다.', {linguistic:14}),
-      opt('빗소리를 배경으로 새로운 음악을 작곡하여 연주회를 연다.', {musical:16}),
-      opt('모두 함께 비를 맞으며 춤추는 축제를 연다.', {bodily:14, interpersonal:8}),
-      opt('비가 대지에 스며드는 모습을 보며 생명의 소중함을 명상한다.', {naturalist:12, intrapersonal:8})
-    ),
-    q('당신의 여정은 끝났다. 당신이 얻은 가장 큰 깨달음은?',
-      opt('진정한 힘은 다른 사람의 마음을 얻는 것에서 나온다는 사실',{interpersonal:16}),
-      opt('세상의 모든 것은 연결되어 있으며, 조화가 가장 중요하다는 것',{naturalist:14, intrapersonal:6}),
-      opt('아름다운 예술과 음악이 세상을 구원할 수 있다는 믿음',{musical:14}),
-      opt('결국 모든 해답은 내 안에 있다는 진리',{intrapersonal:16})
-    ),
-    q('마지막으로, 당신의 지혜를 한 문장으로 남긴다면?',
-      opt('"서로의 이야기에 귀 기울일 때, 세상은 평화로워집니다."',{interpersonal:14, linguistic:8}),
-      opt('"가장 깊은 침묵 속에서 가장 위대한 지혜를 발견할 수 있습니다."',{intrapersonal:16}),
-      opt('"세상의 모든 소리는 저마다의 의미를 가진 아름다운 노래입니다."',{musical:14}),
-      opt('"한 편의 시가 천 개의 칼보다 강할 수 있습니다."',{linguistic:16})
-    )
-  ],
-
-  warrior: [
-    q('산골 마을이 불길에 휩싸였다. 연기가 자욱하다. 당신은 어떻게 대처하나?',
-      opt('사람들을 안전한 곳으로 신속히 이끈다',{bodily:16,interpersonal:8}),
-      opt('불길의 원인을 분석해 진압 계획을 세운다',{logical:12}),
-      opt('구조 도구를 찾아 신속히 사용한다',{spatial:12,bodily:8}),
-      opt('주변 식생을 이용해 방화선을 만든다',{naturalist:12,spatial:6})
-    ),
-    q('전설의 검을 찾기 위해 협곡을 내려간다. 바위 길이 불안정하다. 선택은?',
-      opt('천천히 구조를 읽으며 안전하게 통과한다',{spatial:14,logical:6}),
-      opt('힘으로 돌을 밀어 새로운 길을 만든다',{bodily:16}),
-      opt('바위의 진동 소리를 듣고 약한 곳을 피한다',{musical:10,spatial:6}),
-      opt('동료들과 끈을 묶어 안전장비를 만든다',{interpersonal:12,logical:6})
-    ),
-    q('검이 꽂힌 바위 앞, 옛 문구가 도전한다. 무엇을 먼저 할까?',
-      opt('문구의 뜻을 해독하려 시도한다',{linguistic:14}),
-      opt('바위의 약점을 찾아 기계적 힘으로 빼낸다',{logical:12,bodily:10}),
-      opt('주변 지형을 이용해 지레 원리를 적용한다',{spatial:14}),
-      opt('검 주변의 식생 변화를 살핀다',{naturalist:12})
-    ),
-    q('용의 포효가 들리는 밤, 동료가 두려워한다. 당신은?',
-      opt('용감하게 앞장서 동료를 안심시킨다',{bodily:16,interpersonal:8}),
-      opt('포효의 리듬을 분석해 안전한 타이밍을 찾는다',{musical:12,logical:6}),
-      opt('은신처를 찾아 모두를 숨긴다',{spatial:14}),
-      opt('두려움의 원인을 동료들과 나누어 극복한다',{interpersonal:14})
-    ),
-    q('깊은 동굴 속, 무너진 다리를 만났다. 건너려면?',
-      opt('신속히 근력으로 뛰어넘는다',{bodily:16}),
-      opt('남은 자재로 임시 다리를 만든다',{spatial:14,bodily:8}),
-      opt('낙석 패턴을 분석해 안전한 교차점을 찾는다',{logical:12,spatial:6}),
-      opt('자연의 흐름을 이용해 다른 경로를 찾는다',{naturalist:12})
-    ),
-    q('전투 중 적이 함정을 사용한다. 함정 해제는?',
-      opt('무력으로 함정을 파괴한다',{bodily:16}),
-      opt('함정의 기계 구조를 파악해 안전하게 해제한다',{logical:14,spatial:6}),
-      opt('동료를 유도해 함정 지역을 우회시킨다',{interpersonal:14}),
-      opt('함정 주변의 흔적을 분석해 트리거를 찾는다',{naturalist:12,logical:6})
-    ),
-    q('상처 입은 동료가 있다. 응급조치는?',
-      opt('즉시 응급처치로 출혈을 막는다',{bodily:16}),
-      opt('상처 부위를 관찰하고 원인에 맞는 처방을 한다',{naturalist:12,logical:6}),
-      opt('동료의 감정을 달래며 치료를 돕는다',{interpersonal:14}),
-      opt('상처 원인을 기록해 향후 대처방안을 만든다',{linguistic:12,logical:6})
-    ),
-    q('잃어버린 전투 깃발을 회수하라는 명령. 어떻게 진행?',
-      opt('정찰대를 조직해 계획적으로 수색한다',{logical:14,spatial:8}),
-      opt('직접 탐색해 깃발을 되찾는다',{bodily:16}),
-      opt('지형의 이점을 활용해 함정 없이 접근한다',{spatial:14}),
-      opt('지방민과 협력해 정보를 얻는다',{interpersonal:12})
-    ),
-    q('고대의 전투 기록을 해독해야 한다. 당신은?',
-      opt('기록의 문장을 분석해 전투의 흐름을 복원한다',{linguistic:14,logical:6}),
-      opt('지도의 표시를 토대로 전략을 재구성한다',{spatial:14,logical:6}),
-      opt('전투의 리듬을 음악적으로 재현해 전술을 이해한다',{musical:12}),
-      opt('현장의 흔적을 통해 병력 배치를 추정한다',{naturalist:10,spatial:6})
-    ),
-    q('용의 심장에 들어서자 동료들의 사기가 떨어진다. 당신의 리더십은?',
-      opt('강한 표정과 행동으로 사기를 북돋운다',{bodily:14,interpersonal:10}),
-      opt('전략을 차분히 설명해 공포를 줄인다',{logical:12,linguistic:6}),
-      opt('동료들의 불안을 듣고 공감하며 격려한다',{interpersonal:16}),
-      opt('자연의 소리를 이용해 진정시키는 법을 사용한다',{naturalist:12,musical:6})
-    ),
-    q('마지막 결전, 적의 약점을 파고들 순간이 왔다. 당신은?',
-      opt('정확한 타격으로 약점을 노린다',{bodily:16,logical:6}),
-      opt('지형을 이용해 전장을 유리하게 만든다',{spatial:14,logical:6}),
-      opt('동료들과의 협공을 지휘한다',{interpersonal:14}),
-      opt('심리적 압박으로 적을 흔든다',{linguistic:12,intrapersonal:6})
-    ),
-    q('승리 후, 마을을 재건하려 할 때 당신의 우선 과제는?',
-      opt('주민의 안전과 생활복구를 지원한다',{interpersonal:16}),
-      opt('방어시설을 재정비해 향후 위협을 대비한다',{logical:14,bodily:6}),
-      opt('훈련 프로그램으로 주민의 체력을 증진한다',{bodily:14}),
-      opt('지역 환경을 보존하는 규칙을 만든다',{naturalist:12,spatial:6})
-    ),
-    q('전설의 검이 당신을 시험한다: 진정한 용기는 무엇인가?',
-      opt('약자를 지키는 것이라 답한다',{interpersonal:16,intrapersonal:6}),
-      opt('두려움을 넘어선 행동이라 답한다',{bodily:16}),
-      opt('문제를 해결하는 지혜라 답한다',{logical:14}),
-      opt('자신을 아는 깊은 통찰이라 답한다',{intrapersonal:16})
-    ),
-    q('탐험의 끝, 당신이 전하고 싶은 이야기는?',
-      opt('행동이 진정한 용기임을 전한다',{bodily:14,linguistic:6}),
-      opt('협력과 이해가 안정의 길임을 전한다',{interpersonal:14}),
-      opt('지속가능한 방식으로 마을을 재건하자고 말한다',{naturalist:14}),
-      opt('전략적 준비의 중요성을 강조한다',{logical:14})
-    ),
-    q('평화가 찾아온 후, 당신은 자신의 힘을 어떻게 사용하겠는가?',
-      opt('후진을 양성하는 훈련 교관이 된다.',{bodily:14, interpersonal:8}),
-      opt('왕국을 탐사하며 미지의 지도를 완성한다.',{spatial:14, naturalist:6}),
-      opt('전쟁의 경험을 기록한 회고록을 집필한다.', {linguistic:14}),
-      opt('스스로의 한계를 넘기 위한 개인 훈련에 매진한다.', {intrapersonal:14, bodily:8})
-    ),
-    q('마을 대장간에서 당신의 검을 개량해준다고 한다. 어떤 기능을 추가하겠는가?',
-      opt('더 가볍고 빠르게 휘두를 수 있도록 무게를 줄인다.', {bodily:16}),
-      opt('정교한 기계 장치를 추가하여 다양한 형태로 변형되게 한다.', {logical:14, spatial:6}),
-      opt('아름다운 문양을 새겨 왕국의 상징으로 만든다.', {linguistic:10, spatial:8}),
-      opt('특정 소리에 반응하여 빛을 내는 기능을 추가한다.', {musical:12})
-    ),
-    q('당신의 활약을 들은 아이들이 당신처럼 되고 싶어한다. 가장 강조하고 싶은 덕목은?',
-      opt('끊임없이 단련하는 강인한 신체.', {bodily:16}),
-      opt('어떤 상황에서도 냉철함을 잃지 않는 판단력.', {logical:14}),
-      ('동료를 믿고 함께 나아가는 협동심.', {interpersonal:16}),
-      opt('자신과의 싸움에서 이기는 굳건한 정신력.', {intrapersonal:14})
-    ),
-    q('왕국에서 가장 험준한 산을 오르게 되었다. 정상에 오르기 위해 가장 중요한 것은?',
-      opt('지치지 않는 체력과 암벽을 타는 기술.',{bodily:16, spatial:6}),
-      opt('변화무쌍한 날씨를 예측하고 대비하는 지식.', {naturalist:14, logical:6}),
-      opt('정상에 오르고자 하는 강한 동기와 자기 확신.', {intrapersonal:16}),
-      opt('팀원들과 호흡을 맞추며 서로를 이끌어주는 팀워크.', {interpersonal:14})
-    ),
-    q('당신의 업적을 기리는 동상이 세워진다고 한다. 어떤 모습으로 만들고 싶은가?',
-      opt('검을 높이 들고 용맹하게 포효하는 모습.', {bodily:16}),
-      opt('마을 아이들과 함께 웃고 있는 모습.', {interpersonal:14}),
-      opt('지도를 펼쳐들고 먼 곳을 바라보는 모습.', {spatial:14, naturalist:6}),
-      opt('조용히 눈을 감고 명상에 잠긴 모습.', {intrapersonal:16})
-    ),
-    q('모든 여정을 마친 당신, 진정한 "강함"이란 무엇이라고 생각하는가?',
-      opt('내 신념을 행동으로 증명하는 것.', {bodily:14, intrapersonal:6}),
-      opt('나보다 약한 존재를 지켜주는 것.', {interpersonal:16}),
-      opt('지혜와 힘의 균형을 이루는 것.', {logical:14}),
-      opt('내 안의 두려움을 극복하는 것.', {intrapersonal:16})
-    )
-  ],
-
-  wizard: [
-    q('지식의 탑 입구. 오래된 퍼즐이 봉인되어 있다. 처음으로 무엇을 하겠는가?',
-      opt('퍼즐의 기호 규칙을 수학적으로 분석한다',{logical:16,spatial:6}),
-      opt('기호에 담긴 언어적 의미를 해독한다',{linguistic:14}),
-      opt('퍼즐 조각을 직접 조작해 구조를 파악한다',{bodily:10,spatial:8}),
-      opt('탑 주변 식물의 패턴을 관찰해 힌트를 얻는다',{naturalist:12})
-    ),
-    q('환영의 방에 들어서자 당신의 가장 큰 약점이 형상화된다. 극복 방법은?',
-      opt('약점을 직시하고 내면에서 답을 구한다',{intrapersonal:16}),
-      opt('환영의 구조적 허점을 찾아 논리적으로 무력화한다',{logical:14}),
-      opt('환영과 대화해 그들을 설득한다',{interpersonal:12,linguistic:6}),
-      opt('마법적 방법으로 환영을 분리해낸다',{logical:10,bodily:6})
-    ),
-    q('소리의 미궁, 벽이 다양한 소리를 낸다. 탈출법은?',
-      opt('소리의 멜로디를 분석해 규칙을 찾아 탈출한다',{musical:16,logical:6}),
-      opt('미로 구조를 머릿속에 그려 길을 계획한다',{spatial:14}),
-      opt('소리를 낸 지점의 진동을 감지해 안전한 길을 고른다',{naturalist:12,spatial:6}),
-      opt('동료의 목소리에 집중해 위치를 찾는다',{interpersonal:12})
-    ),
-    q('지식의 서고에 봉인이 걸렸다. 봉인을 푸는 방법은?',
-      opt('봉인에 새겨진 문자를 정밀히 해독한다',{linguistic:18}),
-      opt('봉인 구조의 기하학적 약점을 찾아 해제한다',{logical:16,spatial:6}),
-      opt('봉인의 울림을 공명시켜 풀어낸다',{musical:14}),
-      opt('자기 수양으로 봉인과 조화를 이룬다',{intrapersonal:14})
-    ),
-    q('탑이 흔들리기 시작했다. 안전한 탈출을 위해 당신은?',
-      opt('탈출 경로를 계산해 모두를 안내한다',{logical:14,spatial:8}),
-      opt('마법적 방어를 걸어 붕괴를 늦춘다',{logical:12}),
-      opt('동료들을 먼저 대피시키고 자신이 마지막으로 나간다',{interpersonal:14,intrapersonal:6}),
-      opt('주변 환경을 관찰해 안전한 피신처를 찾는다',{naturalist:12})
-    ),
-    q('고대 주문서를 읽을 때, 모르는 단어가 빈번하다. 접근법은?',
-      opt('문맥과 어원을 통해 의미를 추론한다',{linguistic:16}),
-      opt('기호들의 반복 규칙을 찾아 체계를 만든다',{logical:14}),
-      opt('그림과 도표로 재구성해 이해한다',{spatial:14}),
-      opt('내면의 이미지를 통해 상징을 해석한다',{intrapersonal:12})
-    ),
-    q('서고에서 발견한 실험 장비가 이상 반응을 보인다. 어떻게 안정화?',
-      opt('장비의 메커니즘을 분석해 조절장치를 찾는다',{logical:14,spatial:6}),
-      opt('안전 장치를 즉시 가동해 반응을 억제한다',{bodily:12}),
-      opt('주변 식물과 조합해 반응을 중화한다',{naturalist:12}),
-      opt('동료들과 협력해 절차를 따른다',{interpersonal:12})
-    ),
-    q('탑 꼭대기에서 별의 배열을 관찰해야 한다. 방법은?',
-      opt('별의 위치를 기록해 고대 데이터와 대조한다',{logical:14,spatial:8}),
-      opt('하늘의 리듬에서 의미를 찾는다',{musical:12}),
-      opt('관찰자를 조직해 효율적으로 자료를 모은다',{interpersonal:12}),
-      opt('개인적으로 관찰하며 통찰을 얻는다',{intrapersonal:14})
-    ),
-    q('마을에 전염병 징후가 보인다. 조사와 대응은?',
-      opt('증상과 환경을 기록해 원인을 규명한다',{logical:14,naturalist:8}),
-      opt('환자 돌봄을 조직해 확산을 줄인다',{interpersonal:16}),
-      opt('전통 치료법과 현대 지식을 대조해 검토한다',{linguistic:12,logical:8}),
-      opt('자연환경의 변화를 관찰해 연관성을 찾는다',{naturalist:14})
-    ),
-    q('지식의 탐구가 끝이 없음을 깨달았다. 이 순간 당신의 감정은?',
-      opt('더 배워야 할 것이 많다는 사실에 겸손해진다.',{intrapersonal:16}),
-      opt('지식의 체계를 세워 효율적인 연구 계획을 짠다.',{logical:14}),
-      opt('다른 학자들과 교류하며 새로운 영감을 얻고 싶다.',{interpersonal:14, linguistic:6}),
-      opt('잠시 연구를 멈추고, 자연 속에서 머리를 식힌다.',{naturalist:12})
-    ),
-    q('당신의 마법이 폭주하여 의도치 않은 결과를 낳았다. 어떻게 책임지겠는가?',
-      opt('결과를 되돌리기 위한 해결책을 밤새워 연구한다.', {logical:16}),
-      opt('피해를 입은 사람들을 찾아가 진심으로 사과하고 돕는다.', {interpersonal:14}),
-      opt('실수의 원인을 알기 위해 내면을 깊이 성찰한다.', {intrapersonal:16}),
-      opt('실패의 과정을 상세히 기록하여 다른 이들이 같은 실수를 반복하지 않게 한다.', {linguistic:14})
-    ),
-    q('새로운 마법을 창조하게 되었다. 그 마법은 어떤 종류의 마법인가?',
-      opt('복잡한 암호를 즉시 해독하는 분석 마법.',{logical:16, linguistic:6}),
-      opt('사람들의 마음을 편안하게 해주는 치유의 음악 마법.', {musical:14, interpersonal:8}),
-      opt('꿈 속의 풍경을 현실에 그려내는 공간 창조 마법.', {spatial:16}),
-      opt('식물의 성장을 촉진시키는 자연의 조화 마법.', {naturalist:14})
-    ),
-    q('마법 학교의 교장이 되어달라는 제안을 받았다. 당신의 교육 철학은?',
-      opt('학생들이 자유롭게 토론하며 지식을 탐구하게 한다.',{interpersonal:14, linguistic:8}),
-      opt('엄격한 논리적 사고와 마법의 원리를 가르친다.', {logical:16}),
-      opt('마법은 결국 자기 자신을 이해하는 과정임을 강조한다.', {intrapersonal:16}),
-      opt('다양한 마법을 직접 체험하고 몸으로 익히게 한다.', {bodily:12})
-    ),
-    q('세상에서 가장 어려운 질문에 답해야 한다. "지식의 끝은 어디인가?"',
-      opt('지식에는 끝이 없으며, 질문하는 과정 자체가 중요하다고 답한다.', {intrapersonal:14, linguistic:8}),
-      opt('모든 지식이 통합되는 하나의 근원적인 원리가 있을 것이라 답한다.', {logical:16}),
-      opt('다른 존재와의 관계 속에서 지혜를 얻을 때 지식은 완성된다고 답한다.', {interpersonal:14}),
-      opt('자연의 순환을 이해하는 것이 지식의 끝이라고 답한다.', {naturalist:14})
-    ),
-    q('탑에서의 마지막 밤, 당신이 남기고 싶은 메시지는?',
-      opt('지식을 공유하고 후대를 양성하자',{linguistic:14,interpersonal:8}),
-      opt('논리와 준비가 세상을 지킨다',{logical:14}),
-      opt('자연과 조화를 이루는 연구를 권장한다',{naturalist:14}),
-      opt('자신을 잘 돌보는 것이 연구의 지속성이다',{intrapersonal:14})
-    ),
-    q('오랜 연구 끝에 당신은 마법으로 그림을 그리는 법을 발견했다. 첫 작품의 주제는?',
-        opt('별들의 움직임을 담은 밤하늘의 천체도', {spatial:14, logical:8}),
-        opt('마법의 원리를 설명하는 복잡한 다이어그램', {logical:16}),
-        opt('함께 모험한 동료들의 행복한 모습', {interpersonal:14}),
-        opt('내 마음 속의 평온한 풍경', {intrapersonal:14})
-    ),
-    q('어린 마법사 지망생이 당신에게 조언을 구한다. "가장 위대한 마법은 무엇인가요?"',
-        opt('"세상을 바꾸는 것은 지식 그 자체가 아니라, 그것을 사용하는 지혜란다."', {intrapersonal:14, linguistic:8}),
-        opt('"가장 위대한 마법은 타인의 마음을 움직이는 공감의 마법이지."', {interpersonal:16}),
-        opt('"정확한 계산과 논리 위에서 가장 안정적인 마법이 탄생한단다."', {logical:14}),
-        opt('"자연의 흐름을 거스르지 않는 것이 가장 강력한 마법의 기초야."', {naturalist:14})
-    ),
-    q('당신은 고대의 유물을 복원하는 임무를 맡았다. 가장 먼저 할 일은?',
-        opt('유물에 적힌 고대어를 해독하여 용도를 파악한다.', {linguistic:16}),
-        opt('흩어진 파편들을 3차원 퍼즐처럼 맞추어 원래 형태로 복원한다.', {spatial:14, bodily:6}),
-        opt('유물의 작동 원리를 분석하여 논리적으로 재구성한다.', {logical:16}),
-        opt('유물이 만들어진 시대의 사람들의 마음을 상상하며 작업에 임한다.', {intrapersonal:14, interpersonal:6})
-    ),
-    q('당신의 지식을 노리는 라이벌 마법사가 나타났다. 어떻게 대응하겠는가?',
-        opt('마법 대결을 신청하여 실력으로 승부한다.', {bodily:12, logical:8}),
-        opt('그의 연구를 분석하여 논리적 허점을 찾아낸다.', {logical:16}),
-        opt('그와 대화하여 경쟁이 아닌 협력 관계를 제안한다.', {interpersonal:14}),
-        opt('외부의 위협에 흔들리지 않고 내 연구에 더욱 집중한다.', {intrapersonal:16})
-    ),
-    q('모든 지식을 섭렵한 당신, 마지막으로 도전하고 싶은 연구 분야는?',
-        opt('세상의 모든 언어를 통합하는 새로운 언어 체계 창조', {linguistic:16}),
-        opt('존재하지 않는 색깔과 소리를 만들어내는 감각 마법', {musical:14, spatial:8}),
-        opt('시간의 흐름에 대한 근본적인 법칙 탐구', {logical:16}),
-        opt('모든 생명체와 소통할 수 있는 교감 마법', {naturalist:14, interpersonal:8})
-    )
-  ]
+  prince: [q('성의 먼지 쌓인 서고에서 발견한 한 통의 편지. 왕의 글씨는 흔들리지만, 끝에 "빛을 따라라"라는 단서가 적혀있다. 당신은 어디서부터 단서를 찾겠는가?',opt('글 속 단어의 반복과 문장 구조를 꼼꼼히 분석해 숨은 의미를 찾는다',{linguistic:14}),opt('편지의 얼룩과 접힌 자국을 살펴 실제 현장 상황을 유추한다',{naturalist:8,spatial:6}),opt('편지의 수신자와 연관 인물들의 기록을 추적해 맥락을 만든다',{interpersonal:12,logical:6}),opt('편지에 적힌 장소로 직접 발걸음을 옮겨 현장을 확인한다',{bodily:12,spatial:6})),q('마을 시장에는 전설을 아는 노인이 있다. 그는 왕의 편지가 말하는 "빛"이 북쪽 숲의 고목에서 나온다고 속삭인다. 당신은 어떻게 행동하는가?',opt('노인의 이야기를 끝까지 경청하고 추가 단서를 얻어 지도에 표시한다',{interpersonal:12,linguistic:6}),opt('노인이 말한 고목의 위치를 먼저 찾아가 관찰한다',{naturalist:14,spatial:6}),opt('노인의 말이 맞는지 주변 기록과 비교해 검증한다',{logical:12,linguistic:6}),opt('동료를 모아 즉시 탐험대를 조직해 출발한다',{bodily:12,interpersonal:6})),q('숲길에서 작은 문양이 새겨진 돌을 발견했다. 문양은 고대의 별자리와 닮았다. 당신은 무엇을 하겠는가?',opt('문양을 글로 옮겨 의미를 해석한다',{linguistic:12,spatial:4}),opt('문양의 패턴을 눈으로 추적해 별자리 대응을 찾아낸다',{spatial:14}),opt('돌의 재질과 주변 식생을 살펴 이 돌이 놓인 이유를 추정한다',{naturalist:12,logical:4}),opt('동행들과 논의해 집단적인 해석을 시도한다',{interpersonal:12})),q('밤이 찾아오고, 숲 가장자리에서 이상한 울림이 들린다. 울림은 규칙적인 패턴으로 이어진다. 어떻게 반응할까?',opt('울림의 리듬을 기록해 반복 구조를 찾아 해독한다',{musical:14,logical:4}),opt('불을 만들고 안전한 야영지를 만들어 대피한다',{bodily:12,spatial:4}),opt('울림의 소리가 나는 곳을 조용히 찾아 관찰한다',{naturalist:10,spatial:6}),opt('동행자들의 불안을 달래고 협력체계를 유지한다',{interpersonal:14})),q('고목 가까이에서 오래된 비문을 찾았다. 글자는 닳았지만, 핵심 단어 몇 개는 읽힌다. 다음 행동은?',opt('남아있는 단어들을 엮어 전체 문맥을 추리한다',{linguistic:14}),opt('문자의 형식과 도안으로 제작 시기를 추정한다',{logical:10,naturalist:6}),opt('주변에서 유사 문자를 가진 유물을 찾는다',{spatial:12,naturalist:6}),opt('지역 고아원 아이들과 이야기를 나눠 전설을 듣는다',{interpersonal:12})),q('당신은 고목 안에서 소형의 열쇠를 발견했다. 열쇠에는 작고 복잡한 장식이 새겨져 있다. 어떻게 다룰까?',opt('열쇠의 문양을 꼼꼼히 스케치해 기록한다',{linguistic:10,spatial:8}),opt('열쇠를 품에 넣고, 더 많은 단서를 찾기 위해 주변을 탐색한다',{bodily:12}),opt('지역 학자에게 열쇠를 보여 감정을 살핀다',{interpersonal:12,logical:6}),opt('열쇠의 금속 성분을 간이 검사해 기원을 추정한다',{naturalist:10,logical:6})),q('수로가 막혀 마을의 식수가 위험해졌다. 당신이 우선해야 할 일은?',opt('수로의 흐름과 구조를 분석해 우회로를 만든다',{logical:12,spatial:8}),opt('사람들을 조직해 임시로 물을 나르게 한다',{interpersonal:14,bodily:6}),opt('수로 주변의 식물 상태를 파악해 오염원 여부를 확인한다',{naturalist:12}),opt('신속히 현장을 뛰어다니며 구조를 돕는다',{bodily:14})),q('마을 광장에서 노래와 이야기를 듣게 된다. 그 속에서 왕관에 대한 또 다른 암시가 나왔다. 당신은?',opt('이야기의 가사와 단어를 세밀하게 기록한다',{linguistic:12,musical:6}),opt('이야기를 전한 이의 표정과 행동에서 추가 단서를 읽어낸다',{interpersonal:12}),opt('가사에 나온 지형을 직접 찾아 대조한다',{spatial:12}),opt('노래의 멜로디를 분석해 단서의 리듬을 찾는다',{musical:12,logical:4})),q('밤중에 성으로 돌아가자 국경 수비대가 당신을 심문한다. 어떻게 신뢰를 얻을까?',opt('편지와 발견물을 조리 있게 설명해 신뢰를 얻는다',{linguistic:14,interpersonal:6}),opt('수비대의 우려를 이해하고 공감하며 대화한다',{interpersonal:16}),opt('주변 증거를 모아 과학적으로 논증한다',{logical:12}),opt('수비대를 설득해 동행을 허락받는다',{linguistic:10,interpersonal:8})),q('왕이 당신에게 시험을 낸다. "성의 안전과 백성의 행복, 어느 쪽을 우선하겠는가?" 당신의 답은?',opt('백성의 행복을 우선해 정책을 제시한다',{interpersonal:16,linguistic:6}),opt('국가의 안전을 먼저 확보하는 계획을 말한다',{logical:14,bodily:6}),opt('균형을 맞춘 타협안을 제시한다',{logical:12,interpersonal:10}),opt('문화와 교육 강화로 장기적 행복을 꾀한다',{linguistic:12,intrapersonal:6})),q('왕국 외곽의 폐허에서 고대 장치가 작동한다. 장치의 해법을 찾기 위해 당신은?',opt('장치의 문양과 기계적 연결을 분석한다',{logical:14,spatial:6}),opt('장치를 직접 조작해 반응을 관찰한다',{bodily:12}),opt('장치에서 나는 소리를 기록해 패턴을 찾아낸다',{musical:12}),opt('장치 주변의 식생을 조사해 기능을 유추한다',{naturalist:12})),q('여정 도중 한 아이가 길을 잃었다고 달려온다. 아이를 도우려면?',opt('아이의 부모와 상황을 대화로 파악해 연결한다',{interpersonal:14}),opt('아이와 함께 움직이며 잔해에서 흔적을 찾아 이동경로를 추정한다',{spatial:12,bodily:6}),opt('아이의 말투와 행동에서 집 근처의 특징을 유추한다',{linguistic:12,interpersonal:6}),opt('주변 자연의 흔적을 따라 아이의 행방을 찾는다',{naturalist:12})),q('왕실 회의에서 고대 언어를 복원할 필요가 생겼다. 당신은 어떻게 기여하겠는가?',opt('남은 문장들을 조합해 의미를 추정하고 보고한다',{linguistic:16}),opt('기호와 패턴을 기반으로 체계적 규칙을 제안한다',{logical:12,spatial:6}),opt('현장에서 채집한 표본을 학자들과 공유한다',{naturalist:12}),opt('회담을 조정하며 의견을 중재한다',{interpersonal:12})),q('당신의 결단으로 오래된 축제가 부활하려 한다. 축제의 핵심은 무엇으로 할까?',opt('글과 이야기로 민심을 모은다',{linguistic:14}),opt('공연과 노래로 사람들의 마음을 일으킨다',{musical:14}),opt('체육과 연습으로 단결을 다진다',{bodily:12,interpersonal:6}),opt('자연과 함께하는 행사로 지역을 보존한다',{naturalist:12,spatial:6})),q('왕관의 마지막 장소가 드러났다. 신전 문 앞, 네 가지 기념물이 놓여있다. 당신은 어떤 방식으로 시험을 풀 것인가?',opt('문자의 뜻을 해석해 올바른 답을 제시한다',{linguistic:16}),opt('물리적 구조와 문양을 맞춰 작동시키는 방법을 찾는다',{logical:14,spatial:6}),opt('소리의 울림을 재현해 봉인을 푼다',{musical:14}),opt('주변의 식물과 동물 반응을 이용해 힌트를 얻는다',{naturalist:14})),q('왕관을 손에 넣은 순간, 신전이 흔들린다. 탈출로를 찾는 가장 현명한 방법은?',opt('신전 구조를 빠르게 그려 안전한 경로를 계획한다',{spatial:14,logical:6}),opt('동행자들을 인솔해 질서 있게 대피시킨다',{interpersonal:16}),opt('민첩하게 장애물을 피하며 선두에서 길을 연다',{bodily:14}),opt('자신의 내면을 가다듬어 공포를 극복한다',{intrapersonal:14})),q('왕국으로 돌아온 당신, 백성들의 신뢰를 얻기 위해 첫 공적인 행동은?',opt('자신의 모험과 배운 교훈을 편지로 기록해 공개한다',{linguistic:14}),opt('도시 재건 프로젝트를 직접 지휘한다',{logical:12,bodily:8}),opt('모두가 참여하는 축제를 열어 화합을 도모한다',{interpersonal:14,musical:6}),opt('환경 보존 계획을 발표한다',{naturalist:12,spatial:6})),q('왕위를 계승받은 당신, 이웃 나라와 분쟁이 생겼다. 어떻게 해결하겠는가?',opt('외교 문서를 작성해 평화적 해결을 제안한다',{linguistic:14,interpersonal:6}),opt('분쟁 지역의 자원을 분석해 상호 이익이 되는 협상안을 만든다',{logical:14}),opt('상대국 대표와 직접 만나 신뢰를 쌓고 대화로 푼다',{interpersonal:16}),opt('국경 지역의 방어 훈련을 강화하여 힘의 균형을 맞춘다',{bodily:12})),q('가뭄으로 고통받는 백성들을 위해 어떤 정책을 우선시하겠는가?',opt('관개 수로 건설 계획을 설계하고 효율적인 물 분배 시스템을 만든다',{logical:14,spatial:8}),opt('가뭄에 강한 작물을 연구하고 보급하는 장기 계획을 발표한다',{naturalist:14}),opt('공동 우물을 파는 작업에 직접 참여하여 백성들을 독려한다',{bodily:12,interpersonal:8}),opt('모든 백성의 의견을 수렴하여 가장 시급한 지역부터 지원한다',{interpersonal:16,linguistic:6})),q('모험의 여정을 마친 당신. 자신의 경험을 어떻게 기록하고 남기겠는가?',opt('한 권의 책으로 집필하여 왕실 도서관에 보관한다',{linguistic:16}),opt('음악가와 협력하여 장대한 서사시 노래를 만든다',{musical:14}),opt('나의 여정을 통해 배운 리더십에 대해 조용히 성찰하는 시간을 갖는다',{intrapersonal:16}),opt('후대를 위한 리더십 훈련 프로그램을 직접 만든다',{interpersonal:12,bodily:6}))],
+  princess: [q('어릴 적 비밀스럽게 보관한 지도가 당신의 손에 돌아왔다. "영원의 빛"을 찾기 위한 여정이 시작된다. 첫 발은?',opt('지도의 기호와 단어를 천천히 해독한다',{linguistic:14}),opt('지도의 구체적 지형을 실제로 확인하러 나선다',{spatial:14}),opt('마을의 노인들에게 전설을 직접 듣는다',{interpersonal:12}),opt('식생과 계절 변화를 고려해 위치를 추정한다',{naturalist:12})),q('고요의 정원에 들어서자, 마음의 불안이 스멀거린다. 당신은 어떻게 중심을 잡나?',opt('깊은 호흡과 명상으로 마음을 가다듬는다',{intrapersonal:16}),opt('정원의 식물 소리를 귀 기울여 조화의 패턴을 찾는다',{musical:14}),opt('정원의 구조를 읽어 안전한 길을 찾아 걷는다',{spatial:12,logical:6}),opt('정원 주민들과 대화를 나눠 힌트를 얻는다',{interpersonal:12})),q('빛의 호수 앞, 잔물결이 사람들의 감정을 비춘다. 건너려면?',opt('사람들의 이야기를 듣고 그들의 두려움을 덜어준다',{interpersonal:14}),opt('마음을 들여다보며 자신의 진실을 마주한다',{intrapersonal:14}),opt('수면의 파장과 바람을 계산해 안전한 루트를 찾는다',{logical:12,spatial:6}),opt('식물 줄기로 작은 뗏목을 만들어 건넌다',{naturalist:14,bodily:6})),q('별의 신전, 크리스탈은 희미하게 빛난다. 무엇으로 빛을 되살릴까?',opt('오래된 노래를 불러 크리스탈을 정화한다',{musical:16,linguistic:6}),opt('크리스탈의 표면 문자를 해독해 고대 주문을 읊는다',{linguistic:14,logical:6}),opt('자발적 희생의 마음으로 진심을 전한다',{intrapersonal:16,interpersonal:6}),opt('자연의 기운을 모아 에너지를 주입한다',{naturalist:14})),q('신전의 문이 닫히고, 동료들과 갇혔다. 침착하게 탈출하려면?',opt('모두의 목소리를 모아 최선의 계획을 세운다',{interpersonal:14,logical:6}),opt('종이에 경로를 그려 구조적 해법을 찾는다',{spatial:14}),opt('벽의 문양을 통해 숨겨진 통로를 유추한다',{linguistic:12,spatial:6}),opt('자신의 직감으로 출구를 직감한다',{intrapersonal:14})),q('마을 아이들이 당신의 이야기를 듣고 싶어한다. 어떤 방식으로 전할까?',opt('옛이야기를 서사시로 엮어 들려준다',{linguistic:14,musical:6}),opt('자장가와 따뜻한 선율로 아이들을 달랜다',{musical:16,interpersonal:8}),opt('신나는 춤과 노래로 아이들을 참여시킨다',{musical:16,bodily:6}),opt('즉흥 연주로 아이들과 교감한다',{musical:14,interpersonal:10})),q('왕국 외교 미션, 당신은 상대국 대표에게 어떤 제안을 하겠는가?',opt('상대 문화에 대한 서신과 예술 교류를 제안한다',{linguistic:12,interpersonal:10}),opt('공동 연구와 기술교류를 제안한다',{logical:12,spatial:6}),opt('문화행사와 음악으로 친목을 쌓자 제안한다',{musical:12,interpersonal:8}),opt('직접 만나 대화를 통해 신뢰를 쌓는다',{interpersonal:14})),q('어두운 동굴, 갑작스런 붕괴. 동료들이 위태롭다. 우선순위는?',opt('안전한 위치로 신속히 이동시킨다',{bodily:16,spatial:6}),opt('붕괴 패턴을 분석해 다음 위험을 예측한다',{logical:12,musical:6}),opt('동료들의 감정을 다독이며 함께 탈출한다',{interpersonal:14}),opt('내면의 불안을 제어하며 침착하게 상황을 지휘한다',{intrapersonal:16})),q('빛의 진원지에 다다랐으나 네 갈래 길이 있다. 당신은 어떻게 길을 고르나?',opt('지도의 작은 기호를 대조해 옳은 길을 택한다',{spatial:14,linguistic:6}),opt('동행들의 불안을 달래며 다 같이 상의해 결정한다',{interpersonal:14}),opt('직감적으로 조용한 길을 택해 들어선다',{intrapersonal:14}),opt('주변 식물의 생장 방향을 보고 길의 안전성을 판단한다',{naturalist:14})),q('신전 앞의 마지막 의식. 당신은 어떤 말로 빛을 불러오겠는가?',opt('옛 가사와 시를 조합한 연설을 바친다',{linguistic:16}),opt('멜로디를 연주해 크리스탈을 공명시킨다',{musical:16}),opt('진솔한 고백으로 에너지를 모은다',{intrapersonal:16}),opt('자연의 기운을 불러와 조화를 이룬다',{naturalist:16})),q('영원의 빛을 찾은 당신. 그 힘을 어디에 가장 먼저 사용하겠는가?',opt('상처받은 사람들의 마음을 치유하는 노래를 부른다',{musical:14,interpersonal:8}),opt('왕국의 훼손된 자연을 되살리는 데 사용한다',{naturalist:16}),opt('빛의 힘을 분석하여 원리를 기록으로 남긴다',{logical:14,linguistic:6}),opt('내면의 성장을 위해 그 힘을 조용히 받아들인다',{intrapersonal:16})),q('왕국에 돌아온 당신에게 사람들이 지혜를 구한다. 어떻게 답하겠는가?',opt('각자의 이야기를 경청하고, 맞춤형 조언을 해준다',{interpersonal:16}),opt('지혜를 담은 비유적인 이야기나 시를 들려준다',{linguistic:14}),opt('모두가 스스로 답을 찾을 수 있도록 명상법을 가르쳐준다',{intrapersonal:14}),opt('함께 정원을 가꾸며 자연의 순리에서 답을 찾게 한다',{naturalist:12,interpersonal:6})),q('당신의 지혜를 시기하는 세력이 나타났다. 어떻게 대처하겠는가?',opt('그들의 주장을 논리적으로 반박하는 글을 발표한다',{linguistic:12,logical:8}),opt('그들을 직접 만나 오해를 풀고, 그들의 마음을 이해하려 노력한다',{interpersonal:16}),opt('나의 행동과 결과로 스스로 증명될 때까지 묵묵히 나의 길을 간다',{intrapersonal:14}),opt('그들의 마음을 움직일 수 있는 감동적인 음악회를 연다',{musical:14})),q('전쟁으로 상처입은 이웃 나라를 돕기로 했다. 어떤 방법이 최선일까?',opt('마음을 위로하는 구호 물품과 음악가들을 보낸다',{interpersonal:12,musical:10}),opt('효율적인 재건을 위한 도시 계획도를 그려서 전달한다',{spatial:14,logical:6}),opt('그들의 문화를 존중하는 마음을 담은 외교 서신을 보낸다',{linguistic:12,interpersonal:8}),opt('자원봉사단을 꾸려 직접 복구 작업에 동참한다',{bodily:12,interpersonal:8})),q('당신의 이야기가 후세에 어떻게 기억되길 바라는가?',opt('위대한 지도자가 아닌, 따뜻한 친구로 기억되길 바란다',{interpersonal:16}),opt('세상의 조화를 가져온 지혜로운 중재자로 기억되길 바란다',{intrapersonal:14,linguistic:6}),opt('마음을 치유한 아름다운 예술가로 기억되길 바란다',{musical:14}),opt('자연을 사랑하고 지킨 수호자로 기억되길 바란다',{naturalist:14})),q('마을의 아이들이 서로 다투고 있다. 당신은 어떻게 중재하는가?',opt('각자의 입장을 들어보고 공평한 해결책을 제시한다.',{interpersonal:14,logical:6}),opt('다툼을 주제로 한 연극을 만들어 스스로 깨닫게 한다.',{linguistic:12,spatial:6}),opt('모두 함께 할 수 있는 협동 놀이를 제안한다.',{bodily:12,interpersonal:8}),opt('다툼의 원인을 조용히 관찰한 후, 근본적인 문제를 해결한다.',{intrapersonal:14,naturalist:6})),q('당신이 통치하는 왕국에 새로운 예술 사조가 등장했다. 당신의 반응은?',opt('예술가들을 궁으로 초대하여 그들의 작품에 대해 이야기를 나눈다.',{interpersonal:14,linguistic:8}),opt('새로운 예술을 장려하기 위한 지원 정책을 수립한다.',{logical:12}),opt('직접 새로운 형태의 악기를 배우거나 그림을 그려본다.',{musical:10,bodily:8}),opt('이 예술이 백성들의 마음에 어떤 영향을 미치는지 성찰한다.',{intrapersonal:14})),q('오랜 가뭄 끝에 비가 내린다. 이 순간을 어떻게 기념하겠는가?',opt('비를 주제로 한 시를 짓고 백성들 앞에서 낭독한다.',{linguistic:14}),opt('빗소리를 배경으로 새로운 음악을 작곡하여 연주회를 연다.',{musical:16}),opt('모두 함께 비를 맞으며 춤추는 축제를 연다.',{bodily:14,interpersonal:8}),opt('비가 대지에 스며드는 모습을 보며 생명의 소중함을 명상한다.',{naturalist:12,intrapersonal:8})),q('당신의 여정은 끝났다. 당신이 얻은 가장 큰 깨달음은?',opt('진정한 힘은 다른 사람의 마음을 얻는 것에서 나온다는 사실',{interpersonal:16}),opt('세상의 모든 것은 연결되어 있으며, 조화가 가장 중요하다는 것',{naturalist:14,intrapersonal:6}),opt('아름다운 예술과 음악이 세상을 구원할 수 있다는 믿음',{musical:14}),opt('결국 모든 해답은 내 안에 있다는 진리',{intrapersonal:16})),q('마지막으로, 당신의 지혜를 한 문장으로 남긴다면?',opt('"서로의 이야기에 귀 기울일 때, 세상은 평화로워집니다."',{interpersonal:14,linguistic:8}),opt('"가장 깊은 침묵 속에서 가장 위대한 지혜를 발견할 수 있습니다."',{intrapersonal:16}),opt('"세상의 모든 소리는 저마다의 의미를 가진 아름다운 노래입니다."',{musical:14}),opt('"한 편의 시가 천 개의 칼보다 강할 수 있습니다."',{linguistic:16}))],
+  warrior: [q('산골 마을이 불길에 휩싸였다. 연기가 자욱하다. 당신은 어떻게 대처하나?',opt('사람들을 안전한 곳으로 신속히 이끈다',{bodily:16,interpersonal:8}),opt('불길의 원인을 분석해 진압 계획을 세운다',{logical:12}),opt('구조 도구를 찾아 신속히 사용한다',{spatial:12,bodily:8}),opt('주변 식생을 이용해 방화선을 만든다',{naturalist:12,spatial:6})),q('전설의 검을 찾기 위해 협곡을 내려간다. 바위 길이 불안정하다. 선택은?',opt('천천히 구조를 읽으며 안전하게 통과한다',{spatial:14,logical:6}),opt('힘으로 돌을 밀어 새로운 길을 만든다',{bodily:16}),opt('바위의 진동 소리를 듣고 약한 곳을 피한다',{musical:10,spatial:6}),opt('동료들과 끈을 묶어 안전장비를 만든다',{interpersonal:12,logical:6})),q('검이 꽂힌 바위 앞, 옛 문구가 도전한다. 무엇을 먼저 할까?',opt('문구의 뜻을 해독하려 시도한다',{linguistic:14}),opt('바위의 약점을 찾아 기계적 힘으로 빼낸다',{logical:12,bodily:10}),opt('주변 지형을 이용해 지레 원리를 적용한다',{spatial:14}),opt('검 주변의 식생 변화를 살핀다',{naturalist:12})),q('용의 포효가 들리는 밤, 동료가 두려워한다. 당신은?',opt('용감하게 앞장서 동료를 안심시킨다',{bodily:16,interpersonal:8}),opt('포효의 리듬을 분석해 안전한 타이밍을 찾는다',{musical:12,logical:6}),opt('은신처를 찾아 모두를 숨긴다',{spatial:14}),opt('두려움의 원인을 동료들과 나누어 극복한다',{interpersonal:14})),q('깊은 동굴 속, 무너진 다리를 만났다. 건너려면?',opt('신속히 근력으로 뛰어넘는다',{bodily:16}),opt('남은 자재로 임시 다리를 만든다',{spatial:14,bodily:8}),opt('낙석 패턴을 분석해 안전한 교차점을 찾는다',{logical:12,spatial:6}),opt('자연의 흐름을 이용해 다른 경로를 찾는다',{naturalist:12})),q('전투 중 적이 함정을 사용한다. 함정 해제는?',opt('무력으로 함정을 파괴한다',{bodily:16}),opt('함정의 기계 구조를 파악해 안전하게 해제한다',{logical:14,spatial:6}),opt('동료를 유도해 함정 지역을 우회시킨다',{interpersonal:14}),opt('함정 주변의 흔적을 분석해 트리거를 찾는다',{naturalist:12,logical:6})),q('상처 입은 동료가 있다. 응급조치는?',opt('즉시 응급처치로 출혈을 막는다',{bodily:16}),opt('상처 부위를 관찰하고 원인에 맞는 처방을 한다',{naturalist:12,logical:6}),opt('동료의 감정을 달래며 치료를 돕는다',{interpersonal:14}),opt('상처 원인을 기록해 향후 대처방안을 만든다',{linguistic:12,logical:6})),q('잃어버린 전투 깃발을 회수하라는 명령. 어떻게 진행?',opt('정찰대를 조직해 계획적으로 수색한다',{logical:14,spatial:8}),opt('직접 탐색해 깃발을 되찾는다',{bodily:16}),opt('지형의 이점을 활용해 함정 없이 접근한다',{spatial:14}),opt('지방민과 협력해 정보를 얻는다',{interpersonal:12})),q('고대의 전투 기록을 해독해야 한다. 당신은?',opt('기록의 문장을 분석해 전투의 흐름을 복원한다',{linguistic:14,logical:6}),opt('지도의 표시를 토대로 전략을 재구성한다',{spatial:14,logical:6}),opt('전투의 리듬을 음악적으로 재현해 전술을 이해한다',{musical:12}),opt('현장의 흔적을 통해 병력 배치를 추정한다',{naturalist:10,spatial:6})),q('용의 심장에 들어서자 동료들의 사기가 떨어진다. 당신의 리더십은?',opt('강한 표정과 행동으로 사기를 북돋운다',{bodily:14,interpersonal:10}),opt('전략을 차분히 설명해 공포를 줄인다',{logical:12,linguistic:6}),opt('동료들의 불안을 듣고 공감하며 격려한다',{interpersonal:16}),opt('자연의 소리를 이용해 진정시키는 법을 사용한다',{naturalist:12,musical:6})),q('마지막 결전, 적의 약점을 파고들 순간이 왔다. 당신은?',opt('정확한 타격으로 약점을 노린다',{bodily:16,logical:6}),opt('지형을 이용해 전장을 유리하게 만든다',{spatial:14,logical:6}),opt('동료들과의 협공을 지휘한다',{interpersonal:14}),opt('심리적 압박으로 적을 흔든다',{linguistic:12,intrapersonal:6})),q('승리 후, 마을을 재건하려 할 때 당신의 우선 과제는?',opt('주민의 안전과 생활복구를 지원한다',{interpersonal:16}),opt('방어시설을 재정비해 향후 위협을 대비한다',{logical:14,bodily:6}),opt('훈련 프로그램으로 주민의 체력을 증진한다',{bodily:14}),opt('지역 환경을 보존하는 규칙을 만든다',{naturalist:12,spatial:6})),q('전설의 검이 당신을 시험한다: 진정한 용기는 무엇인가?',opt('약자를 지키는 것이라 답한다',{interpersonal:16,intrapersonal:6}),opt('두려움을 넘어선 행동이라 답한다',{bodily:16}),opt('문제를 해결하는 지혜라 답한다',{logical:14}),opt('자신을 아는 깊은 통찰이라 답한다',{intrapersonal:16})),q('탐험의 끝, 당신이 전하고 싶은 이야기는?',opt('행동이 진정한 용기임을 전한다',{bodily:14,linguistic:6}),opt('협력과 이해가 안정의 길임을 전한다',{interpersonal:14}),opt('지속가능한 방식으로 마을을 재건하자고 말한다',{naturalist:14}),opt('전략적 준비의 중요성을 강조한다',{logical:14})),q('평화가 찾아온 후, 당신은 자신의 힘을 어떻게 사용하겠는가?',opt('후진을 양성하는 훈련 교관이 된다.',{bodily:14,interpersonal:8}),opt('왕국을 탐사하며 미지의 지도를 완성한다.',{spatial:14,naturalist:6}),opt('전쟁의 경험을 기록한 회고록을 집필한다.',{linguistic:14}),opt('스스로의 한계를 넘기 위한 개인 훈련에 매진한다.',{intrapersonal:14,bodily:8})),q('마을 대장간에서 당신의 검을 개량해준다고 한다. 어떤 기능을 추가하겠는가?',opt('더 가볍고 빠르게 휘두를 수 있도록 무게를 줄인다.',{bodily:16}),opt('정교한 기계 장치를 추가하여 다양한 형태로 변형되게 한다.',{logical:14,spatial:6}),opt('아름다운 문양을 새겨 왕국의 상징으로 만든다.',{linguistic:10,spatial:8}),opt('특정 소리에 반응하여 빛을 내는 기능을 추가한다.',{musical:12})),q('당신의 활약을 들은 아이들이 당신처럼 되고 싶어한다. 가장 강조하고 싶은 덕목은?',opt('끊임없이 단련하는 강인한 신체.',{bodily:16}),opt('어떤 상황에서도 냉철함을 잃지 않는 판단력.',{logical:14}),opt('동료를 믿고 함께 나아가는 협동심.',{interpersonal:16}),opt('자신과의 싸움에서 이기는 굳건한 정신력.',{intrapersonal:14})),q('왕국에서 가장 험준한 산을 오르게 되었다. 정상에 오르기 위해 가장 중요한 것은?',opt('지치지 않는 체력과 암벽을 타는 기술.',{bodily:16,spatial:6}),opt('변화무쌍한 날씨를 예측하고 대비하는 지식.',{naturalist:14,logical:6}),opt('정상에 오르고자 하는 강한 동기와 자기 확신.',{intrapersonal:16}),opt('팀원들과 호흡을 맞추며 서로를 이끌어주는 팀워크.',{interpersonal:14})),q('당신의 업적을 기리는 동상이 세워진다고 한다. 어떤 모습으로 만들고 싶은가?',opt('검을 높이 들고 용맹하게 포효하는 모습.',{bodily:16}),opt('마을 아이들과 함께 웃고 있는 모습.',{interpersonal:14}),opt('지도를 펼쳐들고 먼 곳을 바라보는 모습.',{spatial:14,naturalist:6}),opt('조용히 눈을 감고 명상에 잠긴 모습.',{intrapersonal:16})),q('모든 여정을 마친 당신, 진정한 "강함"이란 무엇이라고 생각하는가?',opt('내 신념을 행동으로 증명하는 것.',{bodily:14,intrapersonal:6}),opt('나보다 약한 존재를 지켜주는 것.',{interpersonal:16}),opt('지혜와 힘의 균형을 이루는 것.',{logical:14}),opt('내 안의 두려움을 극복하는 것.',{intrapersonal:16}))],
+  wizard: [q('지식의 탑 입구. 오래된 퍼즐이 봉인되어 있다. 처음으로 무엇을 하겠는가?',opt('퍼즐의 기호 규칙을 수학적으로 분석한다',{logical:16,spatial:6}),opt('기호에 담긴 언어적 의미를 해독한다',{linguistic:14}),opt('퍼즐 조각을 직접 조작해 구조를 파악한다',{bodily:10,spatial:8}),opt('탑 주변 식물의 패턴을 관찰해 힌트를 얻는다',{naturalist:12})),q('환영의 방에 들어서자 당신의 가장 큰 약점이 형상화된다. 극복 방법은?',opt('약점을 직시하고 내면에서 답을 구한다',{intrapersonal:16}),opt('환영의 구조적 허점을 찾아 논리적으로 무력화한다',{logical:14}),opt('환영과 대화해 그들을 설득한다',{interpersonal:12,linguistic:6}),opt('마법적 방법으로 환영을 분리해낸다',{logical:10,bodily:6})),q('소리의 미궁, 벽이 다양한 소리를 낸다. 탈출법은?',opt('소리의 멜로디를 분석해 규칙을 찾아 탈출한다',{musical:16,logical:6}),opt('미로 구조를 머릿속에 그려 길을 계획한다',{spatial:14}),opt('소리를 낸 지점의 진동을 감지해 안전한 길을 고른다',{naturalist:12,spatial:6}),opt('동료의 목소리에 집중해 위치를 찾는다',{interpersonal:12})),q('지식의 서고에 봉인이 걸렸다. 봉인을 푸는 방법은?',opt('봉인에 새겨진 문자를 정밀히 해독한다',{linguistic:18}),opt('봉인 구조의 기하학적 약점을 찾아 해제한다',{logical:16,spatial:6}),opt('봉인의 울림을 공명시켜 풀어낸다',{musical:14}),opt('자기 수양으로 봉인과 조화를 이룬다',{intrapersonal:14})),q('탑이 흔들리기 시작했다. 안전한 탈출을 위해 당신은?',opt('탈출 경로를 계산해 모두를 안내한다',{logical:14,spatial:8}),opt('마법적 방어를 걸어 붕괴를 늦춘다',{logical:12}),opt('동료들을 먼저 대피시키고 자신이 마지막으로 나간다',{interpersonal:14,intrapersonal:6}),opt('주변 환경을 관찰해 안전한 피신처를 찾는다',{naturalist:12})),q('고대 주문서를 읽을 때, 모르는 단어가 빈번하다. 접근법은?',opt('문맥과 어원을 통해 의미를 추론한다',{linguistic:16}),opt('기호들의 반복 규칙을 찾아 체계를 만든다',{logical:14}),opt('그림과 도표로 재구성해 이해한다',{spatial:14}),opt('내면의 이미지를 통해 상징을 해석한다',{intrapersonal:12})),q('서고에서 발견한 실험 장비가 이상 반응을 보인다. 어떻게 안정화?',opt('장비의 메커니즘을 분석해 조절장치를 찾는다',{logical:14,spatial:6}),opt('안전 장치를 즉시 가동해 반응을 억제한다',{bodily:12}),opt('주변 식물과 조합해 반응을 중화한다',{naturalist:12}),opt('동료들과 협력해 절차를 따른다',{interpersonal:12})),q('탑 꼭대기에서 별의 배열을 관찰해야 한다. 방법은?',opt('별의 위치를 기록해 고대 데이터와 대조한다',{logical:14,spatial:8}),opt('하늘의 리듬에서 의미를 찾는다',{musical:12}),opt('관찰자를 조직해 효율적으로 자료를 모은다',{interpersonal:12}),opt('개인적으로 관찰하며 통찰을 얻는다',{intrapersonal:14})),q('마을에 전염병 징후가 보인다. 조사와 대응은?',opt('증상과 환경을 기록해 원인을 규명한다',{logical:14,naturalist:8}),opt('환자 돌봄을 조직해 확산을 줄인다',{interpersonal:16}),opt('전통 치료법과 현대 지식을 대조해 검토한다',{linguistic:12,logical:8}),opt('자연환경의 변화를 관찰해 연관성을 찾는다',{naturalist:14})),q('지식의 탐구가 끝이 없음을 깨달았다. 이 순간 당신의 감정은?',opt('더 배워야 할 것이 많다는 사실에 겸손해진다.',{intrapersonal:16}),opt('지식의 체계를 세워 효율적인 연구 계획을 짠다.',{logical:14}),opt('다른 학자들과 교류하며 새로운 영감을 얻고 싶다.',{interpersonal:14,linguistic:6}),opt('잠시 연구를 멈추고, 자연 속에서 머리를 식힌다.',{naturalist:12})),q('당신의 마법이 폭주하여 의도치 않은 결과를 낳았다. 어떻게 책임지겠는가?',opt('결과를 되돌리기 위한 해결책을 밤새워 연구한다.',{logical:16}),opt('피해를 입은 사람들을 찾아가 진심으로 사과하고 돕는다.',{interpersonal:14}),opt('실수의 원인을 알기 위해 내면을 깊이 성찰한다.',{intrapersonal:16}),opt('실패의 과정을 상세히 기록하여 다른 이들이 같은 실수를 반복하지 않게 한다.',{linguistic:14})),q('새로운 마법을 창조하게 되었다. 그 마법은 어떤 종류의 마법인가?',opt('복잡한 암호를 즉시 해독하는 분석 마법.',{logical:16,linguistic:6}),opt('사람들의 마음을 편안하게 해주는 치유의 음악 마법.',{musical:14,interpersonal:8}),opt('꿈 속의 풍경을 현실에 그려내는 공간 창조 마법.',{spatial:16}),opt('식물의 성장을 촉진시키는 자연의 조화 마법.',{naturalist:14})),q('마법 학교의 교장이 되어달라는 제안을 받았다. 당신의 교육 철학은?',opt('학생들이 자유롭게 토론하며 지식을 탐구하게 한다.',{interpersonal:14,linguistic:8}),opt('엄격한 논리적 사고와 마법의 원리를 가르친다.',{logical:16}),opt('마법은 결국 자기 자신을 이해하는 과정임을 강조한다.',{intrapersonal:16}),opt('다양한 마법을 직접 체험하고 몸으로 익히게 한다.',{bodily:12})),q('세상에서 가장 어려운 질문에 답해야 한다. "지식의 끝은 어디인가?"',opt('지식에는 끝이 없으며, 질문하는 과정 자체가 중요하다고 답한다.',{intrapersonal:14,linguistic:8}),opt('모든 지식이 통합되는 하나의 근원적인 원리가 있을 것이라 답한다.',{logical:16}),opt('다른 존재와의 관계 속에서 지혜를 얻을 때 지식은 완성된다고 답한다.',{interpersonal:14}),opt('자연의 순환을 이해하는 것이 지식의 끝이라고 답한다.',{naturalist:14})),q('탑에서의 마지막 밤, 당신이 남기고 싶은 메시지는?',opt('지식을 공유하고 후대를 양성하자',{linguistic:14,interpersonal:8}),opt('논리와 준비가 세상을 지킨다',{logical:14}),opt('자연과 조화를 이루는 연구를 권장한다',{naturalist:14}),opt('자신을 잘 돌보는 것이 연구의 지속성이다',{intrapersonal:14})),q('오랜 연구 끝에 당신은 마법으로 그림을 그리는 법을 발견했다. 첫 작품의 주제는?',opt('별들의 움직임을 담은 밤하늘의 천체도',{spatial:14,logical:8}),opt('마법의 원리를 설명하는 복잡한 다이어그램',{logical:16}),opt('함께 모험한 동료들의 행복한 모습',{interpersonal:14}),opt('내 마음 속의 평온한 풍경',{intrapersonal:14})),q('어린 마법사 지망생이 당신에게 조언을 구한다. "가장 위대한 마법은 무엇인가요?"',opt('"세상을 바꾸는 것은 지식 그 자체가 아니라, 그것을 사용하는 지혜란다."',{intrapersonal:14,linguistic:8}),opt('"가장 위대한 마법은 타인의 마음을 움직이는 공감의 마법이지."',{interpersonal:16}),opt('"정확한 계산과 논리 위에서 가장 안정적인 마법이 탄생한단다."',{logical:14}),opt('"자연의 흐름을 거스르지 않는 것이 가장 강력한 마법의 기초야."',{naturalist:14})),q('당신은 고대의 유물을 복원하는 임무를 맡았다. 가장 먼저 할 일은?',opt('유물에 적힌 고대어를 해독하여 용도를 파악한다.',{linguistic:16}),opt('흩어진 파편들을 3차원 퍼즐처럼 맞추어 원래 형태로 복원한다.',{spatial:14,bodily:6}),opt('유물의 작동 원리를 분석하여 논리적으로 재구성한다.',{logical:16}),opt('유물이 만들어진 시대의 사람들의 마음을 상상하며 작업에 임한다.',{intrapersonal:14,interpersonal:6})),q('당신의 지식을 노리는 라이벌 마법사가 나타났다. 어떻게 대응하겠는가?',opt('마법 대결을 신청하여 실력으로 승부한다.',{bodily:12,logical:8}),opt('그의 연구를 분석하여 논리적 허점을 찾아낸다.',{logical:16}),opt('그와 대화하여 경쟁이 아닌 협력 관계를 제안한다.',{interpersonal:14}),opt('외부의 위협에 흔들리지 않고 내 연구에 더욱 집중한다.',{intrapersonal:16})),q('모든 지식을 섭렵한 당신, 마지막으로 도전하고 싶은 연구 분야는?',opt('세상의 모든 언어를 통합하는 새로운 언어 체계 창조',{linguistic:16}),opt('존재하지 않는 색깔과 소리를 만들어내는 감각 마법',{musical:14,spatial:8}),opt('시간의 흐름에 대한 근본적인 법칙 탐구',{logical:16}),opt('모든 생명체와 소통할 수 있는 교감 마법',{naturalist:14,interpersonal:8}))]
 };
 
-/* ====== 초기화 및 상태 ======*/
+/* ====== 게임 로직 및 상태 관리 ======*/
+const el = id => document.getElementById(id);
+
 const baseScores = {linguistic:50,logical:50,spatial:50,bodily:50,musical:50,interpersonal:50,intrapersonal:50,naturalist:50};
 let scores = {};
-let player = {name:'',clazz:'',charId:'',questIndex:0};
+let player = { name:'', clazz:'', charId:'', emoji:'', questIndex:0 };
 
-const el = id=>document.getElementById(id);
-function show(id){el(id).style.display='block'}
-function hide(id){el(id).style.display='none'}
-
-function resetState(){ scores = JSON.parse(JSON.stringify(baseScores)); player={name:'',clazz:'',charId:'',questIndex:0}; document.querySelectorAll('.char').forEach(c=>c.classList.remove('selected')); hide('game-area'); hide('result-panel'); show('pre-game'); el('hero-emoji').textContent='🧭'; el('hero-name').textContent='모험가'; el('hero-sub').textContent='직업을 선택하고 시작하세요.'; renderStats(); }
-resetState();
-
-/* 캐릭터 선택 */
-document.querySelectorAll('.char').forEach(node=>{ node.addEventListener('click', ()=>{ document.querySelectorAll('.char').forEach(c=>c.classList.remove('selected')); node.classList.add('selected'); player.charId = node.dataset.id; const map = {prince:'🤴',princess:'👸',warrior:'⚔️',wizard:'🔮'}; el('hero-emoji').textContent = map[player.charId]; el('hero-name').textContent = node.querySelector('.name').textContent; el('hero-sub').textContent = node.querySelector('.tag').textContent; playClick(); }); });
-
-/* 시작 버튼 */
-el('btn-start').addEventListener('click', ()=>{
-  const name = el('input-name').value.trim(); const clazz = el('input-class').value.trim(); if(!name||!clazz||!player.charId){ alert('반, 이름, 캐릭터를 모두 선택해 주세요.'); return; }
-  player.name = name; player.clazz = clazz; player.questIndex = 0; scores = JSON.parse(JSON.stringify(baseScores)); show('game-area'); hide('pre-game'); renderQuest(); playClick();
+// 캐릭터 선택 이벤트
+document.querySelectorAll('.character-card').forEach(card => {
+    card.addEventListener('click', () => {
+        playClick();
+        player.charId = card.dataset.id;
+        player.emoji = card.dataset.emoji;
+        el('selected-char-title').textContent = `${player.emoji} ${card.dataset.name} 선택`;
+        el('character-selection-screen').style.display = 'none';
+        el('user-info-screen').style.display = 'block';
+    });
 });
 
-el('btn-reset').addEventListener('click', ()=>{ el('input-name').value=''; el('input-class').value=''; resetState(); playClick(); });
-el('btn-restart').addEventListener('click', ()=>{ resetState(); el('result-panel').style.display='none'; playClick(); });
+// 게임 시작 버튼 이벤트
+el('btn-start').addEventListener('click', () => {
+    const name = el('input-name').value.trim();
+    const clazz = el('input-class').value.trim();
+    if (!name || !clazz) {
+        alert('반과 이름을 모두 입력해 주세요.');
+        return;
+    }
+    player.name = name;
+    player.clazz = clazz;
+    playClick();
+    
+    el('main-title').style.display = 'none';
+    el('user-info-screen').style.display = 'none';
+    el('game-screen').style.display = 'block';
 
-/* 렌더링 및 진행 */
-function renderQuest(){ const list = quests[player.charId]; if(!list){ alert('퀘스트가 준비되지 않았습니다.'); return; } if(player.questIndex>=list.length){ showResult(); return; } const q = list[player.questIndex]; el('quest-text').textContent = q.text; const optRoot = el('options'); optRoot.innerHTML=''; q.options.forEach((o,i)=>{ const div = document.createElement('div'); div.className='option'; div.innerHTML = `<div class="label">${String.fromCharCode(65+i)}. ${o.t}</div><div class="hint">선택 시 해당 능력이 강화됩니다.</div>`; div.addEventListener('click', ()=>{ applyEffects(o.e); player.questIndex++; playSuccess(); renderQuest(); }); optRoot.appendChild(div); }); renderStats(); }
+    resetGame();
+    renderQuest();
+});
 
-function applyEffects(e){ Object.keys(e).forEach(k=>{ if(scores[k]===undefined) scores[k]=50; scores[k]+=e[k]; if(scores[k]>100) scores[k]=100; if(scores[k]<0) scores[k]=0; }); }
+function resetGame() {
+    player.questIndex = 0;
+    scores = JSON.parse(JSON.stringify(baseScores));
+    renderStatsUI();
+}
 
-function renderStats(){ const root = el('stats'); root.innerHTML=''; Object.keys(scores).forEach(k=>{ const box = document.createElement('div'); box.className='stat'; const lab = document.createElement('div'); lab.textContent = ({linguistic:'언어',logical:'논리-수학',spatial:'공간',bodily:'신체',musical:'음악',interpersonal:'대인',intrapersonal:'자기이해',naturalist:'자연'})[k] || k; lab.style.fontWeight='800'; lab.style.color='var(--gold)'; const val = document.createElement('div'); val.textContent = Math.round(scores[k]); val.style.marginTop='6px'; const bar = document.createElement('div'); bar.className='bar'; const inner = document.createElement('div'); inner.className='bar-inner'; inner.style.width = Math.round(scores[k])+'%'; bar.appendChild(inner); box.appendChild(lab); box.appendChild(val); box.appendChild(bar); root.appendChild(box); }); }
+function renderStatsUI() {
+    const grid = el('stats-grid');
+    grid.innerHTML = '';
+    const nameMap = {linguistic:'언어',logical:'논리-수학',spatial:'공간',bodily:'신체',musical:'음악',interpersonal:'대인',intrapersonal:'자기이해',naturalist:'자연'};
+    for(const key in scores) {
+        grid.innerHTML += `
+            <div class="stat-item">
+              ${nameMap[key]}
+              <div class="stat-bar"><div class="stat-bar-inner" id="bar-${key}" style="width: ${scores[key]}%"></div></div>
+            </div>
+        `;
+    }
+}
 
-function showResult(){ hide('game-area'); el('result-panel').style.display='block'; const entries = Object.entries(scores).sort((a,b)=>b[1]-a[1]); const top1 = entries[0][0]; const top2 = entries[1][0]; const mapNames = {linguistic:'언어 지능',logical:'논리-수학 지능',spatial:'공간 지능',bodily:'신체-운동 지능',musical:'음악 지능',interpersonal:'대인관계 지능',intrapersonal:'자기이해 지능',naturalist:'자연 지능'}; el('result-title').textContent = `${player.name}님의 우수 지능: ${mapNames[top1]} (1위), ${mapNames[top2]} (2위)`; el('result-text').innerHTML = `<p>여정에서 당신의 선택은 다음과 같은 특성을 드러냈습니다. <strong>${mapNames[top1]}</strong>와 <strong>${mapNames[top2]}</strong>가 두드러지게 나타났습니다.</p>`; const careerRoot = el('career-cards'); careerRoot.innerHTML=''; const careerMap = {linguistic:{name:'서기관·작가',desc:'언어로 세상을 기록하고 전달합니다.',emoji:'✍️'}, logical:{name:'분석가·연구자',desc:'문제를 구조적으로 해결합니다.',emoji:'🧠'}, spatial:{name:'설계자·디자이너',desc:'공간을 시각화하고 설계합니다.',emoji:'📐'}, bodily:{name:'운동가·수호자',desc:'행동으로 문제를 해결합니다.',emoji:'🤸'}, musical:{name:'음악가·연주자',desc:'소리로 감정을 움직입니다.',emoji:'🎵'}, interpersonal:{name:'리더·상담가',desc:'사람 사이를 잇는 능력이 탁월합니다.',emoji:'🤝'}, intrapersonal:{name:'성찰가·상담가',desc:'자기 통찰로 문제를 해결합니다.',emoji:'🧘'}, naturalist:{name:'생태학자·현장연구자',desc:'자연을 이해하고 보존합니다.',emoji:'🌳'}}; [top1,top2].forEach(k=>{ const info = careerMap[k]; const c = document.createElement('div'); c.className='career'; c.innerHTML = `<div style="font-size:36px">${info.emoji}</div><h4 style="color:var(--gold)">${info.name}</h4><div>${info.desc}</div>`; careerRoot.appendChild(c); }); playFanfare(); }
+function updateStatsUI() {
+    for(const key in scores) {
+        el(`bar-${key}`).style.width = scores[key] + '%';
+    }
+}
 
-// 초기 stats 표시
-renderStats();
+function typeWriter(element, text, onComplete) {
+    let i = 0;
+    element.innerHTML = '';
+    function typing() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, 30);
+        } else {
+            if(onComplete) onComplete();
+        }
+    }
+    typing();
+}
+
+function renderQuest() {
+    const questList = quests[player.charId];
+    if (player.questIndex >= questList.length) {
+        showResult();
+        return;
+    }
+    const q = questList[player.questIndex];
+    const gameCard = el('game-card');
+    
+    gameCard.innerHTML = `
+        <div id="hero-display"><div id="hero-emoji">${player.emoji}</div></div>
+        <h2 id="quest-title">Quest ${player.questIndex + 1}</h2>
+        <p id="quest-text"></p>
+        <div id="choices-container"></div>
+    `;
+
+    typeWriter(el('quest-text'), q.text, () => {
+        const choicesContainer = el('choices-container');
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerHTML = `<strong>${String.fromCharCode(65+i)}.</strong> ${opt.t}`;
+            btn.onclick = () => chooseOption(opt.e);
+            btn.style.animationDelay = `${i * 0.1}s`;
+            choicesContainer.appendChild(btn);
+        });
+    });
+    updateStatsUI();
+}
+
+function chooseOption(effects) {
+    playSuccess();
+    Object.keys(effects).forEach(k => {
+        if(scores[k] !== undefined) {
+            scores[k] += effects[k];
+            if(scores[k] > 100) scores[k] = 100;
+            if(scores[k] < 0) scores[k] = 0;
+        }
+    });
+
+    player.questIndex++;
+    // Disable buttons to prevent multiple clicks
+    const buttons = document.querySelectorAll('.choice-btn');
+    buttons.forEach(button => button.disabled = true);
+    
+    // Slight delay before showing the next quest for smoother transition
+    setTimeout(() => {
+        el('game-card').style.animation = 'fadeOut 0.5s';
+        setTimeout(() => {
+            el('game-card').style.animation = 'fadeIn 0.5s';
+            renderQuest();
+        }, 500);
+    }, 300);
+}
+
+function showResult() {
+    playFanfare();
+    const entries = Object.entries(scores).sort((a,b) => b[1] - a[1]);
+    const top1 = entries[0][0];
+    const top2 = entries[1][0];
+    const mapNames = {linguistic:'언어 지능',logical:'논리-수학 지능',spatial:'공간 지능',bodily:'신체-운동 지능',musical:'음악 지능',interpersonal:'대인관계 지능',intrapersonal:'자기이해 지능',naturalist:'자연 지능'};
+    const careerMap = {linguistic:{name:'서기관·작가',desc:'언어로 세상을 기록하고 전달합니다.',emoji:'✍️'}, logical:{name:'분석가·연구자',desc:'문제를 구조적으로 해결합니다.',emoji:'🧠'}, spatial:{name:'설계자·디자이너',desc:'공간을 시각화하고 설계합니다.',emoji:'📐'}, bodily:{name:'운동가·수호자',desc:'행동으로 문제를 해결합니다.',emoji:'🤸'}, musical:{name:'음악가·연주자',desc:'소리로 감정을 움직입니다.',emoji:'🎵'}, interpersonal:{name:'리더·상담가',desc:'사람 사이를 잇는 능력이 탁월합니다.',emoji:'🤝'}, intrapersonal:{name:'성찰가·상담가',desc:'자기 통찰로 문제를 해결합니다.',emoji:'🧘'}, naturalist:{name:'생태학자·현장연구자',desc:'자연을 이해하고 보존합니다.',emoji:'🌳'}};
+
+    const gameCard = el('game-card');
+    gameCard.innerHTML = `
+        <div class="result-card">
+            <h2 style="text-align:center; font-size:1.8em; color: var(--primary-gold);">🚀 ${player.name}님의 모험 완료!</h2>
+            <p style="text-align:center;">여정에서 드러난 당신의 가장 강력한 잠재력은 다음과 같습니다.</p>
+            <hr style="border-color: var(--border-color); margin: 20px 0;">
+            <h3>🥇 1위: ${mapNames[top1]}</h3>
+            <p>${careerMap[top1].desc}</p>
+            <h3>🥈 2위: ${mapNames[top2]}</h3>
+            <p>${careerMap[top2].desc}</p>
+            <div class="career-cards">
+                <div class="career"><div style="font-size: 3rem;">${careerMap[top1].emoji}</div><h4>${careerMap[top1].name}</h4></div>
+                <div class="career"><div style="font-size: 3rem;">${careerMap[top2].emoji}</div><h4>${careerMap[top2].name}</h4></div>
+            </div>
+            <p style="text-align:center; margin-top: 25px;">모든 지능은 소중해요. 자신의 강점을 발견하고 발전시켜 멋진 미래를 만들어가길 응원할게요!</p>
+            <button class="btn" onclick="location.reload()">🔄 다시 모험하기</button>
+        </div>
+    `;
+}
+
 </script>
 </body>
 </html>
