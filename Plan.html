@@ -1,9 +1,57 @@
-// Life Game React + Firebase + Dashboard 프로젝트
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인생 역전! 라이프 카드 게임 & 대시보드</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<style>
+body { font-family:'Nanum Pen Script', cursive; background:#ffe4e1; margin:0; padding:0; display:flex; flex-direction:column; align-items:center;}
+h1,h2{ text-align:center; }
+.card { background:#fff; border-radius:12px; padding:20px; margin:20px; width:300px; box-shadow:0 4px 8px rgba(0,0,0,0.2); transition: transform 0.3s; }
+.card:hover { transform: scale(1.05); }
+button { margin:5px; padding:10px 15px; border:none; border-radius:8px; background:#ff69b4; color:#fff; cursor:pointer; transition:0.2s;}
+button:hover { background:#ff85c1; }
+.stats { display:flex; justify-content:space-around; width:80%; margin:10px 0; }
+.stat-bar { width:100px; height:20px; background:#ddd; border-radius:10px; overflow:hidden; }
+.stat-fill { height:100%; background:#ff69b4; transition: width 0.5s;}
+#endScreen, #dashboard { display:none; text-align:center; margin-top:20px; width:90%; max-width:800px;}
+table { width:100%; border-collapse:collapse; margin-top:10px;}
+th,td { border:1px solid #ccc; padding:5px; text-align:center;}
+</style>
+</head>
+<body>
+<h1>🎮 인생 역전! 라이프 카드 게임</h1>
 
-// 1️⃣ src/firebase.js
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+<div class="stats">
+  <div>지식<div class="stat-bar"><div id="knowledge" class="stat-fill"></div></div></div>
+  <div>체력<div class="stat-bar"><div id="fitness" class="stat-fill"></div></div></div>
+  <div>친구<div class="stat-bar"><div id="friendship" class="stat-fill"></div></div></div>
+  <div>재능<div class="stat-bar"><div id="talent" class="stat-fill"></div></div></div>
+</div>
 
+<div id="cardContainer"></div>
+
+<div id="endScreen">
+  <h2>🎉 나만의 엔딩 🎉</h2>
+  <p id="endText"></p>
+  <button onclick="showDashboard()">관리자 대시보드 보기</button>
+</div>
+
+<div id="dashboard">
+  <h2>📊 관리자 대시보드</h2>
+  <table id="recordsTable">
+    <thead>
+      <tr>
+        <th>시간</th><th>카드</th><th>선택</th><th>지식</th><th>체력</th><th>친구</th><th>재능</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
 const firebaseConfig = {
   apiKey: "AIzaSyBUKwD2oMtcpMClaNHDNhHoG1ogBYu623k",
   authDomain: "plan-a1107.firebaseapp.com",
@@ -12,185 +60,89 @@ const firebaseConfig = {
   messagingSenderId: "1071905265794",
   appId: "1:1071905265794:web:2e7b46032bbe8ac7f97c9b"
 };
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-
-
-// 2️⃣ src/CardData.js
-export const cards = [
-  {
-    id: 1,
-    text: "중학교 입학",
-    options: [
-      { text: "친구 만들기", effect: { 인간관계: +10 } },
-      { text: "공부 열심히", effect: { 지식: +10 } }
-    ]
-  },
-  {
-    id: 2,
-    text: "첫 시험",
-    options: [
-      { text: "공부 열심히", effect: { 지식: +10 } },
-      { text: "놀기", effect: { 인간관계: +5, 지식: -5 } }
-    ]
-  }
+const cards = [
+  { id:1, text:"첫 시험이 다가왔어요. 친구가 놀자고 합니다.", choices:[{text:"함께 논다", effects:{knowledge:-5, friendship:10}},{text:"공부한다", effects:{knowledge:10, friendship:-5}}]},
+  { id:2, text:"동아리 선택의 날이에요.", choices:[{text:"운동 동아리", effects:{fitness:10}},{text:"독서 동아리", effects:{knowledge:10}}]}
 ];
 
+let stats = { knowledge:50, fitness:50, friendship:50, talent:50 };
+let currentCard = 0;
 
-// 3️⃣ src/components/Card.jsx
-import React from 'react';
-import { motion } from 'framer-motion';
-
-export default function Card({ card, onSelect }) {
-  return (
-    <motion.div 
-      initial={{ rotateY: 90, opacity: 0 }}
-      animate={{ rotateY: 0, opacity: 1 }}
-      exit={{ rotateY: -90, opacity: 0 }}
-      className="bg-white p-6 rounded-lg shadow-md m-4"
-    >
-      <h2 className="text-xl font-bold mb-4">{card.text}</h2>
-      {card.options.map((opt, idx) => (
-        <button key={idx} className="block bg-pink-300 px-4 py-2 m-2 rounded hover:bg-pink-400" onClick={() => onSelect(opt)}>
-          {opt.text}
-        </button>
-      ))}
-    </motion.div>
-  );
+function updateStats(){
+  document.getElementById("knowledge").style.width = stats.knowledge+"%";
+  document.getElementById("fitness").style.width = stats.fitness+"%";
+  document.getElementById("friendship").style.width = stats.friendship+"%";
+  document.getElementById("talent").style.width = stats.talent+"%";
 }
 
-
-// 4️⃣ src/components/StatsBar.jsx
-import React from 'react';
-import { motion } from 'framer-motion';
-
-export default function StatsBar({ stats }) {
-  return (
-    <div className="flex justify-around mb-4">
-      {Object.entries(stats).map(([key, value]) => (
-        <motion.div key={key} animate={{ scale: [1, 1.2, 1] }} className="text-center">
-          <p className="font-bold">{key}</p>
-          <p>{value}</p>
-        </motion.div>
-      ))}
-    </div>
-  );
+function showCard(){
+  if(currentCard >= cards.length){
+    showEnd();
+    return;
+  }
+  const cardContainer = document.getElementById("cardContainer");
+  cardContainer.innerHTML = "";
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `<p>${cards[currentCard].text}</p>`;
+  cards[currentCard].choices.forEach((choice, index)=>{
+    const btn = document.createElement("button");
+    btn.innerText = choice.text;
+    btn.onclick = ()=>selectChoice(index);
+    card.appendChild(btn);
+  });
+  cardContainer.appendChild(card);
 }
 
-
-// 5️⃣ src/components/EndScreen.jsx
-import React from 'react';
-import { motion } from 'framer-motion';
-
-export default function EndScreen({ stats, onRestart }) {
-  return (
-    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-center p-6">
-      <h1 className="text-2xl font-bold mb-4">🎉 게임 종료 🎉</h1>
-      <div className="mb-4">
-        {Object.entries(stats).map(([key, value], idx) => <p key={idx}>{key}: {value}</p>)}
-      </div>
-      <button className="bg-pink-300 px-6 py-2 rounded hover:bg-pink-400" onClick={onRestart}>다시 시작</button>
-    </motion.div>
-  );
+function selectChoice(choiceIndex){
+  const choice = cards[currentCard].choices[choiceIndex];
+  for(let key in choice.effects){
+    stats[key] = Math.min(Math.max(stats[key]+choice.effects[key],0),100);
+  }
+  updateStats();
+  db.collection("gameRecords").add({
+    cardId: cards[currentCard].id,
+    choice: choice.text,
+    stats: {...stats},
+    timestamp: new Date()
+  });
+  currentCard++;
+  showCard();
 }
 
-
-// 6️⃣ src/App.jsx
-import React, { useState } from 'react';
-import Card from './components/Card';
-import StatsBar from './components/StatsBar';
-import EndScreen from './components/EndScreen';
-import { cards } from './CardData';
-import { db } from './firebase';
-import { collection, addDoc } from 'firebase/firestore';
-
-export default function App() {
-  const [currentCard, setCurrentCard] = useState(0);
-  const [stats, setStats] = useState({ 지식: 0, 체력: 0, 인간관계: 0, 재능: 0 });
-  const [gameOver, setGameOver] = useState(false);
-
-  const handleSelect = async (option) => {
-    const newStats = { ...stats };
-    for (let key in option.effect) {
-      newStats[key] += option.effect[key];
-    }
-    setStats(newStats);
-
-    if (currentCard + 1 < cards.length) {
-      setCurrentCard(currentCard + 1);
-    } else {
-      setGameOver(true);
-      await addDoc(collection(db, 'studentRecords'), {
-        stats: newStats,
-        timestamp: new Date()
-      });
-    }
-  };
-
-  const restartGame = () => {
-    setStats({ 지식: 0, 체력: 0, 인간관계: 0, 재능: 0 });
-    setCurrentCard(0);
-    setGameOver(false);
-  };
-
-  return (
-    <div className="min-h-screen bg-pink-50 flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-6">인생 역전! 라이프 카드 게임</h1>
-      <StatsBar stats={stats} />
-      {gameOver ? (
-        <EndScreen stats={stats} onRestart={restartGame} />
-      ) : (
-        <Card card={cards[currentCard]} onSelect={handleSelect} />
-      )}
-    </div>
-  );
+function showEnd(){
+  document.getElementById("cardContainer").style.display="none";
+  document.getElementById("endScreen").style.display="block";
+  document.getElementById("endText").innerText = 
+    `최종 능력치 - 지식:${stats.knowledge}, 체력:${stats.fitness}, 친구:${stats.friendship}, 재능:${stats.talent}`;
 }
 
-
-// 7️⃣ src/Dashboard.jsx
-import React, { useEffect, useState } from 'react';
-import { db } from './firebase';
-import { collection, getDocs } from 'firebase/firestore';
-
-export default function Dashboard() {
-  const [records, setRecords] = useState([]);
-
-  useEffect(() => {
-    const fetchRecords = async () => {
-      const querySnapshot = await getDocs(collection(db, 'studentRecords'));
-      setRecords(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    };
-    fetchRecords();
-  }, []);
-
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">학생 기록 대시보드</h1>
-      <table className="min-w-full bg-white border">
-        <thead>
-          <tr>
-            <th className="border px-4 py-2">ID</th>
-            <th className="border px-4 py-2">지식</th>
-            <th className="border px-4 py-2">체력</th>
-            <th className="border px-4 py-2">인간관계</th>
-            <th className="border px-4 py-2">재능</th>
-            <th className="border px-4 py-2">날짜</th>
-          </tr>
-        </thead>
-        <tbody>
-          {records.map(record => (
-            <tr key={record.id} className="text-center">
-              <td className="border px-4 py-2">{record.id}</td>
-              <td className="border px-4 py-2">{record.stats.지식}</td>
-              <td className="border px-4 py-2">{record.stats.체력}</td>
-              <td className="border px-4 py-2">{record.stats.인간관계}</td>
-              <td className="border px-4 py-2">{record.stats.재능}</td>
-              <td className="border px-4 py-2">{record.timestamp.toDate().toLocaleString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+function showDashboard(){
+  document.getElementById("endScreen").style.display="none";
+  document.getElementById("dashboard").style.display="block";
+  const tbody = document.querySelector("#recordsTable tbody");
+  tbody.innerHTML = "";
+  db.collection("gameRecords").orderBy("timestamp","desc").get().then(snapshot=>{
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${data.timestamp.toDate().toLocaleString()}</td>
+                      <td>${data.cardId}</td>
+                      <td>${data.choice}</td>
+                      <td>${data.stats.knowledge}</td>
+                      <td>${data.stats.fitness}</td>
+                      <td>${data.stats.friendship}</td>
+                      <td>${data.stats.talent}</td>`;
+      tbody.appendChild(tr);
+    });
+  });
 }
+
+updateStats();
+showCard();
+</script>
+</body>
+</html>
