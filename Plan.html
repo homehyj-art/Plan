@@ -1,52 +1,311 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>인생 역전! 라이프 카드 게임</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>인생 역전! 라이프 카드 게임 (Firebase 지원)</title>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
-:root{
---bg:#fff7fb; --card:#ffffff; --text:#222; --muted:#6b7280;
---p1:#93c5fd; --p2:#86efac; --p3:#fca5a5; --p4:#fbcfe8; --accent:#a78bfa;
---shadow:0 10px 20px rgba(0,0,0,.08);
-}
-*{box-sizing:border-box}
-body{font-family:'Jua',sans-serif;background:linear-gradient(135deg,#fef6ff,#f0f9ff);color:var(--text);margin:0}
-.wrap{max-width:960px;margin:30px auto;padding:16px}
-header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
-.title{font-size:28px}
-.subtitle{color:var(--muted);font-size:16px}
-.board{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0 16px}
-.stat{background:#fafafa;border-radius:14px;padding:10px}
-.stat h4{margin:0 0 6px;font-size:14px;display:flex;align-items:center;gap:6px}
-.bar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-.fill{height:100%;width:0%;transition:width .4s ease}
-.K{background:var(--p1)} .S{background:var(--p2)} .R{background:var(--p3)} .T{background:var(--p4)}
-.card{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:18px;margin:8px 0}
-.card h3{margin:0 0 8px;font-size:22px}
-.choices{display:grid;gap:10px}
-button.choice{border:0;border-radius:14px;padding:12px 14px;background:#f1f5f9;cursor:pointer;text-align:left;transition:.15s}
-button.choice:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(0,0,0,.08)}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.btn{border:0;border-radius:12px;padding:10px 12px;background:var(--accent);color:white;cursor:pointer;box-shadow:var(--shadow)}
-.muted{background:#e5e7eb;color:#111}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.log{background:#ffffff;border-radius:16px;box-shadow:var(--shadow);padding:12px;max-height:240px;overflow:auto}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;margin-right:6px;color:#111;background:#eef2ff}
-.ending{font-size:20px}
-.dream{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:12px}
-.dream input,.dream textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;font-family:inherit}
-.tag{display:inline-block;background:#ecfeff;border:1px solid #cffafe;padding:4px 8px;border-radius:999px;margin:4px 4px 0 0;font-size:12px}
+  :root{--bg:#fff7fb;--card:#fff;--muted:#6b7280;--accent:#7c3aed}
+  body{font-family:'Jua',sans-serif;background:linear-gradient(135deg,#fef6ff,#f0f9ff);margin:0;color:#111}
+  .wrap{max-width:1000px;margin:30px auto;padding:18px}
+  header{display:flex;justify-content:space-between;align-items:center}
+  .title{font-size:28px}
+  .board{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.06);margin-top:12px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .stat{background:#fafafa;border-radius:12px;padding:8px}
+  .bar{height:10px;background:#e6edf7;border-radius:999px;overflow:hidden}
+  .fill{height:100%}
+  .K{background:#93c5fd}.S{background:#86efac}.R{background:#fca5a5}.T{background:#fbcfe8}
+  .card{margin-top:12px;padding:14px;border-radius:14px;background:#fff}
+  .choices{display:grid;gap:8px;margin-top:8px}
+  button.choice{padding:10px;border-radius:10px;border:0;background:#f1f5f9;text-align:left;cursor:pointer}
+  .controls{display:flex;gap:8px}
+  .btn{padding:8px 12px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+  .muted{background:#e5e7eb;color:#111}
+  .side{display:grid;gap:12px;margin-top:12px}
+  .log{max-height:240px;overflow:auto;padding:8px;background:#fff;border-radius:12px}
+  .dream{padding:8px;background:#fff;border-radius:12px}
+  .ending{padding:12px;background:#fff;border-radius:12px;margin-top:12px}
+  .small{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header>
-<div>
-<div class="title">🃏 인생 역전! 라이프 카드 게임</div>
-<div class="subtitle">카드를 선택하며 나만의 인생 스토리를 만들어 보자!</div>
+  <header>
+    <div>
+      <div class="title">🃏 인생 역전! 라이프 카드 게임</div>
+      <div class="small">카드로 선택하고, 능력치 변화로 나만의 엔딩을 찾아보자.</div>
+    </div>
+    <div class="controls">
+      <button id="nextBtn" class="btn">다음 카드</button>
+      <button id="resetBtn" class="btn muted">처음부터</button>
+    </div>
+  </header>
+
+  <main class="board">
+    <section class="stats" id="stats">
+      <div class="stat"><div>📘 지식 <span id="valK" class="small"></span></div><div class="bar"><div id="barK" class="fill K" style="width:0%"></div></div></div>
+      <div class="stat"><div>💪 체력 <span id="valS" class="small"></span></div><div class="bar"><div id="barS" class="fill S" style="width:0%"></div></div></div>
+      <div class="stat"><div>🤝 인간관계 <span id="valR" class="small"></span></div><div class="bar"><div id="barR" class="fill R" style="width:0%"></div></div></div>
+      <div class="stat"><div>✨ 재능 <span id="valT" class="small"></span></div><div class="bar"><div id="barT" class="fill T" style="width:0%"></div></div></div>
+    </section>
+
+    <article class="card" id="cardArea">
+      <h3 id="cardTitle">로딩 중...</h3>
+      <p id="cardText"></p>
+      <div class="choices" id="choices"></div>
+    </article>
+
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:16px;margin-top:12px">
+      <div>
+        <div class="card log">
+          <strong>📝 선택 기록</strong>
+          <div id="log" style="margin-top:8px"></div>
+        </div>
+
+        <div id="endingBox" class="ending" style="display:none"></div>
+      </div>
+
+      <aside class="side">
+        <div class="dream">
+          <strong>🏆 나의 꿈 발표 대회</strong>
+          <div class="small">결과와 함께 ‘나의 꿈’을 저장해요 (교사/학생 열람 가능)</div>
+          <input id="dreamName" placeholder="이름(선택)" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid #eee" />
+          <textarea id="dreamText" rows="4" placeholder="나의 꿈/진로" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid #eee"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button id="saveDream" class="btn">등록</button>
+            <button id="loadDreams" class="btn muted">새로고침</button>
+          </div>
+        </div>
+
+        <div class="card log">
+          <strong>서버 상태 / 로컬 저장</strong>
+          <div id="status" class="small" style="margin-top:8px">Firebase: 미설정 (선택)</div>
+        </div>
+
+        <div class="card log">
+          <strong>관리자 도구</strong>
+          <div style="margin-top:8px">
+            <button id="exportLocal" class="btn muted">로컬결과 내보내기</button>
+            <button id="clearLocal" class="btn muted">로컬 기록 전체 삭제</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
 </div>
-<div class="controls">
-localStorage.removeItem('lifeGameDreams
+
+<!-- Firebase (optional) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
+/*
+  설정: 아래 FIREBASE_CONFIG 에 본인 Firebase 콘솔의 설정을 넣으세요.
+  예:
+  const FIREBASE_CONFIG = {
+    apiKey: "API_KEY",
+    authDomain: "PROJECT_ID.firebaseapp.com",
+    projectId: "PROJECT_ID",
+    storageBucket: "PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+*/
+const FIREBASE_CONFIG = null; // <-- 여기에 객체를 넣으면 Firestore로 저장합니다.
+
+let db = null;
+if (FIREBASE_CONFIG) {
+  try {
+    const app = firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+    document.getElementById('status').textContent = 'Firebase: 연결 성공';
+  } catch(e) {
+    console.error('Firebase init error', e);
+    document.getElementById('status').textContent = 'Firebase: 연결 실패 (콘솔 확인)';
+  }
+} else {
+  document.getElementById('status').textContent = 'Firebase: 미설정 (옵션). localStorage로 저장됩니다.';
+}
+</script>
+
+<script>
+(async function(){
+  // 기본 상태
+  const MAX_STEPS = 8;
+  const defaultStats = {K:40,S:40,R:40,T:40};
+  let state = { step:0, stats:{...defaultStats}, history:[], cards:[], endings:[] };
+
+  // UI 레퍼런스
+  const barK = document.getElementById('barK'), barS = document.getElementById('barS'),
+        barR = document.getElementById('barR'), barT = document.getElementById('barT');
+  const valK = document.getElementById('valK'), valS = document.getElementById('valS'),
+        valR = document.getElementById('valR'), valT = document.getElementById('valT');
+  const cardTitle = document.getElementById('cardTitle'), cardText = document.getElementById('cardText'), choicesBox = document.getElementById('choices');
+  const logBox = document.getElementById('log'), endingBox = document.getElementById('endingBox');
+
+  // JSON 불러오기 (cards.json + endings.json)
+  async function loadJSON(path, fallback) {
+    try {
+      const r = await fetch(path);
+      if(!r.ok) throw new Error('fetch fail');
+      return await r.json();
+    } catch(e) {
+      console.warn('fetch failed', path, e);
+      return fallback;
+    }
+  }
+
+  const fallbackCards = [
+    {"id":1,"title":"중학교 입학!","text":"첫날, 옆자리 친구에게 먼저 말을 걸까?","choices":[{"label":"용기내서 먼저 인사한다","delta":{"R":6,"S":1}},{"label":"조용히 교실을 둘러본다","delta":{"K":3}}]}
+  ];
+  const fallbackEndings = [{"id":"balanced-1","title":"균형형 직업인","desc":"균형 잡힌 삶","tags":["균형"],"preferred":"ANY","threshold":0}];
+
+  state.cards = await loadJSON('cards.json', fallbackCards);
+  state.endings = await loadJSON('endings.json', fallbackEndings);
+
+  function clamp(v){ return Math.max(0, Math.min(100, v)); }
+
+  function renderStats(){
+    const s = state.stats;
+    barK.style.width = s.K + "%"; barS.style.width = s.S + "%";
+    barR.style.width = s.R + "%"; barT.style.width = s.T + "%";
+    valK.textContent = s.K; valS.textContent = s.S; valR.textContent = s.R; valT.textContent = s.T;
+  }
+
+  function logPush(text){
+    state.history.unshift({text, at: new Date().toISOString()});
+    const div = document.createElement('div'); div.textContent = '• ' + text;
+    logBox.prepend(div);
+  }
+
+  function applyDelta(delta){
+    for(const k in delta){
+      if(state.stats.hasOwnProperty(k)){
+        state.stats[k] = clamp(state.stats[k] + delta[k]);
+      }
+    }
+  }
+
+  function showCard(index){
+    const card = state.cards[index % state.cards.length];
+    cardTitle.textContent = card.title;
+    cardText.textContent = card.text;
+    choicesBox.innerHTML = '';
+    card.choices.forEach((c,i)=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.textContent = c.label;
+      btn.onclick = async () => {
+        applyDelta(c.delta);
+        renderStats();
+        logPush(`[${card.title}] → ${c.label}`);
+        state.step++;
+        if(state.step >= MAX_STEPS) {
+          await finish();
+        } else {
+          showCard(state.step);
+        }
+      };
+      choicesBox.appendChild(btn);
+    });
+  }
+
+  async function finish(){
+    // 엔딩 선택 로직: 우선 최대 능력치를 기준으로 후보들 필터 → 가장 높은 threshold 만족 엔딩 선택 → 없으면 ANY 계열 선택
+    const s = state.stats;
+    const maxVal = Math.max(s.K, s.S, s.R, s.T);
+    const preferred = (s.K === maxVal ? 'K' : s.S === maxVal ? 'S' : s.R === maxVal ? 'R' : 'T');
+
+    // 후보 필터
+    let candidates = state.endings.filter(e => (e.preferred === 'ANY' || e.preferred === preferred) && (e.threshold <= maxVal));
+    if(candidates.length === 0){
+      // 좀 더 관대하게 threshold 무시
+      candidates = state.endings.filter(e => (e.preferred === 'ANY' || e.preferred === preferred));
+    }
+    // 랜덤성 + 간단한 우선순위: threshold 높은 것 우선
+    candidates.sort((a,b)=> (b.threshold||0) - (a.threshold||0));
+    const chosen = candidates.length ? candidates[0] : {title:'미정',desc:'다양한 가능성이 있습니다.'};
+
+    // 렌더
+    endingBox.style.display = 'block';
+    endingBox.innerHTML = `<div style="font-size:18px"><strong>${chosen.title}</strong></div>
+                           <div style="margin-top:6px">${chosen.desc}</div>
+                           <div style="margin-top:8px"><small class="small">핵심 수치: ${preferred} (${maxVal})</small></div>`;
+
+    // 저장
+    await saveRecordToServer();
+  }
+
+  // 로컬 + 서버 저장 함수
+  function saveLocalRecord(){
+    const arr = JSON.parse(localStorage.getItem('lifeGameRecords')||'[]');
+    arr.push({date:new Date().toISOString(), stats: state.stats, history: state.history});
+    localStorage.setItem('lifeGameRecords', JSON.stringify(arr));
+  }
+
+  async function saveRecordToServer(){
+    saveLocalRecord();
+    if(window.db){
+      try {
+        await db.collection('lifeGameRecords').add({createdAt: new Date(), stats: state.stats, history: state.history});
+        console.log('saved to Firestore');
+      } catch(e){ console.warn('Firestore save failed', e); }
+    }
+  }
+
+  // 꿈 저장
+  document.getElementById('saveDream').onclick = async ()=>{
+    const name = document.getElementById('dreamName').value.trim();
+    const text = document.getElementById('dreamText').value.trim();
+    if(!text){ alert('내용을 입력하세요'); return; }
+    const rec = {name: name || '익명', text, createdAt: new Date().toISOString()};
+    // local
+    const arr = JSON.parse(localStorage.getItem('lifeGameDreams')||'[]'); arr.push(rec); localStorage.setItem('lifeGameDreams', JSON.stringify(arr));
+    alert('저장됨 (로컬). Firebase 설정 시 서버에 저장됩니다.');
+    // server
+    if(window.db){
+      try {
+        await db.collection('lifeGameDreams').add({name: rec.name, text: rec.text, createdAt: new Date()});
+        alert('서버에도 저장되었습니다.');
+      } catch(e){ console.warn('dream save fail', e); }
+    }
+  };
+
+  document.getElementById('loadDreams').onclick = ()=>{
+    const arr = JSON.parse(localStorage.getItem('lifeGameDreams')||'[]');
+    if(arr.length === 0) { alert('저장된 발표가 없습니다 (로컬).'); return; }
+    let html = '';
+    arr.slice().reverse().forEach(a => { html += `<div style="margin-bottom:6px"><strong>${a.name}</strong><div style="font-size:13px">${a.text}</div><div class="small">${new Date(a.createdAt).toLocaleString()}</div></div>`; });
+    alert('로컬 발표 목록:\n\n' + arr.map(a => `${a.name}: ${a.text}`).join('\n'));
+  };
+
+  // 관리자 버튼들
+  document.getElementById('exportLocal').onclick = ()=>{
+    const arr = JSON.parse(localStorage.getItem('lifeGameRecords')||'[]');
+    const blob = new Blob([JSON.stringify(arr,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'lifeGameRecords.json'; a.click();
+    URL.revokeObjectURL(url);
+  };
+  document.getElementById('clearLocal').onclick = ()=>{
+    if(confirm('로컬 기록을 모두 삭제할까요?')){ localStorage.removeItem('lifeGameRecords'); localStorage.removeItem('lifeGameDreams'); alert('삭제됨'); }
+  };
+
+  // next/reset 버튼
+  document.getElementById('nextBtn').onclick = ()=> {
+    if(state.step >= MAX_STEPS){ alert('이미 모든 카드를 완료했습니다. 처음부터 시작하세요.'); return; }
+    showCard(state.step);
+  };
+  document.getElementById('resetBtn').onclick = ()=> {
+    if(!confirm('처음부터 다시 시작할까요? 현재 진행은 저장됩니다.')) return;
+    state.step = 0; state.stats = {...defaultStats}; state.history = []; logBox.innerHTML = ''; endingBox.style.display='none'; renderStats();
+  };
+
+  // 초기 렌더
+  renderStats();
+  // 프리뷰: 자동 첫 카드 로딩하지 않음 — '다음 카드' 클릭으로 시작
+})();
+</script>
+</body>
+</html>
