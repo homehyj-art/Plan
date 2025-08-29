@@ -2,59 +2,350 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>📜 Ancient Calling — 다중지능 탐험</title>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>📜 다중지능 탐험: 고대의 부름</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum:wght@400;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
-:root { --brown-text:#4a3a2a; --gold:#c89a4b; }
-*{box-sizing:border-box}
-body{margin:0;font-family:'Gowun Dodum',serif;background:#5d4037 url('https://images.unsplash.com/photo-1520256862855-398228c41684?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat fixed;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;position:relative;overflow:hidden}
-body:before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.45)}
-.wrap{position:relative;z-index:1;width:100%;max-width:1200px}
-.header{text-align:center;margin-bottom:16px}
-.title{font-family:'Cinzel',serif;font-size:clamp(2rem,5vw,3.25rem);color:var(--gold);text-shadow:2px 2px 8px rgba(0,0,0,.8)}
-.subtitle{opacity:.95;font-size:clamp(1rem,2vw,1.1rem)}
-.layout{display:flex;gap:16px}
-.left{width:360px}
-.right{flex:1}
-.card{background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border-radius:16px;padding:16px;border:1px solid rgba(255,215,102,.15);box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.char-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.char{padding:10px;border-radius:12px;background:rgba(0,0,0,.35);text-align:center;cursor:pointer;border:1px solid transparent;transition:.2s}
-.char:hover{transform:translateY(-3px);border-color:var(--gold)}
-.char.selected{background:rgba(200,154,75,.28);border-color:var(--gold);transform:translateY(-3px)}
-label{display:block;color:var(--gold);font-weight:700;margin:6px 0}
-input[type=text]{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,215,102,.2);background:rgba(0,0,0,.3);color:#fff;margin-bottom:8px}
-.btn{display:inline-flex;gap:8px;align-items:center;justify-content:center;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;background:linear-gradient(145deg,#b38645,#835e2c);color:#fff;font-weight:700;width:100%;font-size:1rem;box-shadow:0 5px 15px rgba(0,0,0,.4);transition:.2s}
-.btn:hover{transform:translateY(-1px)}
-.btn:disabled{background:#555;cursor:not-allowed;box-shadow:none}
-#game-card{background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;color:var(--brown-text);padding:40px;min-height:560px;position:relative}
-.quest-header{text-align:center;margin-bottom:8px}
-.quest-header h3{font-family:'Cinzel',serif;color:#5b3e22;margin:0;font-size:clamp(1.1rem,2.2vw,1.4rem)}
-.quest-text{font-size:clamp(1rem,2.1vw,1.2rem);line-height:1.9;min-height:116px}
-.options{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
-.option{padding:12px;border-radius:12px;background:rgba(189,168,133,.35);cursor:pointer;border:1px solid rgba(112,83,48,.3);transition:.15s;text-align:center;user-select:none}
-.option:hover{transform:scale(1.02);background:rgba(189,168,133,.5)}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;color:#fff}
-.stat{background:rgba(0,0,0,.35);padding:8px;border-radius:10px;text-align:center}
-.bar{height:10px;background:rgba(255,255,255,.12);border-radius:6px;margin-top:8px;overflow:hidden}
-.bar-inner{height:100%;background:linear-gradient(90deg,var(--gold),#e6b873);width:0%}
-.result-content{text-align:center}
-@media(max-width:900px){.layout{flex-direction:column}.left{width:100%}#game-card{padding:28px}}
-.spinner{display:none;border:4px solid rgba(255,255,255,.3);border-top:4px solid var(--gold);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.small{font-size:.9rem;opacity:.95}
+/* 변수 및 기본 스타일 */
+:root {
+    --brown-text: #4a3a2a;
+    --gold: #c89a4b;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    /* 텍스트 가독성을 위한 새로운 변수 */
+    --scroll-text: #3c2a1a;
+    --main-text: #fff;
+    --highlight-text: #fddb83;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Gowun Dodum', serif;
+    background-color: #5d4037; /* 이미지 로딩 전 배경색 */
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/papyrus-1478204_1280.jpg?alt=media&token=26214300-84c4-42ea-a4b5-65476d0d216a');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    color: var(--main-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: background-image 1s ease-in-out;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    transition: background-color 2s ease-in-out;
+}
+
+.wrap {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--gold);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.subtitle {
+    font-family: 'Gowun Dodum';
+    opacity: 0.9;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--main-text);
+}
+
+/* 레이아웃 */
+.layout {
+    display: flex;
+    gap: 20px;
+}
+
+.left, .right {
+    transition: all 0.5s ease-out;
+}
+
+.left {
+    width: 360px;
+    animation: fadeInLeft 1s ease-out;
+}
+
+.right {
+    flex: 1;
+    animation: fadeInRight 1s ease-out;
+}
+
+/* 카드 UI */
+.card {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 215, 102, 0.15);
+}
+
+/* 캐릭터 선택 */
+.char-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.char {
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.char:hover {
+    transform: translateY(-5px);
+    background: rgba(0, 0, 0, 0.5);
+    border-color: var(--gold);
+}
+
+.char.selected {
+    background: rgba(200, 154, 75, 0.3);
+    border-color: var(--gold);
+    transform: translateY(-5px);
+}
+
+/* 폼 요소 */
+label {
+    display: block;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 1.1rem; /* 폰트 사이즈 조정 */
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px; /* 패딩 조정 */
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 102, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--main-text);
+    margin-bottom: 10px;
+    font-family: 'Gowun Dodum', serif;
+    font-size: 1.1rem; /* 폰트 사이즈 조정 */
+}
+
+.btn {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(145deg, #b38645, #835e2c);
+    color: var(--main-text);
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    font-family: 'Gowun Dodum', serif;
+    font-size: 1.1rem; /* 폰트 사이즈 조정 */
+    transition: all 0.3s ease;
+}
+
+.btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* 게임 및 퀘스트 영역 */
+#game-card {
+    background: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/ancient_scroll.png?alt=media&token=f0310243-7f3e-4b72-b7e6-23f2113222e4') no-repeat center center;
+    background-size: 100% 100%;
+    color: var(--scroll-text); /* 스크롤 배경에 맞는 글씨 색상 */
+    padding: 50px 60px;
+    min-height: 550px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.quest-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.quest-header h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--scroll-text);
+    margin: 0;
+    font-size: clamp(1.4rem, 2.8vw, 1.8rem); /* 폰트 사이즈 조정 */
+}
+
+.quest-text {
+    font-size: clamp(1.1rem, 2.4vw, 1.4rem); /* 폰트 사이즈 조정 */
+    line-height: 2;
+    min-height: 100px;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.option {
+    padding: 14px; /* 패딩 조정 */
+    border-radius: 10px;
+    background: rgba(189, 168, 133, 0.3);
+    cursor: pointer;
+    border: 1px solid rgba(112, 83, 48, 0.3);
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: clamp(1rem, 2.2vw, 1.2rem); /* 폰트 사이즈 조정 */
+    word-break: keep-all;
+    user-select: none;
+}
+
+.option:hover {
+    transform: scale(1.03);
+    background: rgba(189, 168, 133, 0.5);
+    border-color: var(--brown-text);
+}
+
+.option .label {
+    font-weight: bold;
+}
+
+/* 능력치 통계 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+    color: var(--main-text);
+}
+
+.stat {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), #e6b873);
+    width: 0%;
+    transition: width 0.6s ease-in-out;
+}
+
+/* 결과 영역 */
+.result-content {
+    color: var(--scroll-text); /* 스크롤 배경에 맞는 글씨 색상 */
+    text-align: center;
+}
+
+.result-content h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--scroll-text);
+}
+
+/* 애니메이션 */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: none;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--gold);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+/* 반응형 디자인 */
+@media(max-width:900px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .left {
+        width: 100%;
+    }
+
+    #game-card {
+        padding: 30px;
+    }
+}
 </style>
 </head>
 <body>
-<!-- 안정적인 공개 CDN 자원 사용: Mixkit(음향), Unsplash(이미지) -->
-<audio id="bgm" src="https://assets.mixkit.co/music/preview/mixkit-epic-and-emotional-ambience-943.mp3" loop></audio>
+
+<!-- 오디오 파일은 Mixkit에서 가져왔습니다 -->
+<audio id="bgm" src="https://assets.mixkit.co/sfx/preview/mixkit-calm-music-2200.mp3" loop></audio>
 <audio id="sfx-turn" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1110.mp3"></audio>
-<audio id="sfx-magic" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-chime-2948.mp3"></audio>
 
 <div class="wrap">
   <div class="header">
     <div class="title">Ancient Calling</div>
-    <div class="subtitle">중1 모험가를 위한 다중지능 탐험 RPG — 모험으로 자신의 강점을 발견하세요</div>
+    <div class="subtitle">나의 다중지능을 찾아 떠나는 모험</div>
   </div>
 
   <div class="layout">
@@ -66,17 +357,16 @@ input[type=text]{width:100%;padding:10px;border-radius:10px;border:1px solid rgb
         <input id="input-class" type="text" placeholder="예: 1학년 3반" />
         <label>여정을 함께할 동료</label>
         <div id="char-row" class="char-row">
-          <div class="char" data-id="warrior"><div class="emoji">⚔️</div><div class="name">전사</div></div>
-          <div class="char" data-id="wizard"><div class="emoji">🔮</div><div class="name">마법사</div></div>
-          <div class="char" data-id="archer"><div class="emoji">🏹</div><div class="name">궁수</div></div>
-          <div class="char" data-id="healer"><div class="emoji">🌿</div><div class="name">치유사</div></div>
+          <div class="char" data-id="prince"><div class="emoji">🤴</div><div class="name">용감한 왕자</div></div>
+          <div class="char" data-id="princess"><div class="emoji">👸</div><div class="name">지혜로운 공주</div></div>
+          <div class="char" data-id="warrior"><div class="emoji">⚔️</div><div class="name">강인한 전사</div></div>
+          <div class="char" data-id="wizard"><div class="emoji">🔮</div><div class="name">신비한 마법사</div></div>
         </div>
-        <div style="margin-top:16px">
+        <div style="margin-top:20px;">
           <button id="btn-start" class="btn" disabled>
             <span id="start-btn-text">▶ 모험 시작하기</span>
             <div id="start-btn-spinner" class="spinner"></div>
           </button>
-          <p class="small" style="margin:10px 0 0">각 선택지는 8가지 다중지능(언어, 논리, 공간, 신체, 음악, 대인, 자기이해, 자연친화) 중 하나와 연결되어 있습니다.</p>
         </div>
       </div>
 
@@ -87,20 +377,24 @@ input[type=text]{width:100%;padding:10px;border-radius:10px;border:1px solid rgb
 
     <div class="right">
       <div id="game-card" class="card">
-        <div id="pre-game" style="text-align:center; padding-top:60px">
-          <h3 style="font-family:'Cinzel',serif; color:#5b3e22">📜 모험의 서막</h3>
-          <p class="small" style="color:#2e1f13;background:rgba(255,255,255,.85);display:inline-block;padding:10px 12px;border-radius:10px">이름과 반을 입력하고 동료를 선택한 뒤 시작하세요. 당신의 선택이 강점 지능을 밝힐 단서가 됩니다.</p>
+        <div id="pre-game">
+          <div style="text-align:center; padding-top: 80px;">
+            <h3 style="font-family:'Cinzel', serif; color: var(--scroll-text);">📜 모험의 서막</h3>
+            <p style="font-size: 1.2rem; line-height: 1.8;">이름과 소속을 적고, 여정을 함께할 동료를 선택하세요.<br>당신의 선택이 모여 미래의 길을 밝혀줄 것입니다.<br>이제, 고대의 부름에 응답할 시간입니다.</p>
+          </div>
         </div>
 
         <div id="game-area" style="display:none">
-          <div class="quest-header"><h3 id="quest-title"></h3></div>
+          <div class="quest-header">
+            <h3 id="quest-title"></h3>
+          </div>
           <div id="quest-text" class="quest-text"></div>
           <div id="options" class="options"></div>
         </div>
         
-        <div id="result-area" style="display:none; padding-top: 40px;">
+        <div id="result-area" style="display:none; padding-top: 50px;">
           <div class="result-content" id="result-content"></div>
-          <button id="btn-restart" class="btn" style="max-width:300px; margin: 18px auto 0;">🔄 새로운 모험 시작하기</button>
+          <button id="btn-restart" class="btn" style="max-width:300px; margin: 20px auto 0;">🔄 새로운 모험 시작하기</button>
         </div>
       </div>
     </div>
@@ -108,254 +402,310 @@ input[type=text]{width:100%;padding:10px;border-radius:10px;border:1px solid rgb
 </div>
 
 <script>
-// ===== 사운드 & 헬퍼 =====
-const S = { bgm: document.getElementById('bgm'), click: document.getElementById('sfx-turn'), magic: document.getElementById('sfx-magic') };
-S.bgm.volume = 0.18;
+// 전역 변수 및 상수 설정
+const sounds = {
+    bgm: document.getElementById('bgm'),
+    turn: document.getElementById('sfx-turn'),
+};
+sounds.bgm.volume = 0.2; // BGM 볼륨 조절
+
+// HTML 요소 선택을 위한 헬퍼 함수
 const el = id => document.getElementById(id);
 
-// ===== 점수 초기화 =====
+// 게임 데이터: 기본 점수 및 플레이어 상태
 const baseScores = {linguistic:50,logical:50,spatial:50,bodily:50,musical:50,interpersonal:50,intrapersonal:50,naturalist:50};
 let scores = {};
 let player = {name:'',clazz:'',charId:'',questIndex:0};
-const NAMES = {linguistic:'언어 지능',logical:'논리-수학 지능',spatial:'공간 지능',bodily:'신체-운동 지능',musical:'음악 지능',interpersonal:'대인관계 지능',intrapersonal:'자기이해 지능',naturalist:'자연친화 지능'};
+let loading = false;
 
-// ===== 서사 텍스트 (20단계) - 문장 톤을 더 자연스럽게 다듬음 =====
-const CHAPTERS = {
+/* ====== 퀘스트 데이터 (서사 강화 버전) ====== */
+function q(title, text, a, b, c, d){ return { title, text, options:[a,b,c,d] }; }
+function opt(text, effects){ return {t:text, e:effects}; }
+
+const quests = {
+  prince: [
+    q("왕의 서신", "먼지 쌓인 서고에서 아버지의 흔적이 담긴 낡은 편지를 발견했다. '진정한 왕의 자격은 왕관이 아닌, 백성을 비추는 빛에 있나니. 그 빛을 따라가거라.' 이 수수께끼 같은 유언의 실마리는 어디서부터 찾아야 할까?",
+      opt('📜 편지에 쓰인 단어들의 상징적 의미를 파고들어 분석한다.',{linguistic:14}),
+      opt('🗺️ 편지에 남은 희미한 지도의 흔적을 따라 직접 현장으로 향한다.',{bodily:12,spatial:6}),
+      opt('👥 편지를 마지막으로 만졌을 법한 왕궁의 오랜 신하를 찾아가 대화한다.',{interpersonal:12,logical:6}),
+      opt('🌿 편지지에서 희미하게 나는 풀 향기를 단서로, 특정 지역의 식생을 조사한다.',{naturalist:8,spatial:6})
+    ),
+    q("불안한 소문", "백성들 사이에 퍼지는 불안한 소문이 왕국의 평화를 위협하고 있다. 소문의 근원을 파악하고 해결해야 한다. 어떻게 할 것인가?",
+      opt('🗣️ 사람들의 이야기를 경청하며 소문의 시작점을 파악한다.', {interpersonal:14, intrapersonal: 6}),
+      opt('🔢 소문의 확산 속도와 패턴을 분석하여 논리적으로 대응한다.', {logical:12, linguistic: 6}),
+      opt('👣 소문의 발원지로 알려진 장소를 직접 찾아가 현장을 조사한다.', {bodily:10, spatial: 8}),
+      opt('🎶 소문을 잠재울 평화의 노래를 작곡하여 백성들에게 들려준다.', {musical:14})
+    ),
+    q("고대 유물", "수수께끼의 힘을 가진 고대 유물이 숨겨진 동굴을 발견했다. 유물을 얻으려면 복잡한 수수께끼를 풀어야 한다. 어떤 방법으로 접근할 것인가?",
+      opt('📖 유물에 새겨진 고대 언어를 번역하여 해법을 찾는다.', {linguistic:12, logical: 8}),
+      opt('🧩 유물의 복잡한 기계 장치와 패턴을 분석하여 작동 원리를 파악한다.', {logical:14, spatial: 8}),
+      opt('✊ 동굴의 지형을 탐색하고 신체적인 능력을 활용해 유물을 확보한다.', {bodily:12, spatial: 6}),
+      opt('🧘‍♀️ 유물의 진동과 기운을 느끼며 마음의 눈으로 봉인을 해제한다.', {intrapersonal:14})
+    ),
+    q("어둠의 그림자", "왕국을 덮친 어둠의 그림자가 숲을 병들게 하고 있다. 숲의 생명력을 되찾아줘야 한다. 어떻게 할 것인가?",
+      opt('🌳 숲속의 식물과 동물들과 교감하며 병의 원인을 파악한다.', {naturalist:14, interpersonal: 8}),
+      opt('🪄 그림자의 마법적 패턴을 분석해 봉인을 풀어낼 주문을 찾는다.', {logical:12, musical: 6}),
+      opt('⚔️ 그림자 자체를 물리적인 힘으로 제압하여 숲을 구한다.', {bodily:14}),
+      opt('✍️ 숲의 변화를 기록하며 해결책을 찾아낸다.', {linguistic:10, naturalist: 6})
+    ),
+    q("길 잃은 여행자", "길을 잃고 헤매는 여행자를 만났다. 그는 당신에게 신비한 수수께끼를 건네며 길을 알려달라고 한다. 어떻게 할 것인가?",
+      opt('🗣️ 여행자의 말을 경청하고, 그의 심리 상태를 이해하며 조언한다.', {interpersonal:14, linguistic: 6}),
+      opt('🧭 여행자의 목적지까지의 지도를 직접 그려주며 길을 안내한다.', {spatial:12, interpersonal: 6}),
+      opt('🤔 수수께끼를 논리적으로 분석하여 해답을 찾아낸다.', {logical:12}),
+      opt('🤝 함께 길을 떠나며 몸짓과 행동으로 소통한다.', {bodily:10, interpersonal: 8})
+    ),
+    q("신비한 연못", "오래된 연못가에서 아름다운 멜로디가 들려온다. 멜로디의 정체를 파악하고, 그에 담긴 힘을 깨우려 한다.",
+      opt('🎵 멜로디의 리듬과 화음을 분석하여 악보로 옮겨 적는다.', {musical:16, logical: 6}),
+      opt('🌊 연못 주변의 자연환경을 조사하여 멜로디의 근원을 찾는다.', {naturalist:12, spatial: 6}),
+      opt('🧘‍♀️ 멜로디에 귀 기울이며 내면의 감정을 탐색하고 그 의미를 이해한다.', {intrapersonal:12, musical: 8}),
+      opt('🎤 연못의 멜로디에 화답하는 노래를 불러 연못의 힘을 깨운다.', {musical:14, interpersonal: 8})
+    )
+  ],
+  princess: [
+    q("비밀의 지도", "어릴 적, 할머니께서 '세상을 밝힐 영원의 빛'이 숨겨진 곳이라며 낡은 지도를 주셨다. 이제 그 의미를 찾아 떠날 시간. 지도의 첫 번째 표식은 '고요의 정원'을 가리키고 있다. 어떻게 그곳을 찾아갈까?",
+      opt('📜 지도의 고대 상형문자를 해독하여 정확한 위치를 파악한다.',{linguistic:14}),
+      opt('🧭 지도의 지형과 실제 산맥의 흐름을 대조하며 길을 찾는다.',{spatial:14}),
+      opt('🗣️ '고요의 정원'에 대한 전설을 아는 마을 현자를 찾아가 조언을 구한다.',{interpersonal:12}),
+      opt('🌸 지도에 그려진 특별한 꽃을 찾아, 그 꽃이 피는 곳으로 향한다.',{naturalist:12})
+    ),
+    q("마음의 거울", "오래된 마법의 거울이 당신의 가장 깊은 불안을 비추고 있다. 이 거울을 통해 내면의 힘을 깨우려면 어떻게 해야 할까?",
+      opt('🤔 거울에 비친 불안의 원인을 논리적으로 분석한다.', {logical:12, intrapersonal: 8}),
+      opt('✍️ 거울을 보며 떠오르는 감정과 생각을 글로 기록한다.', {linguistic:12, intrapersonal: 8}),
+      opt('🧘‍♀️ 조용히 눈을 감고 거울이 보내는 감정의 파동을 느낀다.', {intrapersonal:14}),
+      opt('👣 거울에서 한 발짝 떨어져 내 모습과 거리를 두는 연습을 한다.', {bodily:10, intrapersonal: 8})
+    ),
+    q("궁정의 음모", "궁정 내에서 당신을 해치려는 음모가 꾸며지고 있다. 이 위기를 어떻게 헤쳐 나갈 것인가?",
+      opt('🔍 정보를 수집하고, 증거를 논리적으로 조합하여 음모의 주동자를 밝혀낸다.', {logical:14, linguistic: 6}),
+      opt('👥 주변 사람들의 심리를 파악하고, 신뢰할 수 있는 동료를 모은다.', {interpersonal:16}),
+      opt('🏃‍♀️ 직접 몸을 숨겨 음모를 피하고, 반격의 기회를 노린다.', {bodily:12, spatial: 6}),
+      opt('🤫 음모가 드러나기 전에 먼저 그들의 약점을 찾아내어 설득한다.', {interpersonal:14, linguistic: 8})
+    ),
+    q("미로의 숲", "마법에 걸린 숲에 갇혔다. 숲은 끊임없이 형태를 바꾸는 미로가 되어 길을 찾기 어렵다.",
+      opt('🎼 숲에서 들려오는 신비한 새소리의 음계를 분석하여 길을 찾는다.', {musical:14, logical: 6}),
+      opt('� 숲의 식물들과 교감하여 길을 물어본다.', {naturalist:14}),
+      opt('🌌 숲의 패턴을 머릿속에 시각화하며 길을 찾는다.', {spatial:16}),
+      opt('🗺️ 지형을 파악하고 돌이나 나뭇가지로 이정표를 만들어 길을 기록한다.', {spatial:12, logical: 8})
+    ),
+    q("잊혀진 전설", "오래된 전설이 담긴 책을 발견했다. 이 책은 잊혀진 마법에 대한 단서를 담고 있지만, 암호로 잠겨 있다. 이 암호를 어떻게 풀 것인가?",
+      opt('📜 암호문의 문장 구조와 문법을 분석하여 의미를 유추한다.', {linguistic:14, logical: 8}),
+      opt('🧘‍♀️ 암호에 집중하여 내면의 직관으로 해답을 찾아낸다.', {intrapersonal:14}),
+      opt('👥 마을의 나이 많은 학자를 찾아가 함께 암호를 해독한다.', {interpersonal:12, linguistic: 6}),
+      opt('🎶 책의 리듬과 멜로디를 찾아내어 암호와 연결시킨다.', {musical:14, logical: 6})
+    ),
+    q("위기의 정원", "마법의 정원이 시들어가고 있다. 이 정원을 되살리려면 정원의 심장부에 있는 '생명의 씨앗'을 찾아야 한다.",
+      opt('🌱 정원 식물들의 생장 패턴을 관찰하고 병든 원인을 분석한다.', {naturalist:14, logical: 8}),
+      opt('👣 정원의 복잡한 지형을 탐험하며 씨앗이 숨겨진 곳을 찾아낸다.', {spatial:14, bodily: 8}),
+      opt('🗣️ 정원 관리인에게 정원의 역사와 특징에 대해 물어본다.', {interpersonal:12, linguistic: 8}),
+      opt('💧 정원의 흙과 물의 미세한 성분을 분석하여 최적의 환경을 만든다.', {logical:14, naturalist: 8})
+    )
+  ],
   warrior: [
-    ['숲의 경계','안개가 감도는 숲 가장자리에서 첫 발을 내디딘다. 숨결이 길을 알려줄 듯 고요하다.'],
-    ['불씨와 바람','마을의 화롯불이 잦아들고, 이웃들의 불안이 밤공기에 실려온다.'],
-    ['초원의 외침','멀리서 누군가 도움을 청하는 소리가 들린다. 발걸음을 옮겨야 할 시간이다.'],
-    ['무너진 다리','골짜기의 오래된 다리가 흔들린다. 안전하게 건널 방법을 생각해야 한다.'],
-    ['돌의 기억','낡은 석상 앞에서 과거의 이야기가 귓가에 속삭여진다.'],
-    ['용의 숨결','동굴 속 따뜻한 숨소리가 전해온다. 용의 심장에 닿을 준비를 한다.'],
-    ['성벽의 그림자','성문 앞, 긴장감이 도는 행렬이 모여 있다. 진실을 가려낼 시간이 왔다.'],
-    ['전우의 맹세','동료들과의 약속이 흔들린다. 서로를 지키려면 무엇이 필요할까.'],
-    ['모래의 시계','황무지의 모래가 빠르게 흘러간다. 시간은 너의 편이 아니다.'],
-    ['밤의 추적','달빛 아래 남은 발자국을 따라 진실을 좇는다.'],
-    ['가면의 시장','시장 속 소문과 속임수들 사이에서 단서를 찾아야 한다.'],
-    ['강철의 시험','훈련장에서 오래된 의식을 마주한다. 신체와 정신 모두 시험받는다.'],
-    ['숲의 심장','땅속 깊은 곳에서 생명의 맥박이 느껴진다. 귀 기울여 보자.'],
-    ['메아리의 협곡','절벽 사이로 메아리가 반사되어 진실을 증폭시킨다.'],
-    ['빛의 계단','구름 위로 뻗은 계단 끝에 희미한 빛이 보인다.'],
-    ['고요한 전야','결전을 앞둔 밤, 동료들과 조용히 마음을 나눈다.'],
-    ['격돌','어둠의 장군과 정면으로 마주한다. 모든 선택이 결과를 만든다.'],
-    ['흔들림 없는 발걸음','전투가 끝난 후에도 작은 선택이 미래를 이끈다.'],
-    ['왕의 인장','왕국을 위한 표식을 찾아 옳은 결정을 증명해야 한다.'],
-    ['새벽의 문','해가 떠오르고, 새로운 시작의 문이 열린다.']
+    q("사냥꾼의 시험", "고대 전사의 묘지에 도착했다. 이곳을 통과하려면 사냥꾼의 시험을 통과해야 한다. 시험의 내용은 다음과 같다: '눈에 보이지 않는 짐승을 잡아라.' 어떻게 할 것인가?",
+      opt('👣 발자국과 흔적을 추적하며 짐승의 이동 경로를 예측한다.', {bodily:14, logical: 6}),
+      opt('🧘‍♀️ 고요히 앉아 짐승의 기운을 느끼며 위치를 파악한다.', {intrapersonal:14, spatial: 6}),
+      opt('🎶 특정한 리듬의 북소리를 내어 짐승을 유인한다.', {musical:12, logical: 8}),
+      opt('🌳 주변의 나뭇가지와 돌을 이용해 함정을 만들어 짐승을 가둔다.', {naturalist:12, spatial: 8})
+    ),
+    q("무너진 성벽", "마을을 지키던 성벽이 거대한 괴물에 의해 무너졌다. 무너진 성벽을 재건하고, 괴물을 막아야 한다. 어떻게 할 것인가?",
+      opt('💪 괴물의 공격 패턴을 파악하고 신체적인 능력을 활용해 괴물을 무찌른다.', {bodily:16}),
+      opt('🗺️ 성벽의 설계도를 분석하고, 가장 효율적인 재건 계획을 세운다.', {spatial:14, logical: 8}),
+      opt('🗣️ 무너진 성벽의 잔해 속에서 새로운 무기를 만들어 낸다.', {naturalist:10, bodily: 8}),
+      opt('🤝 마을 사람들을 설득하고, 각자의 재능을 활용하여 함께 성벽을 재건한다.', {interpersonal:14, logical: 6})
+    ),
+    q("전쟁의 노래", "전쟁의 긴장감으로 병사들의 사기가 바닥으로 떨어졌다. 병사들의 사기를 북돋아 승리를 이끌어내야 한다.",
+      opt('🎶 승리의 노래를 작곡하여 병사들에게 들려준다.', {musical:16, interpersonal: 8}),
+      opt('🗣️ 병사들에게 격려와 용기를 주는 연설을 한다.', {linguistic:14, interpersonal: 8}),
+      opt('💪 직접 선봉에 서서 병사들에게 용맹함을 보여준다.', {bodily:14}),
+      opt('🧘‍♀️ 내면의 고통과 불안을 다스리며 병사들의 마음을 이해한다.', {intrapersonal:14, interpersonal: 8})
+    ),
+    q("고대 무덤", "전설의 무기가 숨겨진 고대 무덤에 들어섰다. 무덤은 정교한 함정으로 가득 차 있다. 무기를 얻으려면 어떻게 해야 할까?",
+      opt('👣 함정의 패턴을 분석하고, 뛰어난 신체 능력으로 함정을 피한다.', {bodily:14, logical: 8}),
+      opt('🗺️ 무덤의 지형을 머릿속에 시각화하여 가장 안전한 경로를 찾는다.', {spatial:16}),
+      opt('💡 무덤의 벽에 새겨진 문구를 해독하여 함정의 비밀을 알아낸다.', {linguistic:12, logical: 8}),
+      opt('🧘‍♀️ 무덤의 기운을 느끼며 함정의 위치를 감지한다.', {intrapersonal:12, spatial: 8})
+    ),
+    q("잃어버린 식량", "갑작스러운 가뭄으로 식량이 부족해졌다. 굶주린 백성들을 위해 식량을 확보해야 한다.",
+      opt('🌾 숲으로 들어가 식용 가능한 식물을 찾아낸다.', {naturalist:16, spatial: 6}),
+      opt('🗣️ 다른 마을의 촌장을 찾아가 식량 지원을 요청한다.', {interpersonal:14, linguistic: 6}),
+      opt('💪 직접 사냥을 나서서 식량을 확보한다.', {bodily:14, spatial: 8}),
+      opt('📊 식량의 소비 속도와 남은 식량을 계산하여 배급량을 조절한다.', {logical:14, interpersonal: 8})
+    ),
+    q("용의 둥지", "전설의 용이 잠들어 있는 둥지를 발견했다. 용을 깨우지 않고 둥지에 있는 보물을 가져와야 한다.",
+      opt('🗺️ 둥지의 구조를 파악하고, 용의 시야와 움직임을 피해 보물을 확보한다.', {spatial:14, bodily: 8}),
+      opt('🎶 용을 잠재울 자장가를 불러 용이 깨어나지 못하게 한다.', {musical:16}),
+      opt('⚔️ 용의 둥지에 있는 보물을 논리적으로 분석하여 어떤 보물이 가장 가치 있는지 파악한다.', {logical:12, linguistic: 6}),
+      opt('🤝 동료들과 협력하여 용의 주의를 분산시키고 보물을 가져온다.', {interpersonal:14, bodily: 8})
+    )
   ],
   wizard: [
-    ['먼지의 서가','고요한 도서관의 책들이 미묘한 숨소리를 낸다. 오래된 지혜가 깨어난다.'],
-    ['룬의 반짝임','바닥의 룬들이 규칙을 드러내며 작은 빛을 뿜어낸다.'],
-    ['별의 잉크','천장에 흐르는 별빛이 페이지 위에 글자를 새긴다.'],
-    ['수정의 균열','마력의 결정에 금이 가며 균형을 요구한다.'],
-    ['환영의 문','반복되는 복도 속에서 현실과 환영의 선이 흐려진다.'],
-    ['지식의 탑','계단을 오르며 잃어버린 주문의 조각을 모은다.'],
-    ['거울의 질문','거울 속 자신이 다른 해답을 권한다. 마음의 소리에 귀 기울여 보자.'],
-    ['시간의 매듭','흐르는 시간이 꼬여 있다. 풀어야 할 실마리가 보인다.'],
-    ['깃털의 기록','작은 새가 떨어뜨린 글자가 중요한 단서를 남긴다.'],
-    ['주문 공방','실패와 성공의 반복 속에서 기술을 다듬는다.'],
-    ['흑서의 유혹','어두운 책이 은밀한 제안을 한다. 신중히 판단하라.'],
-    ['원소의 합주','네 원소가 하나의 리듬으로 어우러질 때 답이 보인다.'],
-    ['정령의 수업','정령들이 가르침을 건넨다. 수업에 집중해 보자.'],
-    ['침묵의 종','울리지 않는 종의 의미를 찾는 시간이 온다.'],
-    ['봉인의 열쇠','열쇠는 보이지만 봉인은 말이 없다. 방식의 차이를 생각하라.'],
-    ['마력의 흐름','손끝에서 빛이 모이며 길을 만든다.'],
-    ['공명의 방','생각 하나가 공명을 일으켜 많은 답을 낳는다.'],
-    ['어둠의 균형','어둠을 없애기보다 조율하는 법을 배운다.'],
-    ['진실의 문장','빠진 문장을 찾아 완성하면 비밀이 열릴 것이다.'],
-    ['새벽의 수료','한 권의 책을 완성하듯 여정이 마무리된다.']
-  ],
-  archer: [
-    ['바람의 길','갈대숲이 부는 방향을 따라 몸이 가벼워진다.'],
-    ['매의 눈','숲 속 먼 곳에서 희미한 반짝임을 발견한다.'],
-    ['흔들리는 밧줄교','발밑의 다리가 흔들리며 집중을 요구한다.'],
-    ['개울의 리듬','물소리가 일정한 박자를 만들어 길을 알려준다.'],
-    ['이끼의 지문','바위에 난 초록의 패턴이 길을 제시한다.'],
-    ['바위의 틈','협곡 사이의 바람이 소리를 전한다. 경계를 낮추지 마라.'],
-    ['고요한 숨','숨을 고르면 세상이 또렷해진다. 한 번에 한 발짝.'],
-    ['사슴의 발자국','발자국을 따라 조심스럽게 발걸음을 옮긴다.'],
-    ['하늘의 표적','구름 사이로 비친 빛이 과녁을 드러낸다.'],
-    ['바람의 언덕','풀잎의 물결이 방향을 말해준다.'],
-    ['새벽 사냥','새벽빛 속에서 기회를 포착한다.'],
-    ['비밀 동굴','동굴 벽화가 옛 사냥꾼의 지혜를 전한다.'],
-    ['나뭇결의 편지','나무 무늬가 숫자처럼 의미를 전달한다.'],
-    ['바람의 시험','작은 깃털 하나가 정확함을 가르친다.'],
-    ['강가의 반사','물 위에 비친 모습이 답을 숨기고 있다.'],
-    ['새의 노래','높낮이의 변화가 길을 알려준다.'],
-    ['초점','모든 잡음을 잠재우고 하나에 집중한다.'],
-    ['연대의 신호','동료의 신호를 보고 함께 움직인다.'],
-    ['자연의 답장','숲이 먼저 인사하며 길을 안내한다.'],
-    ['귀환','활줄을 당기면 자신감이 빛난다.']
-  ],
-  healer: [
-    ['낙엽의 속삭임','밤에 들려오는 기침 소리에 마음이 아려온다.'],
-    ['샘의 노래','맑은 물소리에 길이 숨겨져 있다. 귀를 기울여 보자.'],
-    ['약초의 길','향으로 이끄는 약초 더미에서 단서를 찾는다.'],
-    ['손의 기억','익숙한 손길이 떨림을 가라앉힌다.'],
-    ['정령의 부탁','작은 목소리가 도움을 청한다. 무엇을 먼저 할까.'],
-    ['합창의 치유','마을 노래가 거리의 긴장을 풀어준다.'],
-    ['마을 회의','서로 다른 목소리 속에서 진심을 읽어야 한다.'],
-    ['고요의 방','숨소리 하나가 회복의 시작이 된다.'],
-    ['별빛 기록','별 아래 기록한 메모가 답을 준다.'],
-    ['새싹의 증언','작은 초록이 큰 변화를 말한다.'],
-    ['온기의 비율','불과 물의 균형을 맞추는 일이 중요하다.'],
-    ['길 위의 위로','낯선 이의 눈물을 닦아주며 연결을 느낀다.'],
-    ['강의 다리','물결의 리듬이 치료의 패턴을 알려준다.'],
-    ['공감의 원','둘러앉아 서로의 이야기를 듣는다.'],
-    ['마지막 재료','한 가지 재료가 아직 모자라다. 어디서 찾을까.'],
-    ['선택의 순간','누구를 먼저 도울지 결정해야 한다.'],
-    ['이별과 감사','작별의 순간, 작은 선물이 남는다.'],
-    ['회복의 장','웃음이 돌아오면 치유는 완성된다.'],
-    ['기록의 마침표','오늘의 기록을 정리해 다음 이를 돕는다.'],
-    ['새벽의 인사','첫 빛과 함께 새로운 날을 맞는다.']
+    q("고대의 주문", "오래된 마법서에서 강력한 주문을 발견했다. 하지만 주문은 암호로 잠겨 있다. 이 암호를 어떻게 풀 것인가?",
+      opt('📜 암호문에 숨겨진 언어적 패턴을 분석하여 주문을 해독한다.', {linguistic:16, logical: 8}),
+      opt('🧩 암호의 논리적 규칙을 찾아내어 퍼즐을 해결하듯 해독한다.', {logical:16, intrapersonal: 8}),
+      opt('🧘‍♀️ 눈을 감고 주문의 기운을 느끼며 내면의 목소리에 귀 기울인다.', {intrapersonal:14}),
+      opt('🎶 주문에 어울리는 멜로디를 찾아내어 암호를 해제한다.', {musical:14, linguistic: 6})
+    ),
+    q("하늘의 별자리", "갑자기 하늘의 별자리가 혼란에 빠졌다. 이 혼란을 바로잡고, 별자리에 숨겨진 예언을 해독해야 한다.",
+      opt('🌌 별자리의 위치와 패턴을 분석하여 혼란의 원인을 밝혀낸다.', {spatial:16, logical: 8}),
+      opt('✍️ 별자리에 대한 예언을 글로 쓰고, 그 의미를 심층적으로 탐구한다.', {linguistic:14, intrapersonal: 8}),
+      opt('🗣️ 별자리를 연구하는 다른 마법사들을 찾아가 함께 해결책을 모색한다.', {interpersonal:14, logical: 6}),
+      opt('🌱 별자리의 변화가 지상의 자연에 미치는 영향을 관찰한다.', {naturalist:12, spatial: 8})
+    ),
+    q("마법의 거울", "마법의 거울이 깨져 조각났다. 이 조각을 다시 맞추려면 조각에 담긴 기억들을 되살려야 한다.",
+      opt('🧘‍♀️ 조각에 손을 대고 내면의 힘을 집중해 기억을 되살린다.', {intrapersonal:16}),
+      opt('🧩 조각의 형태와 그림을 맞춰 거울을 재구성한다.', {spatial:14, logical: 8}),
+      opt('🤝 주변의 사람들을 설득해 조각을 찾아달라고 부탁한다.', {interpersonal:12, bodily: 8}),
+      opt('🎶 조각에 담긴 멜로디를 따라 노래를 부르며 기억을 소환한다.', {musical:14, intrapersonal: 8})
+    ),
+    q("용의 그림자", "마을을 덮친 용의 그림자가 사람들을 공포에 떨게 한다. 그림자를 몰아내고 평화를 되찾아야 한다.",
+      opt('🔥 용의 그림자를 물리적인 힘으로 제압하기 위해 강력한 주문을 사용한다.', {bodily:14, logical: 8}),
+      opt('🗺️ 그림자의 움직임을 파악하고, 약점을 찾아낼 마법 지도를 만든다.', {spatial:14, logical: 8}),
+      opt('🗣️ 사람들에게 용기를 주는 말을 건네며 그림자에 맞설 힘을 불어넣는다.', {interpersonal:14, linguistic: 8}),
+      opt('🌳 숲속의 고대 정령을 찾아가 그림자를 물리칠 방법을 물어본다.', {naturalist:12, intrapersonal: 8})
+    ),
+    q("시든 숲", "마법의 숲이 시들어가고 있다. 숲의 생명력을 되살려야 한다.",
+      opt('🧪 숲의 흙과 물을 분석하여 원인을 찾고, 마법 약을 제조한다.', {logical:14, naturalist: 8}),
+      opt('🌱 숲의 식물들과 교감하여 숲의 고통을 이해하고 치유한다.', {naturalist:16}),
+      opt('🎶 숲의 멜로디를 듣고, 숲에 생명력을 불어넣을 노래를 부른다.', {musical:14, spatial: 6}),
+      opt('🧘‍♀️ 숲의 기운과 내면의 기운을 연결하여 숲을 치유한다.', {intrapersonal:14, naturalist: 8})
+    ),
+    q("마법사의 탑", "고대 마법사의 탑에 들어가려면 복잡한 수수께끼를 풀어야 한다. 탑의 문에는 다음과 같은 문구가 새겨져 있다: '마음을 들여다보라. 그리고 노래하라.'",
+      opt('🧘‍♀️ 내면의 깊은 곳을 탐색하여 자신에 대한 해답을 찾는다.', {intrapersonal:16}),
+      opt('🎵 탑의 문에 새겨진 문구를 멜로디로 바꾸어 노래한다.', {musical:14, linguistic: 6}),
+      opt('💡 문구의 논리적 의미를 분석하여 해답을 찾아낸다.', {logical:12, intrapersonal: 8}),
+      opt('🗣️ 다른 마법사들의 조언을 참고하여 수수께끼를 해결한다.', {interpersonal:12, linguistic: 8})
+    )
   ]
 };
 
-// ===== 선택지 템플릿 (문장 자연스럽게 유지) =====
-const TPL = {
-  warrior: {
-    linguistic: '📜 오래된 표식을 읽어 단서를 찾는다. (언어)',
-    logical:   '🧮 상황을 논리적으로 정리해 해결책을 세운다. (논리)',
-    spatial:   '🗺️ 지형을 떠올려 최적의 길을 계산한다. (공간)',
-    bodily:    '⚔️ 몸으로 앞장서서 돌파한다. (신체)',
-    musical:   '🥁 리듬으로 동료의 호흡을 맞춘다. (음악)',
-    interpersonal:'🤝 동료와 머리를 맞대고 협력한다. (대인)',
-    intrapersonal:'🧘 스스로의 마음을 다스리며 침착하게 선택한다. (자기이해)',
-    naturalist:'🌿 자연의 흔적에서 실마리를 찾는다. (자연)'
-  },
-  wizard: {
-    linguistic: '📖 고대 문장을 천천히 해독한다. (언어)',
-    logical:   '🧩 룬의 규칙을 분석하여 해법을 만든다. (논리)',
-    spatial:   '🔷 마법진을 시각화해 구조를 이해한다. (공간)',
-    bodily:    '✋ 손의 동작으로 섬세한 마법을 건다. (신체)',
-    musical:   '🎼 주문의 음계를 맞춰 공명을 유도한다. (음악)',
-    interpersonal:'🗣️ 정령과 대화해 도움을 청한다. (대인)',
-    intrapersonal:'🧘 자신의 내면에서 단서를 찾는다. (자기이해)',
-    naturalist:'🍃 자연의 기운을 빌려 주문을 보완한다. (자연)'
-  },
-  archer: {
-    linguistic: '📝 흔적을 기록해 흐름을 정리한다. (언어)',
-    logical:   '📐 거리와 바람을 계산해 각도를 잡는다. (논리)',
-    spatial:   '🎯 지형을 입체적으로 파악해 사격 위치를 정한다. (공간)',
-    bodily:    '🏃 능숙한 몸놀림으로 유리한 자리로 이동한다. (신체)',
-    musical:   '🎵 바람의 리듬을 타며 정확도를 높인다. (음악)',
-    interpersonal:'👥 동료와 신호를 주고받아 협력한다. (대인)',
-    intrapersonal:'🧘 호흡과 마음을 가다듬어 집중한다. (자기이해)',
-    naturalist:'🦌 동물의 습성을 읽어 행동을 예측한다. (자연)'
-  },
-  healer: {
-    linguistic: '✍️ 증상과 변화를 꼼꼼히 기록해 소통한다. (언어)',
-    logical:   '⚖️ 원인과 결과를 정리해 처방을 마련한다. (논리)',
-    spatial:   '🧭 치료 공간을 효율적으로 배치한다. (공간)',
-    bodily:    '🤲 손기술로 직접 돌본다. (신체)',
-    musical:   '🎶 안정감을 주는 멜로디로 마음을 다독인다. (음악)',
-    interpersonal:'💬 공감의 말로 신뢰를 쌓는다. (대인)',
-    intrapersonal:'🫀 자기 상태를 점검하며 균형을 유지한다. (자기이해)',
-    naturalist:'🌱 약초와 자연의 힘으로 치유를 돕는다. (자연)'
-  }
-};
-
-// ===== ROTATION: 20단계 동안 4선지 패턴 =====
-const ROTATION = [
-  ['linguistic','logical','interpersonal','bodily'],
-  ['spatial','naturalist','intrapersonal','musical'],
-  ['logical','spatial','bodily','interpersonal'],
-  ['naturalist','linguistic','musical','intrapersonal'],
-  ['bodily','spatial','logical','naturalist'],
-  ['musical','interpersonal','linguistic','intrapersonal'],
-  ['spatial','logical','musical','bodily'],
-  ['interpersonal','intrapersonal','linguistic','naturalist'],
-  ['logical','naturalist','spatial','interpersonal'],
-  ['linguistic','musical','bodily','intrapersonal'],
-  ['naturalist','spatial','interpersonal','logical'],
-  ['musical','linguistic','intrapersonal','bodily'],
-  ['spatial','naturalist','logical','linguistic'],
-  ['interpersonal','musical','bodily','spatial'],
-  ['intrapersonal','linguistic','naturalist','logical'],
-  ['bodily','interpersonal','spatial','musical'],
-  ['logical','intrapersonal','linguistic','naturalist'],
-  ['spatial','bodily','musical','interpersonal'],
-  ['naturalist','logical','intrapersonal','linguistic'],
-  ['musical','spatial','interpersonal','bodily']
-];
-
-// ===== 빌드: 캐릭터별 20단계 퀘스트 생성 =====
-function buildQuests(charId){
-  const list = CHAPTERS[charId];
-  return list.map((pair, idx)=>{
-    const [title, text] = pair;
-    const keys = ROTATION[idx];
-    const options = keys.map(k=>({ t: TPL[charId][k], e: {[k]: 12} }));
-    return { title, text, options };
-  });
-}
-const quests = { warrior: buildQuests('warrior'), wizard: buildQuests('wizard'), archer: buildQuests('archer'), healer: buildQuests('healer') };
-
-// ===== 인터랙션 및 상태관리 =====
-function resetGame(){
-  scores = JSON.parse(JSON.stringify(baseScores));
-  player = {name:'',clazz:'',charId:'',questIndex:0};
-  document.querySelectorAll('.char').forEach(c=>c.classList.remove('selected'));
-  el('game-area').style.display='none';
-  el('result-area').style.display='none';
-  el('pre-game').style.display='block';
-  el('stats-panel').style.display='none';
-  el('input-name').value='';
-  el('input-class').value='';
-  el('start-btn-text').style.display='inline';
-  el('start-btn-spinner').style.display='none';
-  checkStartButton();
-}
-function checkStartButton(){
-  const name = el('input-name').value.trim();
-  const clazz = el('input-class').value.trim();
-  el('btn-start').disabled = !(name && clazz && player.charId);
-}
-
-document.querySelectorAll('.char').forEach(node=>{
-  node.addEventListener('click',()=>{
-    document.querySelectorAll('.char').forEach(c=>c.classList.remove('selected'));
-    node.classList.add('selected');
-    player.charId = node.dataset.id;
-    checkStartButton();
-  });
+// 캐릭터 선택 핸들러
+document.querySelectorAll('.char').forEach(char => {
+    char.addEventListener('click', () => {
+        document.querySelectorAll('.char').forEach(c => c.classList.remove('selected'));
+        char.classList.add('selected');
+        player.charId = char.dataset.id;
+        checkCanStart();
+    });
 });
-el('input-name').addEventListener('input',checkStartButton);
-el('input-class').addEventListener('input',checkStartButton);
 
-el('btn-start').addEventListener('click',()=>{
-  const name = el('input-name').value.trim();
-  const clazz = el('input-class').value.trim();
-  if(!(name&&clazz&&player.charId)) return;
-  player.name=name; player.clazz=clazz; player.questIndex=0;
-  el('start-btn-text').style.display='none'; el('start-btn-spinner').style.display='block';
-  S.bgm.play().catch(()=>{});
-  setTimeout(()=>{ el('pre-game').style.display='none'; el('game-area').style.display='block'; el('stats-panel').style.display='block'; renderQuest(); el('start-btn-text').style.display='inline'; el('start-btn-spinner').style.display='none'; },800);
+// 이름 및 클래스 입력 핸들러
+document.querySelectorAll('#input-name, #input-class').forEach(input => {
+    input.addEventListener('input', checkCanStart);
 });
-el('btn-restart').addEventListener('click',resetGame);
 
+function checkCanStart() {
+    const name = el('input-name').value.trim();
+    const clazz = el('input-class').value.trim();
+    el('btn-start').disabled = !(name && clazz && player.charId);
+}
+
+// 게임 시작 핸들러
+el('btn-start').addEventListener('click', async () => {
+    if (loading) return;
+
+    sounds.bgm.play();
+    loading = true;
+    el('start-btn-text').style.display = 'none';
+    el('start-btn-spinner').style.display = 'block';
+
+    player.name = el('input-name').value.trim();
+    player.clazz = el('input-class').value.trim();
+    player.questIndex = 0;
+    scores = {...baseScores};
+
+    // 지연 효과 추가
+    await new Promise(r => setTimeout(r, 1000));
+
+    el('pre-game').style.display = 'none';
+    el('game-area').style.display = 'block';
+    el('stats-panel').style.display = 'block';
+    
+    loading = false;
+    el('start-btn-text').style.display = 'block';
+    el('start-btn-spinner').style.display = 'none';
+
+    renderQuest();
+});
+
+// 퀘스트 렌더링
 function renderQuest(){
-  const list = quests[player.charId];
-  if(!list || player.questIndex >= list.length){ return showResult(); }
-  const q = list[player.questIndex];
-  el('quest-title').textContent = `📜 Chapter ${player.questIndex+1}: ${q.title}`;
-  // 문장 출력은 자연스럽게 한 번에 넣음 (타자 효과 생략하여 가독성 향상)
-  el('quest-text').textContent = q.text;
-  const root = el('options'); root.innerHTML='';
-  q.options.forEach((o)=>{
-    const div = document.createElement('div'); div.className='option'; div.textContent = o.t;
-    div.onclick = ()=>{ S.click.currentTime=0; S.click.play(); applyEffects(o.e); player.questIndex++; renderStats(); setTimeout(()=>{ S.magic.currentTime=0; S.magic.play(); renderQuest(); },220); };
-    root.appendChild(div);
-  });
-  renderStats();
+    sounds.turn.play();
+    const currentQuest = quests[player.charId][player.questIndex];
+    if (!currentQuest) {
+        showResult();
+        return;
+    }
+    
+    el('quest-title').innerText = currentQuest.title;
+    el('quest-text').innerText = currentQuest.text;
+
+    const optionsDiv = el('options');
+    optionsDiv.innerHTML = '';
+    currentQuest.options.forEach((opt, index) => {
+        const btn = document.createElement('div');
+        btn.className = 'option';
+        btn.innerText = opt.t;
+        btn.onclick = () => handleOption(opt.e);
+        optionsDiv.appendChild(btn);
+    });
+
+    renderStats();
 }
-function applyEffects(e){ Object.keys(e).forEach(k=>{ if(scores[k]!==undefined) scores[k]+=e[k]; }); }
-function renderStats(){ const root = el('stats'); root.innerHTML=''; Object.keys(scores).forEach(k=>{ const score = Math.min(100, Math.max(0, scores[k])); const box = document.createElement('div'); box.className='stat'; box.innerHTML = `<div style="font-weight:700;color:var(--gold)">${NAMES[k]}</div><div class="bar"><div class="bar-inner" style="width:${score}%"></div></div>`; root.appendChild(box); }); }
 
-function showResult(){ el('game-area').style.display='none'; el('stats-panel').style.display='none'; el('result-area').style.display='block'; const entries = Object.entries(scores).sort((a,b)=>b[1]-a[1]); const [top1, top2, top3] = [entries[0][0], entries[1][0], entries[2][0]]; const resultHTML = `\n    <h3 style="font-family:'Cinzel',serif;color:#5b3e22">📜 모험의 결과</h3>\n    <p><strong>${player.name}</strong>(${player.clazz}) 모험가님, 20단계 여정을 마쳤습니다.</p>\n    <p>당신의 선택을 종합한 결과…</p>\n    <h4 style="color:var(--gold);margin:.4em 0">🥇 당신의 강점 지능은 <strong>${NAMES[top1]}</strong> 입니다!</h4>\n    <h4 style="color:#bca06c;margin:.2em 0">🥈 2순위: ${NAMES[top2]}</h4>\n    <h4 style="color:#a78556;margin:.2em 0">🥉 3순위: ${NAMES[top3]}</h4>\n    <p class="small" style="color:#2e1f13;background:rgba(255,255,255,.85);display:inline-block;padding:10px 12px;border-radius:10px">강점은 연습으로 더 성장합니다. 다른 캐릭터로도 모험해 결과를 비교해 보세요.</p>\n  `; el('result-content').innerHTML = resultHTML; }
+// 옵션 선택 핸들러
+function handleOption(effects){
+    for (const key in effects) {
+        scores[key] = Math.min(100, scores[key] + effects[key]);
+    }
 
-// 초기화
-resetGame();
+    player.questIndex++;
+    renderQuest();
+}
+
+// 능력치 통계 렌더링
+function renderStats(){
+    const root = el('stats');
+    root.innerHTML = '';
+    const mapNames = {linguistic:'언어 지능',logical:'논리-수학 지능',spatial:'공간 지능',bodily:'신체-운동 지능',musical:'음악 지능',interpersonal:'대인관계 지능',intrapersonal:'자기이해 지능',naturalist:'자연친화 지능'};
+    Object.keys(scores).forEach(k => {
+        const score = Math.min(100, Math.max(0, scores[k]));
+        const box = document.createElement('div');
+        box.className = 'stat';
+        box.innerHTML = `
+            <div style="font-weight:bold;color:var(--gold); font-size: 0.9rem;">${mapNames[k]}</div>
+            <div class="bar"><div class="bar-inner" style="width:${score}%"></div></div>
+        `;
+        root.appendChild(box);
+    });
+}
+
+// 결과 화면 보여주기
+function showResult(){
+    el('game-area').style.display = 'none';
+    el('stats-panel').style.display = 'none';
+    el('result-area').style.display = 'block';
+
+    const entries = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+    const top1 = entries[0][0];
+    const top2 = entries[1][0];
+    const mapNames = {linguistic:'언어 지능',logical:'논리-수학 지능',spatial:'공간 지능',bodily:'신체-운동 지능',musical:'음악 지능',interpersonal:'대인관계 지능',intrapersonal:'자기이해 지능',naturalist:'자연친화 지능'};
+    
+    const resultHTML = `
+        <h3>📜 모험의 결과</h3>
+        <p><strong>${player.name}</strong>(${player.clazz})의 여정은 마무리되었습니다.</p>
+        <p style="font-size:1.2rem; margin-top: 20px;">
+            당신은 모험을 통해 <strong><span style="color:var(--gold);font-weight:bold;">${mapNames[top1]}</span></strong>와 <strong><span style="color:var(--gold);font-weight:bold;">${mapNames[top2]}</span></strong>의 지능이 가장 뛰어남을 발견했습니다.
+        </p>
+        <p style="font-size:1.1rem; line-height: 1.6; margin-top: 20px;">
+            ${mapNames[top1]}는 복잡한 문제를 해결하고 패턴을 파악하는 데 뛰어나며, ${mapNames[top2]}는...
+        </p>
+    `;
+    el('result-content').innerHTML = resultHTML;
+
+    // 다시 시작하기 버튼
+    el('btn-restart').onclick = () => {
+        location.reload();
+    };
+}
 </script>
 </body>
 </html>
