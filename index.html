@@ -12,7 +12,7 @@
 body{
     margin:0;
     font-family: 'Gowun Dodum', serif;
-    background: url('./assets/papyrus-1478204_1280.jpg') no-repeat center center fixed;
+    background: url('https://placehold.co/1280x1280/8B4513/FFFFFF?text=Papyrus+Background') no-repeat center center fixed; /* Placeholder image for background */
     background-size: cover;
     color: #fff;
     display: flex;
@@ -31,11 +31,11 @@ body{
 }
 .title{
     font-family: 'Cinzel', serif;
-    font-size: 3.5rem; /* 글씨 크기 수정 */
+    font-size: 3.5rem;
     color: var(--gold);
     text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
-.subtitle{ font-family: 'Gowun Dodum'; opacity:0.9; font-size: 1.3rem; color: #f0f0f0; } /* 글씨 크기 수정 */
+.subtitle{ font-family: 'Gowun Dodum'; opacity:0.9; font-size: 1.3rem; color: #f0f0f0; }
 
 .layout{ display:flex; gap:20px; }
 .left, .right{ transition: all 0.5s ease-out; }
@@ -96,7 +96,7 @@ input[type=text]{
 }
 
 #game-card {
-    background: url('./assets/ancient-1822557_1280.jpg') no-repeat center center;
+    background: url('https://placehold.co/1280x1280/8B4513/FFFFFF?text=Ancient+Scrolls') no-repeat center center; /* Placeholder for ancient scroll background */
     background-size: 100% 100%;
     color: var(--brown-text);
     padding: 50px 60px;
@@ -105,7 +105,7 @@ input[type=text]{
 }
 .quest-header { text-align: center; margin-bottom: 20px; }
 .quest-header h3 { font-family: 'Cinzel', serif; color: #6a4a2a; margin: 0; font-size: 1.5rem;}
-.quest-text { font-size:1.3rem; line-height:2; min-height: 100px; } /* 글씨 크기 및 줄 간격 수정 */
+.quest-text { font-size:1.3rem; line-height:2; min-height: 100px; }
 .options{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:20px; }
 .option{
     padding:12px;
@@ -116,7 +116,7 @@ input[type=text]{
     transition: all .2s ease;
 }
 .option:hover{ transform: scale(1.03); background:rgba(189, 168, 133, 0.5); border-color: var(--brown-text); }
-.option .label{ font-weight:bold; font-size: 1.1rem; } /* 글씨 크기 수정 */
+.option .label{ font-weight:bold; font-size: 1.1rem; }
 
 .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; color: #fff;}
 .stat{ background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; text-align:center; }
@@ -135,8 +135,8 @@ input[type=text]{
 </head>
 <body>
 
-<audio id="bgm" src="./assets/audio_2dde649a33.mp3" loop></audio>
-<audio id="sfx-turn" src="./assets/audio_731c045b61.mp3"></audio>
+<audio id="bgm" src="https://assets.mixkit.co/sfx/preview/mixkit-calm-music-2200.mp3" loop></audio>
+<audio id="sfx-turn" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1110.mp3"></audio>
 
 <div class="wrap">
   <div class="header">
@@ -159,7 +159,7 @@ input[type=text]{
           <div class="char" data-id="wizard"><div class="emoji">🔮</div><div class="name">신비한 마법사</div></div>
         </div>
         <div style="margin-top:20px;">
-          <button id="btn-start" class="btn">▶ 모험 시작하기</button>
+          <button id="btn-start" class="btn" disabled>▶ 모험 시작하기</button>
         </div>
       </div>
 
@@ -368,7 +368,6 @@ const quests = {
     )
   ]
 };
-// 참고: 실제 코드에는 모든 퀘스트 데이터가 포함되어 있습니다.
 
 /* ====== 초기화 및 상태 ======*/
 const baseScores = {linguistic:50,logical:50,spatial:50,bodily:50,musical:50,interpersonal:50,intrapersonal:50,naturalist:50};
@@ -387,6 +386,15 @@ function resetGame(){
     el('stats-panel').style.display = 'none';
     el('input-name').value = '';
     el('input-class').value = '';
+    checkStartButton();
+}
+
+/* 시작 버튼 활성화/비활성화 체크 */
+function checkStartButton() {
+    const name = el('input-name').value.trim();
+    const clazz = el('input-class').value.trim();
+    const isCharSelected = !!player.charId;
+    el('btn-start').disabled = !(name && clazz && isCharSelected);
 }
 
 /* 캐릭터 선택 */
@@ -395,17 +403,18 @@ document.querySelectorAll('.char').forEach(node=>{
         document.querySelectorAll('.char').forEach(c=>c.classList.remove('selected'));
         node.classList.add('selected');
         player.charId = node.dataset.id;
+        checkStartButton();
     });
 });
+
+/* 입력 필드 변경 이벤트 */
+el('input-name').addEventListener('input', checkStartButton);
+el('input-class').addEventListener('input', checkStartButton);
 
 /* 시작 버튼 */
 el('btn-start').addEventListener('click', () => {
   const name = el('input-name').value.trim();
   const clazz = el('input-class').value.trim();
-  if(!name || !clazz || !player.charId){
-    alert('이름, 소속, 동료를 모두 선택해주세요!');
-    return;
-  }
   player.name = name;
   player.clazz = clazz;
   player.questIndex = 0;
