@@ -4,17 +4,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>📜 다중지능 탐험: 고대의 부름</title>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum:wght@400;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
 /* 변수 및 기본 스타일 */
 :root {
     --brown-text: #4a3a2a;
     --gold: #c89a4b;
     --card-bg: rgba(255, 255, 255, 0.85);
-    /* 텍스트 가독성을 위한 새로운 변수 */
-    --scroll-text: #3c2a1a;
-    --main-text: #fff;
-    --highlight-text: #fddb83;
 }
 
 * {
@@ -28,29 +24,15 @@ body {
     background-image: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/papyrus-1478204_1280.jpg?alt=media&token=26214300-84c4-42ea-a4b5-65476d0d216a');
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: cover;
     background-attachment: fixed;
-    color: var(--main-text);
+    background-size: cover;
+    color: var(--brown-text);
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: background-image 1s ease-in-out;
-}
-
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    pointer-events: none;
-    transition: background-color 2s ease-in-out;
+    overflow-y: auto; /* 내용이 넘칠 때 스크롤 가능하도록 */
 }
 
 .wrap {
@@ -64,606 +46,430 @@ body::before {
     animation: fadeInDown 1s ease-out;
 }
 
-.title {
+.header h1 {
     font-family: 'Cinzel', serif;
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 5vw, 4rem);
     color: var(--gold);
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-}
-
-.subtitle {
-    font-family: 'Gowun Dodum';
-    opacity: 0.9;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    color: var(--main-text);
-}
-
-/* 레이아웃 */
-.layout {
-    display: flex;
-    gap: 20px;
-}
-
-.left, .right {
-    transition: all 0.5s ease-out;
-}
-
-.left {
-    width: 360px;
-    animation: fadeInLeft 1s ease-out;
-}
-
-.right {
-    flex: 1;
-    animation: fadeInRight 1s ease-out;
-}
-
-/* 카드 UI */
-.card {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(255, 215, 102, 0.15);
-}
-
-/* 캐릭터 선택 */
-.char-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.char {
-    padding: 10px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.char:hover {
-    transform: translateY(-5px);
-    background: rgba(0, 0, 0, 0.5);
-    border-color: var(--gold);
-}
-
-.char.selected {
-    background: rgba(200, 154, 75, 0.3);
-    border-color: var(--gold);
-    transform: translateY(-5px);
-}
-
-/* 폼 요소 */
-label {
-    display: block;
-    color: var(--gold);
-    font-weight: 700;
-    margin-bottom: 6px;
-    font-size: 1.1rem; /* 폰트 사이즈 조정 */
-}
-
-input[type=text] {
-    width: 100%;
-    padding: 12px; /* 패딩 조정 */
-    border-radius: 8px;
-    border: 1px solid rgba(255, 215, 102, 0.2);
-    background: rgba(0, 0, 0, 0.3);
-    color: var(--main-text);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin-bottom: 10px;
-    font-family: 'Gowun Dodum', serif;
-    font-size: 1.1rem; /* 폰트 사이즈 조정 */
 }
 
-.btn {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 16px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    background: linear-gradient(145deg, #b38645, #835e2c);
-    color: var(--main-text);
-    font-weight: bold;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-    width: 100%;
-    font-family: 'Gowun Dodum', serif;
-    font-size: 1.1rem; /* 폰트 사이즈 조정 */
-    transition: all 0.3s ease;
+.header p {
+    color: #fff;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.btn:disabled {
-    background: #555;
-    cursor: not-allowed;
-    box-shadow: none;
+.game-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: clamp(20px, 4vw, 40px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
 }
 
-.btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+/* 화면 별로 다른 배경 이미지 설정 */
+@media (max-width: 768px) {
+    body {
+        background-size: auto 100%;
+    }
 }
 
-/* 게임 및 퀘스트 영역 */
-#game-card {
-    background: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/ancient_scroll.png?alt=media&token=f0310243-7f3e-4b72-b7e6-23f2113222e4') no-repeat center center;
-    background-size: 100% 100%;
-    color: var(--scroll-text); /* 스크롤 배경에 맞는 글씨 색상 */
-    padding: 50px 60px;
-    min-height: 550px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}
-
-.quest-header {
+/* 게임 시작 화면 */
+#start-screen {
     text-align: center;
+}
+
+.input-group {
     margin-bottom: 20px;
+    text-align: left;
 }
 
-.quest-header h3 {
-    font-family: 'Cinzel', serif;
-    color: var(--scroll-text);
-    margin: 0;
-    font-size: clamp(1.4rem, 2.8vw, 1.8rem); /* 폰트 사이즈 조정 */
-}
-
-.quest-text {
-    font-size: clamp(1.1rem, 2.4vw, 1.4rem); /* 폰트 사이즈 조정 */
-    line-height: 2;
-    min-height: 100px;
-}
-
-.options {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.option {
-    padding: 14px; /* 패딩 조정 */
-    border-radius: 10px;
-    background: rgba(189, 168, 133, 0.3);
-    cursor: pointer;
-    border: 1px solid rgba(112, 83, 48, 0.3);
-    transition: all 0.2s ease;
-    text-align: center;
-    font-size: clamp(1rem, 2.2vw, 1.2rem); /* 폰트 사이즈 조정 */
-    word-break: keep-all;
-    user-select: none;
-}
-
-.option:hover {
-    transform: scale(1.03);
-    background: rgba(189, 168, 133, 0.5);
-    border-color: var(--brown-text);
-}
-
-.option .label {
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
-/* 능력치 통계 */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-top: 12px;
-    color: var(--main-text);
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--brown-text);
+    background-color: #f7f7f7;
+}
+
+.input-group input:focus, .input-group select:focus {
+    outline: none;
+    border-color: var(--gold);
+}
+
+button {
+    background-color: var(--gold);
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #b28842;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 게임 진행 화면 */
+#game-area {
+    display: none;
+    text-align: center;
+}
+
+.quest-counter {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--gold);
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.story-text {
+    min-height: 150px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    background-color: #fcfcfc;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+    text-align: left;
+}
+
+.choice-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 통계 패널 */
+#stats-panel {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#stats-panel h4 {
+    margin-top: 0;
+    color: #4a3a2a;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
 }
 
 .stat {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px;
-    border-radius: 8px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .bar {
-    height: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    margin-top: 8px;
+    width: 70%;
+    height: 15px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .bar-inner {
     height: 100%;
-    background: linear-gradient(90deg, var(--gold), #e6b873);
-    width: 0%;
-    transition: width 0.6s ease-in-out;
+    background: linear-gradient(90deg, #c89a4b, #d4ae6e);
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
 }
 
-/* 결과 영역 */
-.result-content {
-    color: var(--scroll-text); /* 스크롤 배경에 맞는 글씨 색상 */
+/* 결과 화면 */
+#result-area {
+    display: none;
     text-align: center;
 }
 
-.result-content h3 {
-    font-family: 'Cinzel', serif;
-    color: var(--scroll-text);
+#result-area h3 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: var(--gold);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#result-area p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#result-area strong {
+    color: var(--gold);
+}
+
+.result-image {
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--gold);
 }
 
 /* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-30px); }
+    from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeInLeft {
-    from { opacity: 0; transform: translateX(-50px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(50px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.spinner {
-    display: none;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid var(--gold);
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
-}
-
-/* 반응형 디자인 */
-@media(max-width:900px) {
-    .layout {
-        flex-direction: column;
-    }
-
-    .left {
-        width: 100%;
-    }
-
-    #game-card {
-        padding: 30px;
-    }
-}
 </style>
 </head>
 <body>
 
-<!-- 오디오 파일은 Mixkit에서 가져왔습니다 -->
-<audio id="bgm" src="https://assets.mixkit.co/sfx/preview/mixkit-calm-music-2200.mp3" loop></audio>
-<audio id="sfx-turn" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1110.mp3"></audio>
-
 <div class="wrap">
-  <div class="header">
-    <div class="title">Ancient Calling</div>
-    <div class="subtitle">나의 다중지능을 찾아 떠나는 모험</div>
-  </div>
-
-  <div class="layout">
-    <div class="left">
-      <div class="card">
-        <label>모험가 이름</label>
-        <input id="input-name" type="text" placeholder="예: 김민준" />
-        <label>소속 (반)</label>
-        <input id="input-class" type="text" placeholder="예: 1학년 3반" />
-        <label>여정을 함께할 동료</label>
-        <div id="char-row" class="char-row">
-          <div class="char" data-id="prince"><div class="emoji">🤴</div><div class="name">용감한 왕자</div></div>
-          <div class="char" data-id="princess"><div class="emoji">👸</div><div class="name">지혜로운 공주</div></div>
-          <div class="char" data-id="warrior"><div class="emoji">⚔️</div><div class="name">강인한 전사</div></div>
-          <div class="char" data-id="wizard"><div class="emoji">🔮</div><div class="name">신비한 마법사</div></div>
-        </div>
-        <div style="margin-top:20px;">
-          <button id="btn-start" class="btn" disabled>
-            <span id="start-btn-text">▶ 모험 시작하기</span>
-            <div id="start-btn-spinner" class="spinner"></div>
-          </button>
-        </div>
-      </div>
-
-      <div id="stats-panel" class="card" style="margin-top:12px; display:none;">
-          <div id="stats" class="stats-grid"></div>
-      </div>
+    <div class="header">
+        <h1>📜 다중지능 탐험: 고대의 부름</h1>
+        <p>당신의 지능 잠재력을 탐험하는 신비로운 여정</p>
     </div>
 
-    <div class="right">
-      <div id="game-card" class="card">
-        <div id="pre-game">
-          <div style="text-align:center; padding-top: 80px;">
-            <h3 style="font-family:'Cinzel', serif; color: var(--scroll-text);">📜 모험의 서막</h3>
-            <p style="font-size: 1.2rem; line-height: 1.8;">이름과 소속을 적고, 여정을 함께할 동료를 선택하세요.<br>당신의 선택이 모여 미래의 길을 밝혀줄 것입니다.<br>이제, 고대의 부름에 응답할 시간입니다.</p>
-          </div>
+    <div class="game-card">
+        <div id="start-screen">
+            <h2>여정을 시작하며...</h2>
+            <div class="input-group">
+                <label for="playerName">이름:</label>
+                <input type="text" id="playerName" placeholder="모험가의 이름">
+            </div>
+            <div class="input-group">
+                <label for="playerClass">직업:</label>
+                <select id="playerClass">
+                    <option value="전사">전사</option>
+                    <option value="마법사">마법사</option>
+                    <option value="도적">도적</option>
+                    <option value="성직자">성직자</option>
+                </select>
+            </div>
+            <button onclick="startGame()">여정 시작하기</button>
         </div>
 
-        <div id="game-area" style="display:none">
-          <div class="quest-header">
-            <h3 id="quest-title"></h3>
-          </div>
-          <div id="quest-text" class="quest-text"></div>
-          <div id="options" class="options"></div>
+        <div id="game-area">
+            <div class="quest-counter" id="quest-counter"></div>
+            <div class="story-text" id="story-text"></div>
+            <div class="choice-buttons" id="choice-buttons"></div>
         </div>
         
-        <div id="result-area" style="display:none; padding-top: 50px;">
-          <div class="result-content" id="result-content"></div>
-          <button id="btn-restart" class="btn" style="max-width:300px; margin: 20px auto 0;">🔄 새로운 모험 시작하기</button>
-        </div>
-      </div>
+        <div id="result-area"></div>
     </div>
-  </div>
+    <div id="stats-panel">
+        <h4>📊 현재 능력치</h4>
+        <div id="stats-container"></div>
+    </div>
 </div>
 
 <script>
-// 전역 변수 및 상수 설정
-const sounds = {
-    bgm: document.getElementById('bgm'),
-    turn: document.getElementById('sfx-turn'),
-};
-sounds.bgm.volume = 0.2; // BGM 볼륨 조절
-
-// HTML 요소 선택을 위한 헬퍼 함수
 const el = id => document.getElementById(id);
 
-// 게임 데이터: 기본 점수 및 플레이어 상태
-const baseScores = {linguistic:50,logical:50,spatial:50,bodily:50,musical:50,interpersonal:50,intrapersonal:50,naturalist:50};
-let scores = {};
-let player = {name:'',clazz:'',charId:'',questIndex:0};
-let loading = false;
+let player = {};
+let scores = {
+    linguistic: 0,
+    logical: 0,
+    spatial: 0,
+    bodily: 0,
+    musical: 0,
+    interpersonal: 0,
+    intrapersonal: 0,
+    naturalist: 0
+};
+let currentQuestIndex = 0;
+const totalQuests = 20;
 
-/* ====== 퀘스트 데이터 (서사 강화 버전) ====== */
-function q(title, text, a, b, c, d){ return { title, text, options:[a,b,c,d] }; }
-function opt(text, effects){ return {t:text, e:effects}; }
+// 각 캐릭터별 퀘스트 데이터
+const warriorQuests = [
+    { text: "고대 유적의 무너진 석상을 복구해야 합니다. 어떤 방식으로 복구하시겠습니까?", choices: [{text: "돌덩이들을 정확한 위치에 쌓는다.", effects: {spatial: 10}}, {text: "가장 튼튼한 돌을 찾아낸다.", effects: {bodily: 10}}, {text: "석상의 기록을 해독해본다.", effects: {linguistic: 10}}, {text: "주변의 이끼를 이용해 예술적으로 꾸민다.", effects: {musical: 10}}] },
+    { text: "골렘의 약점을 찾아내야 합니다. 어떻게 하시겠습니까?", choices: [{text: "골렘의 움직임 패턴을 분석한다.", effects: {logical: 10}}, {text: "골렘의 재질을 손으로 만져본다.", effects: {bodily: 10}}, {text: "골렘을 닮은 신화 속 괴물을 떠올린다.", effects: {linguistic: 10}}, {text: "골렘의 움직임을 따라하며 분석한다.", effects: {bodily: 10}}] },
+    { text: "고대 부족의 지도자가 되었습니다. 부족원들의 갈등을 어떻게 해결하시겠습니까?", choices: [{text: "양쪽의 의견을 모두 듣고 조율한다.", effects: {interpersonal: 10}}, {text: "논리적인 규칙을 정해준다.", effects: {logical: 10}}, {text: "혼자만의 시간을 가지며 깊이 생각한다.", effects: {intrapersonal: 10}}, {text: "부족원들과 노래를 부르며 화합을 도모한다.", effects: {musical: 10}}] },
+    { text: "신비로운 약초를 찾아야 합니다. 어디서 찾아야 할까요?", choices: [{text: "약초의 특징을 기록한 고대 문서를 읽는다.", effects: {linguistic: 10}}, {text: "지도의 지형을 분석한다.", effects: {spatial: 10}}, {text: "약초의 향기를 찾아 주변을 탐색한다.", effects: {naturalist: 10}}, {text: "약초가 가장 잘 자랄 만한 환경을 추론한다.", effects: {logical: 10}}] },
+    { text: "고대 유적의 미로에 갇혔습니다. 어떻게 탈출하시겠습니까?", choices: [{text: "미로의 벽에 손을 대고 한쪽으로만 계속 간다.", effects: {bodily: 10}}, {text: "미로의 전체적인 구조를 머릿속에 그린다.", effects: {spatial: 10}}, {text: "바닥의 발자국을 분석해 다른 사람의 흔적을 쫓는다.", effects: {interpersonal: 10}}, {text: "이성적으로 판단하여 미로의 규칙을 찾는다.", effects: {logical: 10}}] },
+    { text: "거대한 절벽을 올라야 합니다. 어떻게 하시겠습니까?", choices: [{text: "가장 안전하고 효율적인 경로를 계산한다.", effects: {logical: 10}}, {text: "가벼운 짐만 남기고 올라갈 준비를 한다.", effects: {bodily: 10}}, {text: "절벽의 지형을 머릿속에 기억한다.", effects: {spatial: 10}}, {text: "올라가면서 자신의 몸 상태를 점검한다.", effects: {intrapersonal: 10}}] },
+    { text: "전설의 검을 찾기 위해 동굴로 들어갑니다. 동굴 속에서 울리는 소리를 어떻게 활용하시겠습니까?", choices: [{text: "소리의 진동을 따라 검의 위치를 찾는다.", effects: {musical: 10}}, {text: "소리의 근원을 논리적으로 추론한다.", effects: {logical: 10}}, {text: "동굴의 넓이를 소리로 가늠한다.", effects: {spatial: 10}}, {text: "동굴 속 생물의 울음소리를 분석한다.", effects: {naturalist: 10}}] },
+    { text: "낯선 부족을 만났습니다. 그들의 환심을 사야 합니다. 어떻게 하실 건가요?", choices: [{text: "그들의 언어를 따라해본다.", effects: {linguistic: 10}}, {text: "그들에게 내면의 진심을 보여준다.", effects: {intrapersonal: 10}}, {text: "그들에게 정중하게 대화한다.", effects: {interpersonal: 10}}, {text: "그들의 춤을 따라 배워본다.", effects: {bodily: 10}}] },
+    { text: "사막에서 길을 잃었습니다. 어떻게 길을 찾으시겠습니까?", choices: [{text: "별자리를 보고 방향을 가늠한다.", effects: {spatial: 10}}, {text: "모래바람의 방향을 관찰한다.", effects: {naturalist: 10}}, {text: "자신의 내면의 목소리에 집중한다.", effects: {intrapersonal: 10}}, {text: "가장 확률이 높은 경로를 계산한다.", effects: {logical: 10}}] },
+    { text: "전쟁터에 있습니다. 어떻게 전장을 지휘하시겠습니까?", choices: [{text: "병사들의 사기를 높이는 연설을 한다.", effects: {linguistic: 10}}, {text: "병사들의 심리를 파악해 배치한다.", effects: {interpersonal: 10}}, {text: "전장의 지형을 분석해 최적의 전략을 짠다.", effects: {spatial: 10}}, {text: "자신이 직접 선봉에 서서 싸운다.", effects: {bodily: 10}}] },
+    { text: "정체불명의 고대 장치를 마주했습니다. 어떻게 작동시키시겠습니까?", choices: [{text: "장치의 원리를 이해하려 노력한다.", effects: {logical: 10}}, {text: "장치의 외형을 분석해본다.", effects: {spatial: 10}}, {text: "장치를 조심스럽게 만져보며 작동 방식을 찾는다.", effects: {bodily: 10}}, {text: "장치에 대해 기록된 문서를 찾아본다.", effects: {linguistic: 10}}] },
+    { text: "고대 숲에서 길을 잃었습니다. 어떻게 탈출하시겠습니까?", choices: [{text: "식물의 생태를 파악해 길을 찾는다.", effects: {naturalist: 10}}, {text: "자신의 직감을 믿고 나아간다.", effects: {intrapersonal: 10}}, {text: "나뭇가지로 길의 방향을 표시한다.", effects: {spatial: 10}}, {text: "숲의 동물들의 움직임을 따라간다.", effects: {interpersonal: 10}}] },
+    { text: "고대 거인의 유적에서 보물을 발견했습니다. 거인의 유품 중 하나를 골라야 합니다.", choices: [{text: "거인의 노래가 새겨진 악기를 고른다.", effects: {musical: 10}}, {text: "거인의 일기가 담긴 책을 고른다.", effects: {linguistic: 10}}, {text: "거인이 만들던 조각상을 고른다.", effects: {spatial: 10}}, {text: "거인의 무기를 고른다.", effects: {bodily: 10}}] },
+    { text: "고대 신전의 수호자가 되었습니다. 신전을 침범하려는 자들과 어떻게 대화하시겠습니까?", choices: [{text: "위엄 있는 목소리로 경고한다.", effects: {linguistic: 10}}, {text: "그들의 마음을 읽으려 노력한다.", effects: {intrapersonal: 10}}, {text: "그들의 행동 패턴을 분석한다.", effects: {logical: 10}}, {text: "침범자들을 설득하려 한다.", effects: {interpersonal: 10}}] },
+    { text: "사악한 마법사가 숲을 오염시켰습니다. 어떻게 숲을 되살리시겠습니까?", choices: [{text: "마법사의 주문을 해독한다.", effects: {linguistic: 10}}, {text: "오염된 땅의 상태를 관찰한다.", effects: {naturalist: 10}}, {text: "숲의 동물들과 교감한다.", effects: {interpersonal: 10}}, {text: "몸을 움직여 오염을 정화하는 의식을 치른다.", effects: {bodily: 10}}] },
+    { text: "고대 도시의 지붕을 뛰어넘어야 합니다. 어떻게 하시겠습니까?", choices: [{text: "도시의 구조를 파악해 최단거리를 뛴다.", effects: {spatial: 10}}, {text: "자신이 뛸 수 있는 거리를 계산한다.", effects: {logical: 10}}, {text: "가장 안정적인 착지 자세를 취한다.", effects: {bodily: 10}}, {text: "먼 거리를 이동하는 다른 생명체의 움직임을 관찰한다.", effects: {naturalist: 10}}] },
+    { text: "고대 유적에 숨겨진 비밀을 담은 암호를 발견했습니다. 어떻게 암호를 해독하시겠습니까?", choices: [{text: "규칙을 찾아내려 논리적으로 접근한다.", effects: {logical: 10}}, {text: "직접 몸을 움직여 암호의 패턴을 따라해본다.", effects: {bodily: 10}}, {text: "암호에 사용된 언어의 특징을 떠올린다.", effects: {linguistic: 10}}, {text: "암호를 통해 얻을 수 있는 이득을 상상한다.", effects: {intrapersonal: 10}}] },
+    { text: "사막의 오아시스에 도착했습니다. 하지만 다른 모험가들과 물을 놓고 갈등이 생겼습니다. 어떻게 해결하시겠습니까?", choices: [{text: "물을 공평하게 분배할 규칙을 정한다.", effects: {logical: 10}}, {text: "모험가들을 설득하여 함께 문제를 해결하자고 제안한다.", effects: {interpersonal: 10}}, {text: "자신의 내면의 갈증을 참아낸다.", effects: {intrapersonal: 10}}, {text: "자신의 경험을 바탕으로 오아시스 물을 관리하는 방법을 설명한다.", effects: {naturalist: 10}}] },
+    { text: "고대 예언서를 발견했습니다. 예언서는 음악처럼 흘러가는 문장들로 이루어져 있습니다. 어떻게 해석하시겠습니까?", choices: [{text: "예언서의 음률을 따라 소리 내어 읽는다.", effects: {musical: 10}}, {text: "예언서의 문맥을 분석하여 내용을 파악한다.", effects: {linguistic: 10}}, {text: "예언서를 통해 자신의 운명을 성찰한다.", effects: {intrapersonal: 10}}, {text: "예언서의 내용을 그림으로 그려본다.", effects: {spatial: 10}}] },
+    { text: "고대 유적을 탐험하는 마지막 단계입니다. 마지막 관문을 통과하려면 당신의 내면의 빛을 보여주어야 합니다. 어떻게 하실 건가요?", choices: [{text: "지금까지의 여정을 기록한 시를 읊는다.", effects: {linguistic: 10}}, {text: "자신이 걸어온 길을 춤으로 표현한다.", effects: {bodily: 10}}, {text: "자신의 내면의 목소리에 집중해 진실을 말한다.", effects: {intrapersonal: 10}}, {text: "자신이 얻은 보물을 다른 사람들과 나눈다.", effects: {interpersonal: 10}}] }
+];
 
-const quests = {
-  prince: [
-    q("왕의 서신", "먼지 쌓인 서고에서 아버지의 흔적이 담긴 낡은 편지를 발견했다. '진정한 왕의 자격은 왕관이 아닌, 백성을 비추는 빛에 있나니. 그 빛을 따라가거라.' 이 수수께끼 같은 유언의 실마리는 어디서부터 찾아야 할까?",
-      opt('📜 편지에 쓰인 단어들의 상징적 의미를 파고들어 분석한다.',{linguistic:14}),
-      opt('🗺️ 편지에 남은 희미한 지도의 흔적을 따라 직접 현장으로 향한다.',{bodily:12,spatial:6}),
-      opt('👥 편지를 마지막으로 만졌을 법한 왕궁의 오랜 신하를 찾아가 대화한다.',{interpersonal:12,logical:6}),
-      opt('🌿 편지지에서 희미하게 나는 풀 향기를 단서로, 특정 지역의 식생을 조사한다.',{naturalist:8,spatial:6})
-    ),
-    q("불안한 소문", "백성들 사이에 퍼지는 불안한 소문이 왕국의 평화를 위협하고 있다. 소문의 근원을 파악하고 해결해야 한다. 어떻게 할 것인가?",
-      opt('🗣️ 사람들의 이야기를 경청하며 소문의 시작점을 파악한다.', {interpersonal:14, intrapersonal: 6}),
-      opt('🔢 소문의 확산 속도와 패턴을 분석하여 논리적으로 대응한다.', {logical:12, linguistic: 6}),
-      opt('👣 소문의 발원지로 알려진 장소를 직접 찾아가 현장을 조사한다.', {bodily:10, spatial: 8}),
-      opt('🎶 소문을 잠재울 평화의 노래를 작곡하여 백성들에게 들려준다.', {musical:14})
-    ),
-    q("고대 유물", "수수께끼의 힘을 가진 고대 유물이 숨겨진 동굴을 발견했다. 유물을 얻으려면 복잡한 수수께끼를 풀어야 한다. 어떤 방법으로 접근할 것인가?",
-      opt('📖 유물에 새겨진 고대 언어를 번역하여 해법을 찾는다.', {linguistic:12, logical: 8}),
-      opt('🧩 유물의 복잡한 기계 장치와 패턴을 분석하여 작동 원리를 파악한다.', {logical:14, spatial: 8}),
-      opt('✊ 동굴의 지형을 탐색하고 신체적인 능력을 활용해 유물을 확보한다.', {bodily:12, spatial: 6}),
-      opt('🧘‍♀️ 유물의 진동과 기운을 느끼며 마음의 눈으로 봉인을 해제한다.', {intrapersonal:14})
-    ),
-    q("어둠의 그림자", "왕국을 덮친 어둠의 그림자가 숲을 병들게 하고 있다. 숲의 생명력을 되찾아줘야 한다. 어떻게 할 것인가?",
-      opt('🌳 숲속의 식물과 동물들과 교감하며 병의 원인을 파악한다.', {naturalist:14, interpersonal: 8}),
-      opt('🪄 그림자의 마법적 패턴을 분석해 봉인을 풀어낼 주문을 찾는다.', {logical:12, musical: 6}),
-      opt('⚔️ 그림자 자체를 물리적인 힘으로 제압하여 숲을 구한다.', {bodily:14}),
-      opt('✍️ 숲의 변화를 기록하며 해결책을 찾아낸다.', {linguistic:10, naturalist: 6})
-    ),
-    q("길 잃은 여행자", "길을 잃고 헤매는 여행자를 만났다. 그는 당신에게 신비한 수수께끼를 건네며 길을 알려달라고 한다. 어떻게 할 것인가?",
-      opt('🗣️ 여행자의 말을 경청하고, 그의 심리 상태를 이해하며 조언한다.', {interpersonal:14, linguistic: 6}),
-      opt('🧭 여행자의 목적지까지의 지도를 직접 그려주며 길을 안내한다.', {spatial:12, interpersonal: 6}),
-      opt('🤔 수수께끼를 논리적으로 분석하여 해답을 찾아낸다.', {logical:12}),
-      opt('🤝 함께 길을 떠나며 몸짓과 행동으로 소통한다.', {bodily:10, interpersonal: 8})
-    ),
-    q("신비한 연못", "오래된 연못가에서 아름다운 멜로디가 들려온다. 멜로디의 정체를 파악하고, 그에 담긴 힘을 깨우려 한다.",
-      opt('🎵 멜로디의 리듬과 화음을 분석하여 악보로 옮겨 적는다.', {musical:16, logical: 6}),
-      opt('🌊 연못 주변의 자연환경을 조사하여 멜로디의 근원을 찾는다.', {naturalist:12, spatial: 6}),
-      opt('🧘‍♀️ 멜로디에 귀 기울이며 내면의 감정을 탐색하고 그 의미를 이해한다.', {intrapersonal:12, musical: 8}),
-      opt('🎤 연못의 멜로디에 화답하는 노래를 불러 연못의 힘을 깨운다.', {musical:14, interpersonal: 8})
-    )
-  ],
-  princess: [
-    q("비밀의 지도", "어릴 적, 할머니께서 '세상을 밝힐 영원의 빛'이 숨겨진 곳이라며 낡은 지도를 주셨다. 이제 그 의미를 찾아 떠날 시간. 지도의 첫 번째 표식은 '고요의 정원'을 가리키고 있다. 어떻게 그곳을 찾아갈까?",
-      opt('📜 지도의 고대 상형문자를 해독하여 정확한 위치를 파악한다.',{linguistic:14}),
-      opt('🧭 지도의 지형과 실제 산맥의 흐름을 대조하며 길을 찾는다.',{spatial:14}),
-      opt('🗣️ '고요의 정원'에 대한 전설을 아는 마을 현자를 찾아가 조언을 구한다.',{interpersonal:12}),
-      opt('🌸 지도에 그려진 특별한 꽃을 찾아, 그 꽃이 피는 곳으로 향한다.',{naturalist:12})
-    ),
-    q("마음의 거울", "오래된 마법의 거울이 당신의 가장 깊은 불안을 비추고 있다. 이 거울을 통해 내면의 힘을 깨우려면 어떻게 해야 할까?",
-      opt('🤔 거울에 비친 불안의 원인을 논리적으로 분석한다.', {logical:12, intrapersonal: 8}),
-      opt('✍️ 거울을 보며 떠오르는 감정과 생각을 글로 기록한다.', {linguistic:12, intrapersonal: 8}),
-      opt('🧘‍♀️ 조용히 눈을 감고 거울이 보내는 감정의 파동을 느낀다.', {intrapersonal:14}),
-      opt('👣 거울에서 한 발짝 떨어져 내 모습과 거리를 두는 연습을 한다.', {bodily:10, intrapersonal: 8})
-    ),
-    q("궁정의 음모", "궁정 내에서 당신을 해치려는 음모가 꾸며지고 있다. 이 위기를 어떻게 헤쳐 나갈 것인가?",
-      opt('🔍 정보를 수집하고, 증거를 논리적으로 조합하여 음모의 주동자를 밝혀낸다.', {logical:14, linguistic: 6}),
-      opt('👥 주변 사람들의 심리를 파악하고, 신뢰할 수 있는 동료를 모은다.', {interpersonal:16}),
-      opt('🏃‍♀️ 직접 몸을 숨겨 음모를 피하고, 반격의 기회를 노린다.', {bodily:12, spatial: 6}),
-      opt('🤫 음모가 드러나기 전에 먼저 그들의 약점을 찾아내어 설득한다.', {interpersonal:14, linguistic: 8})
-    ),
-    q("미로의 숲", "마법에 걸린 숲에 갇혔다. 숲은 끊임없이 형태를 바꾸는 미로가 되어 길을 찾기 어렵다.",
-      opt('🎼 숲에서 들려오는 신비한 새소리의 음계를 분석하여 길을 찾는다.', {musical:14, logical: 6}),
-      opt('� 숲의 식물들과 교감하여 길을 물어본다.', {naturalist:14}),
-      opt('🌌 숲의 패턴을 머릿속에 시각화하며 길을 찾는다.', {spatial:16}),
-      opt('🗺️ 지형을 파악하고 돌이나 나뭇가지로 이정표를 만들어 길을 기록한다.', {spatial:12, logical: 8})
-    ),
-    q("잊혀진 전설", "오래된 전설이 담긴 책을 발견했다. 이 책은 잊혀진 마법에 대한 단서를 담고 있지만, 암호로 잠겨 있다. 이 암호를 어떻게 풀 것인가?",
-      opt('📜 암호문의 문장 구조와 문법을 분석하여 의미를 유추한다.', {linguistic:14, logical: 8}),
-      opt('🧘‍♀️ 암호에 집중하여 내면의 직관으로 해답을 찾아낸다.', {intrapersonal:14}),
-      opt('👥 마을의 나이 많은 학자를 찾아가 함께 암호를 해독한다.', {interpersonal:12, linguistic: 6}),
-      opt('🎶 책의 리듬과 멜로디를 찾아내어 암호와 연결시킨다.', {musical:14, logical: 6})
-    ),
-    q("위기의 정원", "마법의 정원이 시들어가고 있다. 이 정원을 되살리려면 정원의 심장부에 있는 '생명의 씨앗'을 찾아야 한다.",
-      opt('🌱 정원 식물들의 생장 패턴을 관찰하고 병든 원인을 분석한다.', {naturalist:14, logical: 8}),
-      opt('👣 정원의 복잡한 지형을 탐험하며 씨앗이 숨겨진 곳을 찾아낸다.', {spatial:14, bodily: 8}),
-      opt('🗣️ 정원 관리인에게 정원의 역사와 특징에 대해 물어본다.', {interpersonal:12, linguistic: 8}),
-      opt('💧 정원의 흙과 물의 미세한 성분을 분석하여 최적의 환경을 만든다.', {logical:14, naturalist: 8})
-    )
-  ],
-  warrior: [
-    q("사냥꾼의 시험", "고대 전사의 묘지에 도착했다. 이곳을 통과하려면 사냥꾼의 시험을 통과해야 한다. 시험의 내용은 다음과 같다: '눈에 보이지 않는 짐승을 잡아라.' 어떻게 할 것인가?",
-      opt('👣 발자국과 흔적을 추적하며 짐승의 이동 경로를 예측한다.', {bodily:14, logical: 6}),
-      opt('🧘‍♀️ 고요히 앉아 짐승의 기운을 느끼며 위치를 파악한다.', {intrapersonal:14, spatial: 6}),
-      opt('🎶 특정한 리듬의 북소리를 내어 짐승을 유인한다.', {musical:12, logical: 8}),
-      opt('🌳 주변의 나뭇가지와 돌을 이용해 함정을 만들어 짐승을 가둔다.', {naturalist:12, spatial: 8})
-    ),
-    q("무너진 성벽", "마을을 지키던 성벽이 거대한 괴물에 의해 무너졌다. 무너진 성벽을 재건하고, 괴물을 막아야 한다. 어떻게 할 것인가?",
-      opt('💪 괴물의 공격 패턴을 파악하고 신체적인 능력을 활용해 괴물을 무찌른다.', {bodily:16}),
-      opt('🗺️ 성벽의 설계도를 분석하고, 가장 효율적인 재건 계획을 세운다.', {spatial:14, logical: 8}),
-      opt('🗣️ 무너진 성벽의 잔해 속에서 새로운 무기를 만들어 낸다.', {naturalist:10, bodily: 8}),
-      opt('🤝 마을 사람들을 설득하고, 각자의 재능을 활용하여 함께 성벽을 재건한다.', {interpersonal:14, logical: 6})
-    ),
-    q("전쟁의 노래", "전쟁의 긴장감으로 병사들의 사기가 바닥으로 떨어졌다. 병사들의 사기를 북돋아 승리를 이끌어내야 한다.",
-      opt('🎶 승리의 노래를 작곡하여 병사들에게 들려준다.', {musical:16, interpersonal: 8}),
-      opt('🗣️ 병사들에게 격려와 용기를 주는 연설을 한다.', {linguistic:14, interpersonal: 8}),
-      opt('💪 직접 선봉에 서서 병사들에게 용맹함을 보여준다.', {bodily:14}),
-      opt('🧘‍♀️ 내면의 고통과 불안을 다스리며 병사들의 마음을 이해한다.', {intrapersonal:14, interpersonal: 8})
-    ),
-    q("고대 무덤", "전설의 무기가 숨겨진 고대 무덤에 들어섰다. 무덤은 정교한 함정으로 가득 차 있다. 무기를 얻으려면 어떻게 해야 할까?",
-      opt('👣 함정의 패턴을 분석하고, 뛰어난 신체 능력으로 함정을 피한다.', {bodily:14, logical: 8}),
-      opt('🗺️ 무덤의 지형을 머릿속에 시각화하여 가장 안전한 경로를 찾는다.', {spatial:16}),
-      opt('💡 무덤의 벽에 새겨진 문구를 해독하여 함정의 비밀을 알아낸다.', {linguistic:12, logical: 8}),
-      opt('🧘‍♀️ 무덤의 기운을 느끼며 함정의 위치를 감지한다.', {intrapersonal:12, spatial: 8})
-    ),
-    q("잃어버린 식량", "갑작스러운 가뭄으로 식량이 부족해졌다. 굶주린 백성들을 위해 식량을 확보해야 한다.",
-      opt('🌾 숲으로 들어가 식용 가능한 식물을 찾아낸다.', {naturalist:16, spatial: 6}),
-      opt('🗣️ 다른 마을의 촌장을 찾아가 식량 지원을 요청한다.', {interpersonal:14, linguistic: 6}),
-      opt('💪 직접 사냥을 나서서 식량을 확보한다.', {bodily:14, spatial: 8}),
-      opt('📊 식량의 소비 속도와 남은 식량을 계산하여 배급량을 조절한다.', {logical:14, interpersonal: 8})
-    ),
-    q("용의 둥지", "전설의 용이 잠들어 있는 둥지를 발견했다. 용을 깨우지 않고 둥지에 있는 보물을 가져와야 한다.",
-      opt('🗺️ 둥지의 구조를 파악하고, 용의 시야와 움직임을 피해 보물을 확보한다.', {spatial:14, bodily: 8}),
-      opt('🎶 용을 잠재울 자장가를 불러 용이 깨어나지 못하게 한다.', {musical:16}),
-      opt('⚔️ 용의 둥지에 있는 보물을 논리적으로 분석하여 어떤 보물이 가장 가치 있는지 파악한다.', {logical:12, linguistic: 6}),
-      opt('🤝 동료들과 협력하여 용의 주의를 분산시키고 보물을 가져온다.', {interpersonal:14, bodily: 8})
-    )
-  ],
-  wizard: [
-    q("고대의 주문", "오래된 마법서에서 강력한 주문을 발견했다. 하지만 주문은 암호로 잠겨 있다. 이 암호를 어떻게 풀 것인가?",
-      opt('📜 암호문에 숨겨진 언어적 패턴을 분석하여 주문을 해독한다.', {linguistic:16, logical: 8}),
-      opt('🧩 암호의 논리적 규칙을 찾아내어 퍼즐을 해결하듯 해독한다.', {logical:16, intrapersonal: 8}),
-      opt('🧘‍♀️ 눈을 감고 주문의 기운을 느끼며 내면의 목소리에 귀 기울인다.', {intrapersonal:14}),
-      opt('🎶 주문에 어울리는 멜로디를 찾아내어 암호를 해제한다.', {musical:14, linguistic: 6})
-    ),
-    q("하늘의 별자리", "갑자기 하늘의 별자리가 혼란에 빠졌다. 이 혼란을 바로잡고, 별자리에 숨겨진 예언을 해독해야 한다.",
-      opt('🌌 별자리의 위치와 패턴을 분석하여 혼란의 원인을 밝혀낸다.', {spatial:16, logical: 8}),
-      opt('✍️ 별자리에 대한 예언을 글로 쓰고, 그 의미를 심층적으로 탐구한다.', {linguistic:14, intrapersonal: 8}),
-      opt('🗣️ 별자리를 연구하는 다른 마법사들을 찾아가 함께 해결책을 모색한다.', {interpersonal:14, logical: 6}),
-      opt('🌱 별자리의 변화가 지상의 자연에 미치는 영향을 관찰한다.', {naturalist:12, spatial: 8})
-    ),
-    q("마법의 거울", "마법의 거울이 깨져 조각났다. 이 조각을 다시 맞추려면 조각에 담긴 기억들을 되살려야 한다.",
-      opt('🧘‍♀️ 조각에 손을 대고 내면의 힘을 집중해 기억을 되살린다.', {intrapersonal:16}),
-      opt('🧩 조각의 형태와 그림을 맞춰 거울을 재구성한다.', {spatial:14, logical: 8}),
-      opt('🤝 주변의 사람들을 설득해 조각을 찾아달라고 부탁한다.', {interpersonal:12, bodily: 8}),
-      opt('🎶 조각에 담긴 멜로디를 따라 노래를 부르며 기억을 소환한다.', {musical:14, intrapersonal: 8})
-    ),
-    q("용의 그림자", "마을을 덮친 용의 그림자가 사람들을 공포에 떨게 한다. 그림자를 몰아내고 평화를 되찾아야 한다.",
-      opt('🔥 용의 그림자를 물리적인 힘으로 제압하기 위해 강력한 주문을 사용한다.', {bodily:14, logical: 8}),
-      opt('🗺️ 그림자의 움직임을 파악하고, 약점을 찾아낼 마법 지도를 만든다.', {spatial:14, logical: 8}),
-      opt('🗣️ 사람들에게 용기를 주는 말을 건네며 그림자에 맞설 힘을 불어넣는다.', {interpersonal:14, linguistic: 8}),
-      opt('🌳 숲속의 고대 정령을 찾아가 그림자를 물리칠 방법을 물어본다.', {naturalist:12, intrapersonal: 8})
-    ),
-    q("시든 숲", "마법의 숲이 시들어가고 있다. 숲의 생명력을 되살려야 한다.",
-      opt('🧪 숲의 흙과 물을 분석하여 원인을 찾고, 마법 약을 제조한다.', {logical:14, naturalist: 8}),
-      opt('🌱 숲의 식물들과 교감하여 숲의 고통을 이해하고 치유한다.', {naturalist:16}),
-      opt('🎶 숲의 멜로디를 듣고, 숲에 생명력을 불어넣을 노래를 부른다.', {musical:14, spatial: 6}),
-      opt('🧘‍♀️ 숲의 기운과 내면의 기운을 연결하여 숲을 치유한다.', {intrapersonal:14, naturalist: 8})
-    ),
-    q("마법사의 탑", "고대 마법사의 탑에 들어가려면 복잡한 수수께끼를 풀어야 한다. 탑의 문에는 다음과 같은 문구가 새겨져 있다: '마음을 들여다보라. 그리고 노래하라.'",
-      opt('🧘‍♀️ 내면의 깊은 곳을 탐색하여 자신에 대한 해답을 찾는다.', {intrapersonal:16}),
-      opt('🎵 탑의 문에 새겨진 문구를 멜로디로 바꾸어 노래한다.', {musical:14, linguistic: 6}),
-      opt('💡 문구의 논리적 의미를 분석하여 해답을 찾아낸다.', {logical:12, intrapersonal: 8}),
-      opt('🗣️ 다른 마법사들의 조언을 참고하여 수수께끼를 해결한다.', {interpersonal:12, linguistic: 8})
-    )
-  ]
+const wizardQuests = [
+    { text: "고대 마법서의 봉인을 풀어야 합니다. 어떤 방법으로 봉인을 해제하겠습니까?", choices: [{text: "봉인에 사용된 고대 언어를 해독한다.", effects: {linguistic: 10}}, {text: "봉인에 숨겨진 수학적 패턴을 찾아낸다.", effects: {logical: 10}}, {text: "봉인의 문양을 상상 속에서 재배열한다.", effects: {spatial: 10}}, {text: "봉인의 기운을 느껴 그 진동을 재현한다.", effects: {musical: 10}}] },
+    { text: "신비로운 생명체의 약점을 알아내야 합니다. 어떻게 하시겠습니까?", choices: [{text: "생명체의 울음소리를 분석한다.", effects: {musical: 10}}, {text: "생명체의 행동 패턴을 관찰한다.", effects: {naturalist: 10}}, {text: "생명체의 마음을 읽어본다.", effects: {interpersonal: 10}}, {text: "생명체의 약점을 논리적으로 추론한다.", effects: {logical: 10}}] },
+    { text: "고대 유적의 지도를 그려야 합니다. 어떻게 그리시겠습니까?", choices: [{text: "방의 크기와 거리를 정밀하게 측정해 그린다.", effects: {logical: 10}}, {text: "주변의 지형지물을 활용해 그린다.", effects: {spatial: 10}}, {text: "탐험 중 만난 다른 모험가들에게 정보를 얻어 그린다.", effects: {interpersonal: 10}}, {text: "내면의 감각을 이용해 그린다.", effects: {intrapersonal: 10}}] },
+    { text: "오랜 시간 잠들어 있던 골렘을 깨워야 합니다. 어떤 방법으로 골렘을 깨우시겠습니까?", choices: [{text: "골렘에게 명령어를 말한다.", effects: {linguistic: 10}}, {text: "골렘의 핵심 부품을 찾아 손으로 만진다.", effects: {bodily: 10}}, {text: "골렘의 외형을 따라하며 움직여본다.", effects: {bodily: 10}}, {text: "골렘의 제작 과정을 상상한다.", effects: {spatial: 10}}] },
+    { text: "신비로운 약초를 재배해야 합니다. 어떻게 재배하시겠습니까?", choices: [{text: "약초의 생태를 연구해 최적의 환경을 만든다.", effects: {naturalist: 10}}, {text: "약초의 성장 규칙을 계산한다.", effects: {logical: 10}}, {text: "약초에게 말을 걸며 키운다.", effects: {linguistic: 10}}, {text: "약초의 영혼과 교감하려 노력한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 거울을 통해 환영을 봐야 합니다. 어떤 방법으로 환영을 보시겠습니까?", choices: [{text: "거울에 비친 자신의 모습을 성찰한다.", effects: {intrapersonal: 10}}, {text: "거울의 마법적 에너지를 손으로 느낀다.", effects: {bodily: 10}}, {text: "거울에 비친 풍경을 그림으로 그린다.", effects: {spatial: 10}}, {text: "거울 속 환영에게 말을 건넨다.", effects: {linguistic: 10}}] },
+    { text: "고대 유적에서 울리는 음악에 맞춰 춤을 추어야 합니다. 어떻게 하시겠습니까?", choices: [{text: "음악의 리듬에 맞춰 자연스럽게 몸을 맡긴다.", effects: {musical: 10}}, {text: "음악의 규칙을 분석해 춤의 패턴을 만든다.", effects: {logical: 10}}, {text: "춤을 통해 자신의 감정을 표현한다.", effects: {intrapersonal: 10}}, {text: "주변의 모험가들을 모아 함께 춤을 춘다.", effects: {interpersonal: 10}}] },
+    { text: "사막의 모래바람을 멈춰야 합니다. 어떻게 하시겠습니까?", choices: [{text: "바람의 흐름을 분석해 마법을 사용한다.", effects: {naturalist: 10}}, {text: "바람의 소리를 이용해 마법 주문을 만든다.", effects: {musical: 10}}, {text: "바람의 속도를 계산해 마법을 사용한다.", effects: {logical: 10}}, {text: "바람의 방향을 예측해 마법을 사용한다.", effects: {spatial: 10}}] },
+    { text: "어둠의 마법을 해제해야 합니다. 어떤 방법을 사용하시겠습니까?", choices: [{text: "마법 주문을 외운다.", effects: {linguistic: 10}}, {text: "마법의 기운을 느끼며 해제 의식을 진행한다.", effects: {bodily: 10}}, {text: "마법의 원리를 이해하려 노력한다.", effects: {logical: 10}}, {text: "자신의 내면의 힘을 이용한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 도시의 주민들과 교류해야 합니다. 어떻게 하시겠습니까?", choices: [{text: "그들의 문화와 역사를 공부한다.", effects: {linguistic: 10}}, {text: "그들과 함께 춤을 추고 노래를 부른다.", effects: {musical: 10}}, {text: "그들의 감정을 이해하려 노력한다.", effects: {interpersonal: 10}}, {text: "그들의 사회 구조를 분석한다.", effects: {logical: 10}}] },
+    { text: "고대 문명의 건축물을 복구해야 합니다. 어떻게 복구하시겠습니까?", choices: [{text: "건축물의 구조를 파악해 모형을 만든다.", effects: {spatial: 10}}, {text: "건축물의 재료를 손으로 만져본다.", effects: {bodily: 10}}, {text: "건축물에 새겨진 문양을 해독한다.", effects: {linguistic: 10}}, {text: "자신의 내면의 감각을 이용해 복구한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 유적에서 정체불명의 식물을 발견했습니다. 어떻게 조사하시겠습니까?", choices: [{text: "식물의 생태를 관찰하고 기록한다.", effects: {naturalist: 10}}, {text: "식물의 성장 패턴을 분석한다.", effects: {logical: 10}}, {text: "식물의 외형을 그림으로 그린다.", effects: {spatial: 10}}, {text: "식물에게 말을 걸어본다.", effects: {linguistic: 10}}] },
+    { text: "고대 유적의 거대한 퍼즐을 풀어야 합니다. 어떻게 퍼즐을 푸시겠습니까?", choices: [{text: "퍼즐의 모양을 파악해 조각들을 맞춘다.", effects: {spatial: 10}}, {text: "퍼즐의 원리를 논리적으로 추론한다.", effects: {logical: 10}}, {text: "퍼즐의 제작자의 의도를 상상한다.", effects: {intrapersonal: 10}}, {text: "퍼즐 조각들을 직접 만져보며 감각을 익힌다.", effects: {bodily: 10}}] },
+    { text: "다른 모험가와 함께 유적을 탐험해야 합니다. 어떻게 협력하시겠습니까?", choices: [{text: "서로의 역할을 분담하고 계획을 세운다.", effects: {interpersonal: 10}}, {text: "상대방의 의견을 존중하며 대화한다.", effects: {linguistic: 10}}, {text: "상대방의 감정 상태를 파악한다.", effects: {intrapersonal: 10}}, {text: "서로의 동작을 맞춰 협동한다.", effects: {bodily: 10}}] },
+    { text: "고대 숲에서 들리는 환상적인 음악을 따라가야 합니다. 어떻게 하시겠습니까?", choices: [{text: "음악의 멜로디와 리듬을 기록한다.", effects: {musical: 10}}, {text: "음악이 들리는 방향을 시각적으로 파악한다.", effects: {spatial: 10}}, {text: "음악의 의미를 추론한다.", effects: {linguistic: 10}}, {text: "음악에 대한 자신의 감상을 기록한다.", effects: {intrapersonal: 10}}] },
+    { text: "거대한 폭포를 건너야 합니다. 어떻게 건너시겠습니까?", choices: [{text: "폭포의 물줄기를 관찰해 가장 안전한 길을 찾는다.", effects: {naturalist: 10}}, {text: "폭포의 힘을 직접 느끼며 건넌다.", effects: {bodily: 10}}, {text: "폭포의 물줄기를 보며 길을 예측한다.", effects: {spatial: 10}}, {text: "폭포를 건너기 위한 공학적 방법을 상상한다.", effects: {logical: 10}}] },
+    { text: "고대 유적의 비밀을 담은 예언서를 해독해야 합니다. 어떻게 해독하시겠습니까?", choices: [{text: "예언서의 문맥을 논리적으로 분석한다.", effects: {logical: 10}}, {text: "예언서의 내용을 시로 읊어본다.", effects: {linguistic: 10}}, {text: "예언서의 내용을 그림으로 그려본다.", effects: {spatial: 10}}, {text: "예언서가 말하고자 하는 바를 내면의 목소리로 듣는다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 용의 심장을 찾아야 합니다. 용의 심장은 숨겨져 있습니다. 어떻게 찾으시겠습니까?", choices: [{text: "용의 마음을 읽어본다.", effects: {interpersonal: 10}}, {text: "용의 생태를 연구한다.", effects: {naturalist: 10}}, {text: "용의 비늘을 만져보며 단서를 찾는다.", effects: {bodily: 10}}, {text: "용의 울음소리를 분석한다.", effects: {musical: 10}}] },
+    { text: "고대 도시에서 열리는 축제에 참여해야 합니다. 어떻게 참여하시겠습니까?", choices: [{text: "축제 참가자들의 마음을 읽어본다.", effects: {interpersonal: 10}}, {text: "축제 음악을 연주한다.", effects: {musical: 10}}, {text: "축제에 대한 기록을 찾아본다.", effects: {linguistic: 10}}, {text: "축제 참가자들의 행동을 관찰한다.", effects: {naturalist: 10}}] },
+    { text: "고대 유적에서 당신의 지능을 시험하는 마지막 시험에 직면했습니다. 당신은 어떻게 이 시험을 통과하시겠습니까?", choices: [{text: "자신의 강점 지능을 분석해 문제를 해결한다.", effects: {logical: 10}}, {text: "자신의 내면의 힘을 사용한다.", effects: {intrapersonal: 10}}, {text: "문제를 다른 사람들과 함께 해결한다.", effects: {interpersonal: 10}}, {text: "자신이 쌓아온 경험을 토대로 문제를 해결한다.", effects: {linguistic: 10}}] }
+];
+
+const thiefQuests = [
+    { text: "고대 신전의 비밀 통로를 찾아야 합니다. 어떻게 찾으시겠습니까?", choices: [{text: "통로의 구조를 머릿속으로 그려본다.", effects: {spatial: 10}}, {text: "통로의 바닥에 남은 발자국을 분석한다.", effects: {logical: 10}}, {text: "통로의 벽을 손으로 만져보며 빈 공간을 찾는다.", effects: {bodily: 10}}, {text: "통로에 대한 소문을 모아 분석한다.", effects: {interpersonal: 10}}] },
+    { text: "고대 도시의 밤거리를 은밀하게 이동해야 합니다. 어떻게 이동하시겠습니까?", choices: [{text: "건물과 건물을 뛰어다니며 이동한다.", effects: {bodily: 10}}, {text: "도시의 지형을 머릿속에 기억한다.", effects: {spatial: 10}}, {text: "도시의 소리를 분석해 사람들의 위치를 파악한다.", effects: {musical: 10}}, {text: "도시의 규칙을 분석해 순찰 경로를 예측한다.", effects: {logical: 10}}] },
+    { text: "고대 유물 상자를 열어야 합니다. 상자에는 복잡한 자물쇠가 걸려 있습니다. 어떻게 여시겠습니까?", choices: [{text: "자물쇠의 구조를 분석해 해제한다.", effects: {logical: 10}}, {text: "자물쇠에 귀를 대고 소리를 들으며 해제한다.", effects: {musical: 10}}, {text: "자물쇠의 문양을 보며 해제 방법을 상상한다.", effects: {spatial: 10}}, {text: "자물쇠를 직접 만져보며 작동 방식을 파악한다.", effects: {bodily: 10}}] },
+    { text: "낯선 동굴에서 길을 잃었습니다. 어떻게 탈출하시겠습니까?", choices: [{text: "동굴의 바람 소리를 듣고 길을 찾는다.", effects: {musical: 10}}, {text: "바닥의 흙과 돌을 분석해 방향을 추론한다.", effects: {naturalist: 10}}, {text: "자신의 내면의 목소리에 집중해 길을 찾는다.", effects: {intrapersonal: 10}}, {text: "동굴의 지도를 머릿속에 그린다.", effects: {spatial: 10}}] },
+    { text: "고대 유적에서 다른 도적과 경쟁해야 합니다. 어떻게 경쟁자를 제압하시겠습니까?", choices: [{text: "경쟁자의 심리를 파악해 약점을 찾는다.", effects: {interpersonal: 10}}, {text: "가장 효율적인 경로를 계산한다.", effects: {logical: 10}}, {text: "경쟁자의 언행을 분석해 속임수를 간파한다.", effects: {linguistic: 10}}, {text: "경쟁자에게 정면으로 도전한다.", effects: {bodily: 10}}] },
+    { text: "고대 기록을 훔쳐야 합니다. 어떻게 훔치시겠습니까?", choices: [{text: "기록의 내용을 분석해 중요한 부분만 가져간다.", effects: {linguistic: 10}}, {text: "기록이 보관된 장소의 구조를 파악한다.", effects: {spatial: 10}}, {text: "기록을 지키는 경비병의 움직임을 분석한다.", effects: {logical: 10}}, {text: "기록을 훔치려는 자신의 의도를 성찰한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 유적의 함정을 해체해야 합니다. 어떻게 해체하시겠습니까?", choices: [{text: "함정의 구조를 파악해 해체한다.", effects: {spatial: 10}}, {text: "함정의 작동 원리를 논리적으로 추론한다.", effects: {logical: 10}}, {text: "함정의 미세한 움직임을 몸으로 느낀다.", effects: {bodily: 10}}, {text: "함정을 만든 사람의 의도를 상상한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 도시에 잠입해야 합니다. 어떻게 잠입하시겠습니까?", choices: [{text: "가장 인적이 드문 길을 찾는다.", effects: {interpersonal: 10}}, {text: "주변 환경과 조화를 이루어 눈에 띄지 않게 이동한다.", effects: {naturalist: 10}}, {text: "주민들의 대화를 엿들어 중요한 정보를 얻는다.", effects: {linguistic: 10}}, {text: "자신이 잠입해야 하는 이유를 되새긴다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 신전의 보물을 훔쳐야 합니다. 보물은 마법의 감옥에 갇혀 있습니다. 어떻게 훔치시겠습니까?", choices: [{text: "감옥의 마법 주문을 해독한다.", effects: {linguistic: 10}}, {text: "감옥의 마법적 패턴을 분석한다.", effects: {logical: 10}}, {text: "감옥의 에너지를 손으로 느껴본다.", effects: {bodily: 10}}, {text: "감옥의 소리를 듣고 약점을 찾는다.", effects: {musical: 10}}] },
+    { text: "고대 숲에서 쫓기고 있습니다. 어떻게 따돌리시겠습니까?", choices: [{text: "숲의 지형을 이용해 숨는다.", effects: {spatial: 10}}, {text: "숲의 동물들의 울음소리를 따라한다.", effects: {naturalist: 10}}, {text: "추격자의 심리를 파악해 혼란을 준다.", effects: {interpersonal: 10}}, {text: "가장 효과적인 탈출 경로를 계산한다.", effects: {logical: 10}}] },
+    { text: "고대 유적의 함정 퍼즐을 풀어야 합니다. 어떻게 퍼즐을 푸시겠습니까?", choices: [{text: "퍼즐의 원리를 논리적으로 추론한다.", effects: {logical: 10}}, {text: "퍼즐의 모양을 손으로 만져보며 해법을 찾는다.", effects: {bodily: 10}}, {text: "퍼즐에 대한 기록을 찾아본다.", effects: {linguistic: 10}}, {text: "퍼즐의 제작자의 의도를 상상한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 도시에서 도망쳐야 합니다. 어떻게 도망치시겠습니까?", choices: [{text: "가장 인적이 드문 길을 찾아 이동한다.", effects: {interpersonal: 10}}, {text: "도시에 사는 동물들의 움직임을 따라간다.", effects: {naturalist: 10}}, {text: "자신의 내면의 힘을 사용해 도망친다.", effects: {intrapersonal: 10}}, {text: "가장 효율적인 도주 경로를 계산한다.", effects: {logical: 10}}] },
+    { text: "고대 신전의 비밀 방에 들어갔습니다. 방의 벽에 그림이 그려져 있습니다. 어떻게 해석하시겠습니까?", choices: [{text: "그림의 상징을 분석한다.", effects: {spatial: 10}}, {text: "그림의 내용을 시로 읊어본다.", effects: {linguistic: 10}}, {text: "그림이 담고 있는 감정을 느껴본다.", effects: {intrapersonal: 10}}, {text: "그림을 통해 방의 구조를 파악한다.", effects: {spatial: 10}}] },
+    { text: "고대 숲에서 들리는 소리를 분석해 길을 찾아야 합니다. 어떻게 분석하시겠습니까?", choices: [{text: "소리의 음높이와 리듬을 기록한다.", effects: {musical: 10}}, {text: "소리의 근원을 논리적으로 추론한다.", effects: {logical: 10}}, {text: "소리의 주인을 상상한다.", effects: {interpersonal: 10}}, {text: "소리의 감정을 느껴본다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 유적의 보물을 훔치기 위해 다른 도적과 팀을 맺었습니다. 어떻게 협력하시겠습니까?", choices: [{text: "각자의 역할을 나누고 계획을 세운다.", effects: {interpersonal: 10}}, {text: "자신의 강점을 살려 임무를 수행한다.", effects: {bodily: 10}}, {text: "상대방의 약점을 보완해준다.", effects: {intrapersonal: 10}}, {text: "보물에 대한 정보를 공유한다.", effects: {linguistic: 10}}] },
+    { text: "고대 도시의 지붕을 뛰어넘어야 합니다. 어떻게 하시겠습니까?", choices: [{text: "건물 사이의 거리를 계산한다.", effects: {logical: 10}}, {text: "지붕의 구조를 머릿속에 그린다.", effects: {spatial: 10}}, {text: "가장 효율적인 착지 자세를 취한다.", effects: {bodily: 10}}, {text: "지붕을 뛰어넘는 다른 동물의 움직임을 관찰한다.", effects: {naturalist: 10}}] },
+    { text: "고대 유적의 거대한 퍼즐을 풀어야 합니다. 어떻게 퍼즐을 푸시겠습니까?", choices: [{text: "퍼즐의 원리를 논리적으로 추론한다.", effects: {logical: 10}}, {text: "퍼즐의 모양을 손으로 만져보며 해법을 찾는다.", effects: {bodily: 10}}, {text: "퍼즐에 대한 기록을 찾아본다.", effects: {linguistic: 10}}, {text: "퍼즐의 제작자의 의도를 상상한다.", effects: {intrapersonal: 10}}] },
+    { text: "사막의 오아시스에 도착했습니다. 하지만 다른 모험가들과 물을 놓고 갈등이 생겼습니다. 어떻게 해결하시겠습니까?", choices: [{text: "물을 공평하게 분배할 규칙을 정한다.", effects: {logical: 10}}, {text: "모험가들을 설득하여 함께 문제를 해결하자고 제안한다.", effects: {interpersonal: 10}}, {text: "자신의 내면의 갈증을 참아낸다.", effects: {intrapersonal: 10}}, {text: "자신의 경험을 바탕으로 오아시스 물을 관리하는 방법을 설명한다.", effects: {naturalist: 10}}] },
+    { text: "고대 예언서를 발견했습니다. 예언서는 음악처럼 흘러가는 문장들로 이루어져 있습니다. 어떻게 해석하시겠습니까?", choices: [{text: "예언서의 음률을 따라 소리 내어 읽는다.", effects: {musical: 10}}, {text: "예언서의 문맥을 분석하여 내용을 파악한다.", effects: {linguistic: 10}}, {text: "예언서를 통해 자신의 운명을 성찰한다.", effects: {intrapersonal: 10}}, {text: "예언서의 내용을 그림으로 그려본다.", effects: {spatial: 10}}] },
+    { text: "고대 유적을 탐험하는 마지막 단계입니다. 마지막 관문을 통과하려면 당신의 내면의 빛을 보여주어야 합니다. 어떻게 하실 건가요?", choices: [{text: "지금까지의 여정을 기록한 시를 읊는다.", effects: {linguistic: 10}}, {text: "자신이 걸어온 길을 춤으로 표현한다.", effects: {bodily: 10}}, {text: "자신의 내면의 목소리에 집중해 진실을 말한다.", effects: {intrapersonal: 10}}, {text: "자신이 얻은 보물을 다른 사람들과 나눈다.", effects: {interpersonal: 10}}] }
+];
+
+const priestQuests = [
+    { text: "고대 신전의 수호자가 되었습니다. 신전을 침범하려는 자들과 어떻게 대화하시겠습니까?", choices: [{text: "그들의 마음을 읽으려 노력한다.", effects: {interpersonal: 10}}, {text: "그들의 행동 패턴을 분석한다.", effects: {logical: 10}}, {text: "침범자들을 설득하려 한다.", effects: {interpersonal: 10}}, {text: "위엄 있는 목소리로 경고한다.", effects: {linguistic: 10}}] },
+    { text: "사악한 마법사가 숲을 오염시켰습니다. 어떻게 숲을 되살리시겠습니까?", choices: [{text: "오염된 땅의 상태를 관찰한다.", effects: {naturalist: 10}}, {text: "마법사의 주문을 해독한다.", effects: {linguistic: 10}}, {text: "숲의 동물들과 교감한다.", effects: {interpersonal: 10}}, {text: "몸을 움직여 오염을 정화하는 의식을 치른다.", effects: {bodily: 10}}] },
+    { text: "고대 유적에서 들리는 슬픈 음악을 치유해야 합니다. 어떻게 하시겠습니까?", choices: [{text: "음악의 멜로디와 리듬을 분석한다.", effects: {musical: 10}}, {text: "음악의 슬픔을 느끼며 공감한다.", effects: {intrapersonal: 10}}, {text: "음악을 따라가 근원을 찾아본다.", effects: {spatial: 10}}, {text: "주변의 사람들과 함께 음악을 연주해본다.", effects: {interpersonal: 10}}] },
+    { text: "고대 도시에서 병든 사람들을 치료해야 합니다. 어떻게 치료하시겠습니까?", choices: [{text: "병의 원인을 논리적으로 분석한다.", effects: {logical: 10}}, {text: "병든 사람들의 마음을 위로한다.", effects: {interpersonal: 10}}, {text: "약초의 효능을 찾아본다.", effects: {naturalist: 10}}, {text: "자신의 내면의 힘을 이용해 치유한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 유적에서 정체불명의 식물을 발견했습니다. 어떻게 조사하시겠습니까?", choices: [{text: "식물의 생태를 관찰하고 기록한다.", effects: {naturalist: 10}}, {text: "식물의 성장 패턴을 분석한다.", effects: {logical: 10}}, {text: "식물의 외형을 그림으로 그린다.", effects: {spatial: 10}}, {text: "식물에게 말을 걸어본다.", effects: {linguistic: 10}}] },
+    { text: "고대 유적에서 길을 잃은 사람을 만났습니다. 어떻게 도와주시겠습니까?", choices: [{text: "그의 말을 경청하고 길을 찾아준다.", effects: {interpersonal: 10}}, {text: "지도의 지형을 분석해 길을 찾아준다.", effects: {spatial: 10}}, {text: "자신의 직감을 믿고 길을 안내한다.", effects: {intrapersonal: 10}}, {text: "주변의 식물과 동물을 이용해 길을 찾는다.", effects: {naturalist: 10}}] },
+    { text: "고대 유적의 비밀을 담은 예언서를 해독해야 합니다. 어떻게 해독하시겠습니까?", choices: [{text: "예언서의 문맥을 논리적으로 분석한다.", effects: {logical: 10}}, {text: "예언서의 내용을 시로 읊어본다.", effects: {linguistic: 10}}, {text: "예언서의 내용을 그림으로 그려본다.", effects: {spatial: 10}}, {text: "예언서가 말하고자 하는 바를 내면의 목소리로 듣는다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 폭포의 아름다움을 그림으로 담아야 합니다. 어떻게 그리시겠습니까?", choices: [{text: "폭포의 구조를 정확하게 묘사한다.", effects: {spatial: 10}}, {text: "폭포의 소리를 그림으로 표현한다.", effects: {musical: 10}}, {text: "폭포의 물줄기를 직접 만져보며 그림을 그린다.", effects: {bodily: 10}}, {text: "폭포를 보며 자신의 감정을 그림에 담는다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 유적의 거대한 퍼즐을 풀어야 합니다. 어떻게 퍼즐을 푸시겠습니까?", choices: [{text: "퍼즐의 원리를 논리적으로 추론한다.", effects: {logical: 10}}, {text: "퍼즐의 모양을 손으로 만져보며 해법을 찾는다.", effects: {bodily: 10}}, {text: "퍼즐에 대한 기록을 찾아본다.", effects: {linguistic: 10}}, {text: "퍼즐의 제작자의 의도를 상상한다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 도시에서 도망쳐야 합니다. 어떻게 도망치시겠습니까?", choices: [{text: "가장 인적이 드문 길을 찾아 이동한다.", effects: {interpersonal: 10}}, {text: "도시에 사는 동물들의 움직임을 따라간다.", effects: {naturalist: 10}}, {text: "자신의 내면의 힘을 사용해 도망친다.", effects: {intrapersonal: 10}}, {text: "가장 효율적인 도주 경로를 계산한다.", effects: {logical: 10}}] },
+    { text: "고대 숲에서 들리는 소리를 분석해 길을 찾아야 합니다. 어떻게 분석하시겠습니까?", choices: [{text: "소리의 음높이와 리듬을 기록한다.", effects: {musical: 10}}, {text: "소리의 근원을 논리적으로 추론한다.", effects: {logical: 10}}, {text: "소리의 주인을 상상한다.", effects: {interpersonal: 10}}, {text: "소리의 감정을 느껴본다.", effects: {intrapersonal: 10}}] },
+    { text: "고대 유적의 보물을 훔치기 위해 다른 도적과 팀을 맺었습니다. 어떻게 협력하시겠습니까?", choices: [{text: "각자의 역할을 나누고 계획을 세운다.", effects: {interpersonal: 10}}, {text: "자신의 강점을 살려 임무를 수행한다.", effects: {bodily: 10}}, {text: "상대방의 약점을 보완해준다.", effects: {intrapersonal: 10}}, {text: "보물에 대한 정보를 공유한다.", effects: {linguistic: 10}}] },
+    { text: "고대 도시의 지붕을 뛰어넘어야 합니다. 어떻게 하시겠습니까?", choices: [{text: "건물 사이의 거리를 계산한다.", effects: {logical: 10}}, {text: "지붕의 구조를 머릿속에 그린다.", effects: {spatial: 10}}, {text: "가장 효율적인 착지 자세를 취한다.", effects: {bodily: 10}}, {text: "지붕을 뛰어넘는 다른 동물의 움직임을 관찰한다.", effects: {naturalist: 10}}] },
+    { text: "고대 유적의 거대한 퍼즐을 풀어야 합니다. 어떻게 퍼즐을 푸시겠습니까?", choices: [{text: "퍼즐의 원리를 논리적으로 추론한다.", effects: {logical: 10}}, {text: "퍼즐의 모양을 손으로 만져보며 해법을 찾는다.", effects: {bodily: 10}}, {text: "퍼즐에 대한 기록을 찾아본다.", effects: {linguistic: 10}}, {text: "퍼즐의 제작자의 의도를 상상한다.", effects: {intrapersonal: 10}}] },
+    { text: "사막의 오아시스에 도착했습니다. 하지만 다른 모험가들과 물을 놓고 갈등이 생겼습니다. 어떻게 해결하시겠습니까?", choices: [{text: "물을 공평하게 분배할 규칙을 정한다.", effects: {logical: 10}}, {text: "모험가들을 설득하여 함께 문제를 해결하자고 제안한다.", effects: {interpersonal: 10}}, {text: "자신의 내면의 갈증을 참아낸다.", effects: {intrapersonal: 10}}, {text: "자신의 경험을 바탕으로 오아시스 물을 관리하는 방법을 설명한다.", effects: {naturalist: 10}}] },
+    { text: "고대 예언서를 발견했습니다. 예언서는 음악처럼 흘러가는 문장들로 이루어져 있습니다. 어떻게 해석하시겠습니까?", choices: [{text: "예언서의 음률을 따라 소리 내어 읽는다.", effects: {musical: 10}}, {text: "예언서의 문맥을 분석하여 내용을 파악한다.", effects: {linguistic: 10}}, {text: "예언서를 통해 자신의 운명을 성찰한다.", effects: {intrapersonal: 10}}, {text: "예언서의 내용을 그림으로 그려본다.", effects: {spatial: 10}}] },
+    { text: "고대 유적을 탐험하는 마지막 단계입니다. 마지막 관문을 통과하려면 당신의 내면의 빛을 보여주어야 합니다. 어떻게 하실 건가요?", choices: [{text: "지금까지의 여정을 기록한 시를 읊는다.", effects: {linguistic: 10}}, {text: "자신이 걸어온 길을 춤으로 표현한다.", effects: {bodily: 10}}, {text: "자신의 내면의 목소리에 집중해 진실을 말한다.", effects: {intrapersonal: 10}}, {text: "자신이 얻은 보물을 다른 사람들과 나눈다.", effects: {interpersonal: 10}}] }
+];
+
+
+// 각 캐릭터별 퀘스트 목록
+const allQuests = {
+    "전사": warriorQuests,
+    "마법사": wizardQuests,
+    "도적": thiefQuests,
+    "성직자": priestQuests
 };
 
-// 캐릭터 선택 핸들러
-document.querySelectorAll('.char').forEach(char => {
-    char.addEventListener('click', () => {
-        document.querySelectorAll('.char').forEach(c => c.classList.remove('selected'));
-        char.classList.add('selected');
-        player.charId = char.dataset.id;
-        checkCanStart();
-    });
-});
-
-// 이름 및 클래스 입력 핸들러
-document.querySelectorAll('#input-name, #input-class').forEach(input => {
-    input.addEventListener('input', checkCanStart);
-});
-
-function checkCanStart() {
-    const name = el('input-name').value.trim();
-    const clazz = el('input-class').value.trim();
-    el('btn-start').disabled = !(name && clazz && player.charId);
-}
-
-// 게임 시작 핸들러
-el('btn-start').addEventListener('click', async () => {
-    if (loading) return;
-
-    sounds.bgm.play();
-    loading = true;
-    el('start-btn-text').style.display = 'none';
-    el('start-btn-spinner').style.display = 'block';
-
-    player.name = el('input-name').value.trim();
-    player.clazz = el('input-class').value.trim();
-    player.questIndex = 0;
-    scores = {...baseScores};
-
-    // 지연 효과 추가
-    await new Promise(r => setTimeout(r, 1000));
-
-    el('pre-game').style.display = 'none';
+function startGame() {
+    player.name = el('playerName').value || "모험가";
+    player.clazz = el('playerClass').value;
+    
+    // 캐릭터별 퀘스트 로드
+    player.quests = allQuests[player.clazz] || warriorQuests;
+    currentQuestIndex = 0;
+    
+    el('start-screen').style.display = 'none';
     el('game-area').style.display = 'block';
     el('stats-panel').style.display = 'block';
     
-    loading = false;
-    el('start-btn-text').style.display = 'block';
-    el('start-btn-spinner').style.display = 'none';
+    // 점수 초기화
+    scores = {
+        linguistic: 0,
+        logical: 0,
+        spatial: 0,
+        bodily: 0,
+        musical: 0,
+        interpersonal: 0,
+        intrapersonal: 0,
+        naturalist: 0
+    };
+    
+    renderStats();
+    nextScene();
+}
 
-    renderQuest();
-});
-
-// 퀘스트 렌더링
-function renderQuest(){
-    sounds.turn.play();
-    const currentQuest = quests[player.charId][player.questIndex];
-    if (!currentQuest) {
+function nextScene() {
+    // 퀘스트가 모두 끝났는지 확인
+    if (currentQuestIndex >= totalQuests) {
         showResult();
         return;
     }
     
-    el('quest-title').innerText = currentQuest.title;
-    el('quest-text').innerText = currentQuest.text;
+    // 퀘스트 번호 업데이트
+    el('quest-counter').innerText = `퀘스트 ${currentQuestIndex + 1} / ${totalQuests}`;
 
-    const optionsDiv = el('options');
-    optionsDiv.innerHTML = '';
-    currentQuest.options.forEach((opt, index) => {
-        const btn = document.createElement('div');
-        btn.className = 'option';
-        btn.innerText = opt.t;
-        btn.onclick = () => handleOption(opt.e);
-        optionsDiv.appendChild(btn);
+    const quest = player.quests[currentQuestIndex];
+    
+    el('story-text').innerText = quest.text;
+    const choicesDiv = el('choice-buttons');
+    choicesDiv.innerHTML = '';
+    
+    quest.choices.forEach(choice => {
+        const button = document.createElement('button');
+        button.innerText = choice.text;
+        button.onclick = () => {
+            // 선택지 효과 적용
+            if (choice.effects) {
+                for (const key in choice.effects) {
+                    scores[key] = (scores[key] || 0) + choice.effects[key];
+                }
+            }
+            currentQuestIndex++;
+            renderStats();
+            nextScene();
+        };
+        choicesDiv.appendChild(button);
     });
-
-    renderStats();
 }
 
-// 옵션 선택 핸들러
-function handleOption(effects){
-    for (const key in effects) {
-        scores[key] = Math.min(100, scores[key] + effects[key]);
-    }
-
-    player.questIndex++;
-    renderQuest();
-}
-
-// 능력치 통계 렌더링
-function renderStats(){
-    const root = el('stats');
+function renderStats() {
+    const root = el('stats-container');
     root.innerHTML = '';
     const mapNames = {linguistic:'언어 지능',logical:'논리-수학 지능',spatial:'공간 지능',bodily:'신체-운동 지능',musical:'음악 지능',interpersonal:'대인관계 지능',intrapersonal:'자기이해 지능',naturalist:'자연친화 지능'};
     Object.keys(scores).forEach(k => {
@@ -671,14 +477,13 @@ function renderStats(){
         const box = document.createElement('div');
         box.className = 'stat';
         box.innerHTML = `
-            <div style="font-weight:bold;color:var(--gold); font-size: 0.9rem;">${mapNames[k]}</div>
+            <div style="font-weight:bold;color:var(--gold)">${mapNames[k]}</div>
             <div class="bar"><div class="bar-inner" style="width:${score}%"></div></div>
         `;
         root.appendChild(box);
     });
 }
 
-// 결과 화면 보여주기
 function showResult(){
     el('game-area').style.display = 'none';
     el('stats-panel').style.display = 'none';
@@ -691,21 +496,15 @@ function showResult(){
     
     const resultHTML = `
         <h3>📜 모험의 결과</h3>
-        <p><strong>${player.name}</strong>(${player.clazz})의 여정은 마무리되었습니다.</p>
-        <p style="font-size:1.2rem; margin-top: 20px;">
-            당신은 모험을 통해 <strong><span style="color:var(--gold);font-weight:bold;">${mapNames[top1]}</span></strong>와 <strong><span style="color:var(--gold);font-weight:bold;">${mapNames[top2]}</span></strong>의 지능이 가장 뛰어남을 발견했습니다.
-        </p>
-        <p style="font-size:1.1rem; line-height: 1.6; margin-top: 20px;">
-            ${mapNames[top1]}는 복잡한 문제를 해결하고 패턴을 파악하는 데 뛰어나며, ${mapNames[top2]}는...
-        </p>
+        <p><strong>${player.name}</strong>(${player.clazz}) 모험가는 <strong>${mapNames[top1]}</strong>와 <strong>${mapNames[top2]}</strong> 능력치가 가장 뛰어난 것으로 나타났습니다.</p>
+        <p>당신의 여정은 고대 유적의 비밀을 풀기 위한 다양한 시도와 도전을 통해 당신의 다중지능 잠재력을 탐색한 값진 경험이었습니다.</p>
+        <img src="https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/image_6b997f.png?alt=media&token=c1935634-110f-4f27-a068-1cf01ddf4c02" alt="모험 결과 이미지" class="result-image">
+        <button onclick="window.location.reload()">다시 시작하기</button>
     `;
-    el('result-content').innerHTML = resultHTML;
 
-    // 다시 시작하기 버튼
-    el('btn-restart').onclick = () => {
-        location.reload();
-    };
+    el('result-area').innerHTML = resultHTML;
 }
+
 </script>
 </body>
 </html>
