@@ -6,13 +6,13 @@
 <title>📜 다중지능 탐험: 고대의 부름</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{
+/* 변수 및 기본 스타일 */
+:root {
     --brown-text: #4a3a2a;
     --gold: #c89a4b;
     --card-bg: rgba(255, 255, 255, 0.85);
 }
 
-/* Base Styles */
 * {
     box-sizing: border-box;
 }
@@ -20,8 +20,12 @@
 body {
     margin: 0;
     font-family: 'Gowun Dodum', serif;
-    background: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/papyrus-1478204_1280.jpg?alt=media&token=26214300-84c4-42ea-a4b5-65476d0d216a') no-repeat center center fixed;
+    background-color: #5d4037; /* 이미지 로딩 전 배경색 */
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/papyrus-1478204_1280.jpg?alt=media&token=26214300-84c4-42ea-a4b5-65476d0d216a');
+    background-repeat: no-repeat;
+    background-position: center center;
     background-size: cover;
+    background-attachment: fixed;
     color: #fff;
     display: flex;
     align-items: center;
@@ -30,9 +34,9 @@ body {
     padding: 20px;
     position: relative;
     overflow: hidden;
+    transition: background-image 1s ease-in-out;
 }
 
-/* BGM Fade-in effect */
 body::before {
     content: '';
     position: absolute;
@@ -50,7 +54,6 @@ body::before {
     max-width: 1200px;
 }
 
-/* Header & Title */
 .header {
     text-align: center;
     margin-bottom: 20px;
@@ -71,7 +74,7 @@ body::before {
     color: #f0f0f0;
 }
 
-/* Layout */
+/* 레이아웃 */
 .layout {
     display: flex;
     gap: 20px;
@@ -91,7 +94,7 @@ body::before {
     animation: fadeInRight 1s ease-out;
 }
 
-/* Card */
+/* 카드 UI */
 .card {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
@@ -101,7 +104,7 @@ body::before {
     border: 1px solid rgba(255, 215, 102, 0.15);
 }
 
-/* Character Selection */
+/* 캐릭터 선택 */
 .char-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -130,7 +133,7 @@ body::before {
     transform: translateY(-5px);
 }
 
-/* Form Elements */
+/* 폼 요소 */
 label {
     display: block;
     color: var(--gold);
@@ -179,7 +182,7 @@ input[type=text] {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Game & Quest Area */
+/* 게임 및 퀘스트 영역 */
 #game-card {
     background: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/ancient_scroll.png?alt=media&token=f0310243-7f3e-4b72-b7e6-23f2113222e4') no-repeat center center;
     background-size: 100% 100%;
@@ -238,7 +241,7 @@ input[type=text] {
     font-weight: bold;
 }
 
-/* Stats */
+/* 능력치 통계 */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -269,7 +272,7 @@ input[type=text] {
     transition: width 0.6s ease-in-out;
 }
 
-/* Result Area */
+/* 결과 영역 */
 .result-content {
     color: var(--brown-text);
     text-align: center;
@@ -280,7 +283,7 @@ input[type=text] {
     color: #6a4a2a;
 }
 
-/* Animations */
+/* 애니메이션 */
 @keyframes fadeInDown {
     from { opacity: 0; transform: translateY(-30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -311,7 +314,7 @@ input[type=text] {
     margin: 0 auto;
 }
 
-/* Responsive */
+/* 반응형 디자인 */
 @media(max-width:900px) {
     .layout {
         flex-direction: column;
@@ -473,7 +476,7 @@ const quests = {
     q("미로의 숲", "마법에 걸린 숲에 갇혔다. 숲은 끊임없이 형태를 바꾸는 미로가 되어 길을 찾기 어렵다.",
       opt('🎼 숲에서 들려오는 신비한 새소리의 음계를 분석하여 길을 찾는다.', {musical:14, logical: 6}),
       opt('🌳 숲의 식물들과 교감하여 길을 물어본다.', {naturalist:14}),
-      opt('🧠 숲의 패턴을 머릿속에 시각화하며 길을 찾는다.', {spatial:16}),
+      opt('� 숲의 패턴을 머릿속에 시각화하며 길을 찾는다.', {spatial:16}),
       opt('🗺️ 지형을 파악하고 돌이나 나뭇가지로 이정표를 만들어 길을 기록한다.', {spatial:12, bodily: 6})
     ),
     q("병든 정원", "어머니께서 아끼시던 정원이 병에 걸렸다. 정원을 되살리기 위해서는 특별한 힘이 필요하다.",
@@ -739,3 +742,4 @@ resetGame();
 </script>
 </body>
 </html>
+�
