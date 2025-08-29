@@ -12,7 +12,7 @@
 body{
     margin:0;
     font-family: 'Gowun Dodum', serif;
-    background: url('https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+    background: url('https://cdn.pixabay.com/photo/2016/06/25/12/52/papyrus-1478204_1280.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     display: flex;
@@ -96,7 +96,7 @@ input[type=text]{
 }
 
 #game-card {
-    background: url('https://i.ibb.co/bF9p2R7/papyrus-bg.png') no-repeat center center;
+    background: url('https://cdn.pixabay.com/photo/2016/11/14/03/40/ancient-1822557_1280.jpg') no-repeat center center;
     background-size: 100% 100%;
     color: var(--brown-text);
     padding: 50px 60px;
@@ -164,7 +164,7 @@ input[type=text]{
       </div>
 
       <div id="stats-panel" class="card" style="margin-top:12px; display:none;">
-         <div id="stats" class="stats-grid"></div>
+          <div id="stats" class="stats-grid"></div>
       </div>
     </div>
 
@@ -234,7 +234,7 @@ const quests = {
     // ...
   ],
   warrior: [
-     q("불타는 마을", "평화롭던 산골 마을이 원인 모를 화염에 휩싸였다. 비명과 연기 속에서, 당신은 본능적으로 검을 쥐었다. 무엇을 가장 먼저 해야 하는가?",
+      q("불타는 마을", "평화롭던 산골 마을이 원인 모를 화염에 휩싸였다. 비명과 연기 속에서, 당신은 본능적으로 검을 쥐었다. 무엇을 가장 먼저 해야 하는가?",
       opt('🔥 사람들을 안전한 강가로 신속히 이끌며 대피시킨다.',{bodily:16,interpersonal:8}),
       opt('🚒 불길이 번지는 방향과 속도를 분석하여 효과적인 진압 계획을 세운다.',{logical:12}),
       opt('🏡 무너지는 집에서 미처 빠져나오지 못한 아이를 구하기 위해 뛰어든다.',{bodily:14, intrapersonal: 6}),
