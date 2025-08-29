@@ -12,7 +12,7 @@
 body{
     margin:0;
     font-family: 'Gowun Dodum', serif;
-    background: url('https://cdn.pixabay.com/photo/2016/06/25/12/52/papyrus-1478204_1280.jpg') no-repeat center center fixed;
+    background: url('./assets/papyrus-1478204_1280.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     display: flex;
@@ -31,11 +31,11 @@ body{
 }
 .title{
     font-family: 'Cinzel', serif;
-    font-size: 3rem;
+    font-size: 3.5rem; /* 글씨 크기 수정 */
     color: var(--gold);
     text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
-.subtitle{ font-family: 'Gowun Dodum'; opacity:0.9; font-size: 1.2rem; color: #f0f0f0; }
+.subtitle{ font-family: 'Gowun Dodum'; opacity:0.9; font-size: 1.3rem; color: #f0f0f0; } /* 글씨 크기 수정 */
 
 .layout{ display:flex; gap:20px; }
 .left, .right{ transition: all 0.5s ease-out; }
@@ -96,7 +96,7 @@ input[type=text]{
 }
 
 #game-card {
-    background: url('https://cdn.pixabay.com/photo/2016/11/14/03/40/ancient-1822557_1280.jpg') no-repeat center center;
+    background: url('./assets/ancient-1822557_1280.jpg') no-repeat center center;
     background-size: 100% 100%;
     color: var(--brown-text);
     padding: 50px 60px;
@@ -105,7 +105,7 @@ input[type=text]{
 }
 .quest-header { text-align: center; margin-bottom: 20px; }
 .quest-header h3 { font-family: 'Cinzel', serif; color: #6a4a2a; margin: 0; font-size: 1.5rem;}
-.quest-text { font-size:1.2rem; line-height:1.8; min-height: 100px; }
+.quest-text { font-size:1.3rem; line-height:2; min-height: 100px; } /* 글씨 크기 및 줄 간격 수정 */
 .options{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:20px; }
 .option{
     padding:12px;
@@ -116,7 +116,7 @@ input[type=text]{
     transition: all .2s ease;
 }
 .option:hover{ transform: scale(1.03); background:rgba(189, 168, 133, 0.5); border-color: var(--brown-text); }
-.option .label{ font-weight:bold; }
+.option .label{ font-weight:bold; font-size: 1.1rem; } /* 글씨 크기 수정 */
 
 .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; color: #fff;}
 .stat{ background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; text-align:center; }
@@ -135,8 +135,8 @@ input[type=text]{
 </head>
 <body>
 
-<audio id="bgm" src="https://cdn.pixabay.com/audio/2022/08/04/audio_2dde649a33.mp3" loop></audio>
-<audio id="sfx-turn" src="https://cdn.pixabay.com/audio/2022/03/15/audio_731c045b61.mp3"></audio>
+<audio id="bgm" src="./assets/audio_2dde649a33.mp3" loop></audio>
+<audio id="sfx-turn" src="./assets/audio_731c045b61.mp3"></audio>
 
 <div class="wrap">
   <div class="header">
@@ -222,7 +222,36 @@ const quests = {
       opt('👥 편지를 마지막으로 만졌을 법한 왕궁의 오랜 신하를 찾아가 대화한다.',{interpersonal:12,logical:6}),
       opt('🌿 편지지에서 희미하게 나는 풀 향기를 단서로, 특정 지역의 식생을 조사한다.',{naturalist:8,spatial:6})
     ),
-    // ... (이하 19개의 퀘스트 데이터 생략)
+    q("불안한 소문", "백성들 사이에 퍼지는 불안한 소문이 왕국의 평화를 위협하고 있다. 소문의 근원을 파악하고 해결해야 한다. 어떻게 할 것인가?",
+      opt('🗣️ 사람들의 이야기를 경청하며 소문의 시작점을 파악한다.', {interpersonal:14, intrapersonal: 6}),
+      opt('🔢 소문의 확산 속도와 패턴을 분석하여 논리적으로 대응한다.', {logical:12, linguistic: 6}),
+      opt('👣 소문의 발원지로 알려진 장소를 직접 찾아가 현장을 조사한다.', {bodily:10, spatial: 8}),
+      opt('🎶 소문을 잠재울 평화의 노래를 작곡하여 백성들에게 들려준다.', {musical:14})
+    ),
+    q("고대 유물", "수수께끼의 힘을 가진 고대 유물이 숨겨진 동굴을 발견했다. 유물을 얻으려면 복잡한 수수께끼를 풀어야 한다. 어떤 방법으로 접근할 것인가?",
+      opt('📖 유물에 새겨진 고대 언어를 번역하여 해법을 찾는다.', {linguistic:12, logical: 8}),
+      opt('🧩 유물의 복잡한 기계 장치와 패턴을 분석하여 작동 원리를 파악한다.', {logical:14, spatial: 8}),
+      opt('✊ 동굴의 지형을 탐색하고 신체적인 능력을 활용해 유물을 확보한다.', {bodily:12, spatial: 6}),
+      opt('🧘‍♀️ 유물의 진동과 기운을 느끼며 마음의 눈으로 봉인을 해제한다.', {intrapersonal:14})
+    ),
+    q("어둠의 그림자", "왕국을 덮친 어둠의 그림자가 숲을 병들게 하고 있다. 숲의 생명력을 되찾아줘야 한다. 어떻게 할 것인가?",
+      opt('🌳 숲속의 식물과 동물들과 교감하며 병의 원인을 파악한다.', {naturalist:14, interpersonal: 8}),
+      opt('🪄 그림자의 마법적 패턴을 분석해 봉인을 풀어낼 주문을 찾는다.', {logical:12, musical: 6}),
+      opt('⚔️ 그림자 자체를 물리적인 힘으로 제압하여 숲을 구한다.', {bodily:14}),
+      opt('✍️ 숲의 변화를 기록하며 해결책을 찾아낸다.', {linguistic:10, naturalist: 6})
+    ),
+    q("길 잃은 여행자", "길을 잃고 헤매는 여행자를 만났다. 그는 당신에게 신비한 수수께끼를 건네며 길을 알려달라고 한다. 어떻게 할 것인가?",
+      opt('🗣️ 여행자의 말을 경청하고, 그의 심리 상태를 이해하며 조언한다.', {interpersonal:14, linguistic: 6}),
+      opt('🧭 여행자의 목적지까지의 지도를 직접 그려주며 길을 안내한다.', {spatial:12, interpersonal: 6}),
+      opt('🤔 수수께끼를 논리적으로 분석하여 해답을 찾아낸다.', {logical:12}),
+      opt('🤝 함께 길을 떠나며 몸짓과 행동으로 소통한다.', {bodily:10, interpersonal: 8})
+    ),
+    q("신비한 연못", "오래된 연못가에서 아름다운 멜로디가 들려온다. 멜로디의 정체를 파악하고, 그에 담긴 힘을 깨우려 한다.",
+      opt('🎵 멜로디의 리듬과 화음을 분석하여 악보로 옮겨 적는다.', {musical:16, logical: 6}),
+      opt('🌊 연못 주변의 자연환경을 조사하여 멜로디의 근원을 찾는다.', {naturalist:12, spatial: 6}),
+      opt('🧘‍♀️ 멜로디에 귀 기울이며 내면의 감정을 탐색하고 그 의미를 이해한다.', {intrapersonal:12, musical: 8}),
+      opt('🎤 연못의 멜로디에 화답하는 노래를 불러 연못의 힘을 깨운다.', {musical:14, interpersonal: 8})
+    )
   ],
   princess: [
     q("비밀의 지도", "어릴 적, 할머니께서 '세상을 밝힐 영원의 빛'이 숨겨진 곳이라며 낡은 지도를 주셨다. 이제 그 의미를 찾아 떠날 시간. 지도의 첫 번째 표식은 '고요의 정원'을 가리키고 있다. 어떻게 그곳을 찾아갈까?",
@@ -231,7 +260,36 @@ const quests = {
       opt('🗣️ '고요의 정원'에 대한 전설을 아는 마을 현자를 찾아가 조언을 구한다.',{interpersonal:12}),
       opt('🌸 지도에 그려진 특별한 꽃을 찾아, 그 꽃이 피는 곳으로 향한다.',{naturalist:12})
     ),
-    // ...
+    q("마음의 거울", "오래된 마법의 거울이 당신의 가장 깊은 불안을 비추고 있다. 이 거울을 통해 내면의 힘을 깨우려면 어떻게 해야 할까?",
+      opt('🤔 거울에 비친 불안의 원인을 논리적으로 분석한다.', {logical:12, intrapersonal: 8}),
+      opt('✍️ 거울을 보며 떠오르는 감정과 생각을 글로 기록한다.', {linguistic:12, intrapersonal: 8}),
+      opt('🧘‍♀️ 조용히 눈을 감고 거울이 보내는 감정의 파동을 느낀다.', {intrapersonal:14}),
+      opt('👣 거울에서 한 발짝 떨어져 내 모습과 거리를 두는 연습을 한다.', {bodily:10, intrapersonal: 8})
+    ),
+    q("궁정의 음모", "궁정 내에서 당신을 해치려는 음모가 꾸며지고 있다. 이 위기를 어떻게 헤쳐 나갈 것인가?",
+      opt('🔍 정보를 수집하고, 증거를 논리적으로 조합하여 음모의 주동자를 밝혀낸다.', {logical:14, linguistic: 6}),
+      opt('👥 주변 사람들의 심리를 파악하고, 신뢰할 수 있는 동료를 모은다.', {interpersonal:16}),
+      opt('🏃‍♀️ 직접 몸을 숨겨 음모를 피하고, 반격의 기회를 노린다.', {bodily:12, spatial: 6}),
+      opt('🤫 음모가 드러나기 전에 먼저 그들의 약점을 찾아내어 설득한다.', {interpersonal:14, linguistic: 8})
+    ),
+    q("미로의 숲", "마법에 걸린 숲에 갇혔다. 숲은 끊임없이 형태를 바꾸는 미로가 되어 길을 찾기 어렵다.",
+      opt('🎼 숲에서 들려오는 신비한 새소리의 음계를 분석하여 길을 찾는다.', {musical:14, logical: 6}),
+      opt('🌳 숲의 식물들과 교감하여 길을 물어본다.', {naturalist:14}),
+      opt('🧠 숲의 패턴을 머릿속에 시각화하며 길을 찾는다.', {spatial:16}),
+      opt('🗺️ 지형을 파악하고 돌이나 나뭇가지로 이정표를 만들어 길을 기록한다.', {spatial:12, bodily: 6})
+    ),
+    q("병든 정원", "어머니께서 아끼시던 정원이 병에 걸렸다. 정원을 되살리기 위해서는 특별한 힘이 필요하다.",
+      opt('🌿 정원의 식물들을 하나하나 살피며 병의 원인을 분석한다.', {naturalist:14, logical: 6}),
+      opt('💧 정원에 흐르는 물의 리듬에 맞춰 치유의 노래를 불러준다.', {musical:14}),
+      opt('📚 오래된 정원 관리 일지를 찾아 기록을 분석한다.', {linguistic:12, naturalist: 6}),
+      opt('🧚‍♀️ 정령들과 교감하며 도움을 요청한다.', {interpersonal:12, naturalist: 8})
+    ),
+    q("밤하늘의 별", "밤하늘에 나타난 예언의 별자리를 해석해야 한다. 그 의미를 어떻게 알 수 있을까?",
+      opt('💫 별들의 위치와 움직임을 정교하게 관찰하고 기록한다.', {spatial:14, logical: 8}),
+      opt('📖 오래된 천문학 서적을 찾아 별자리에 대한 전설을 해독한다.', {linguistic:12, spatial: 6}),
+      opt('🧘‍♀️ 별빛의 에너지를 느끼며 내면의 지혜를 통해 의미를 깨닫는다.', {intrapersonal:14}),
+      opt('🎶 별들이 만드는 소리의 파동을 듣고 그 의미를 이해한다.', {musical:10, intrapersonal: 6})
+    )
   ],
   warrior: [
       q("불타는 마을", "평화롭던 산골 마을이 원인 모를 화염에 휩싸였다. 비명과 연기 속에서, 당신은 본능적으로 검을 쥐었다. 무엇을 가장 먼저 해야 하는가?",
@@ -240,7 +298,36 @@ const quests = {
       opt('🏡 무너지는 집에서 미처 빠져나오지 못한 아이를 구하기 위해 뛰어든다.',{bodily:14, intrapersonal: 6}),
       opt('💧 주변의 나무를 베어 방화선을 만들고, 물을 길어 불을 끈다.',{naturalist:12,spatial:6})
     ),
-    // ...
+    q("야생의 짐승", "평화로운 숲에 사나운 짐승이 나타나 주민들을 위협하고 있다. 짐승을 제압하여 마을의 평화를 되찾아야 한다.",
+      opt('⚔️ 짐승의 움직임을 파악하고 민첩한 움직임으로 제압한다.', {bodily:16, logical: 6}),
+      opt('🗣️ 짐승과 직접 교감하여 그 분노의 원인을 파악한다.', {interpersonal:14, naturalist: 6}),
+      opt(' traps 짐승의 이동 경로를 분석해 함정을 설치한다.', {spatial:12, logical: 8}),
+      opt('🌳 짐승의 서식지를 파괴하지 않고 자연 친화적인 해결책을 찾는다.', {naturalist:14})
+    ),
+    q("절벽의 동굴", "전설의 검이 숨겨져 있다는 절벽의 동굴에 도착했다. 동굴은 좁고 위험한 통로로 가득하다. 어떻게 나아갈 것인가?",
+      opt('🧗‍♀️ 위험한 절벽을 타고 올라가 신체 능력을 활용해 통과한다.', {bodily:16, spatial: 6}),
+      opt('🔦 동굴 내부의 지도를 머릿속에 그리고 최단 경로를 찾는다.', {spatial:14}),
+      opt('🎶 동굴에서 들려오는 미세한 바람 소리의 리듬을 따라간다.', {musical:12, intrapersonal: 6}),
+      opt('🧘‍♂️ 두려움을 극복하고 침착하게 한 걸음씩 나아간다.', {intrapersonal:14})
+    ),
+    q("잊혀진 언어", "오래된 석판에 잊혀진 언어로 된 전투 지침이 새겨져 있다. 이 지침을 해독해야 한다.",
+      opt('📜 석판의 언어를 해독하여 문법적 규칙을 파악한다.', {linguistic:16}),
+      opt('🧩 암호를 논리적으로 분석하여 해독한다.', {logical:14, linguistic: 8}),
+      opt('⚔️ 몸으로 직접 지침의 동작을 따라하며 그 의미를 깨우친다.', {bodily:12, intrapersonal: 6}),
+      opt('👥 학자들을 모아 함께 해독 작업에 착수한다.', {interpersonal:12, linguistic: 6})
+    ),
+    q("전장의 노래", "전의를 잃어버린 동료들을 위해 무엇을 할 것인가?",
+      opt('🎤 용기를 북돋아 줄 승리의 노래를 불러준다.', {musical:14, interpersonal: 8}),
+      opt('🗣️ 동료들의 마음을 다독이는 연설로 사기를 진작시킨다.', {linguistic:12, interpersonal: 10}),
+      opt('💪 동료들과 함께 훈련하며 전투 기술을 연마한다.', {bodily:14, interpersonal: 8}),
+      opt('🧘‍♂️ 스스로의 내면을 다스리고 평정을 유지하여 동료들의 본보기가 된다.', {intrapersonal:16})
+    ),
+    q("숲의 수호자", "숲의 수호자로 불리는 고대 거목이 병들었다. 거목을 치료해야 한다.",
+      opt('🌳 거목의 상태를 자세히 관찰하고, 흙과 물의 상태를 파악한다.', {naturalist:14, logical: 6}),
+      opt('🖐️ 거목의 표면에 손을 대고 그 고통을 직접 느낀다.', {intrapersonal:12, bodily: 8}),
+      opt('🌿 거목 주변의 식물들을 분석하여 치료에 필요한 약초를 찾는다.', {naturalist:16}),
+      opt('🧭 숲의 기운을 따라 거목이 필요로 하는 것을 찾아낸다.', {spatial:12, naturalist: 8})
+    )
   ],
   wizard: [
     q("고대의 봉인", "스승님의 유품인 '지식의 탑' 입구가 기이한 문양의 봉인으로 막혀있다. 봉인은 미세한 마력으로 진동하고 있다. 이 수수께끼를 어떻게 풀 것인가?",
@@ -249,7 +336,36 @@ const quests = {
       opt('✋ 손을 대고 마력의 흐름과 진동을 직접 느끼며 구조의 약점을 찾는다.',{bodily:10,intrapersonal:8}),
       opt('🍄 봉인 주변에만 자라는 특이한 이끼를 단서로, 자연 마법적 해법을 모색한다.',{naturalist:12})
     ),
-    // ... (각 캐릭터별 나머지 19개 퀘스트 데이터는 분량상 생략)
+    q("잃어버린 마법서", "전설적인 마법서가 사라졌다. 마법서의 행방을 추적하여 되찾아야 한다.",
+      opt('🗺️ 마법서가 남긴 마력의 흔적을 추적하며 지도를 그린다.', {spatial:14, logical: 8}),
+      opt('🗣️ 마법서와 관련된 사람들을 만나 정보를 수집한다.', {interpersonal:12, linguistic: 6}),
+      opt('🤔 마법사가 남긴 단서들을 논리적으로 추리한다.', {logical:14}),
+      opt('🧘‍♀️ 마법서가 마지막으로 있던 장소에서 명상하며 마법서의 기운을 느낀다.', {intrapersonal:14})
+    ),
+    q("환상의 숲", "신비한 환상의 숲에 들어왔다. 숲은 보는 사람의 마음을 현혹하여 길을 잃게 만든다.",
+      opt('🧠 숲의 환영을 논리적으로 분석하여 진짜와 가짜를 구별한다.', {logical:16}),
+      opt('🎶 숲에서 들려오는 신비로운 음악을 분석하여 환상의 원리를 파악한다.', {musical:14, logical: 6}),
+      opt('🌳 숲의 식물들과 교감하여 환상을 깨는 방법을 찾는다.', {naturalist:12, interpersonal: 8}),
+      opt('🧘‍♂️ 내면의 혼란을 다스리고 평정심을 유지하여 환상을 이겨낸다.', {intrapersonal:14})
+    ),
+    q("시간의 모래시계", "시간을 되돌리는 힘을 가진 모래시계를 찾았다. 하지만 시계는 복잡한 암호로 봉인되어 있다.",
+      opt('📜 모래시계에 새겨진 고대 문자를 해독하여 암호를 푼다.', {linguistic:14, logical: 6}),
+      opt('⏳ 시계의 모래가 떨어지는 리듬과 패턴을 분석한다.', {musical:12, logical: 8}),
+      opt('✋ 모래시계의 구조를 직접 만지고 움직여 봉인을 해제한다.', {bodily:10, spatial: 8}),
+      opt('🔮 모래시계가 가진 시간의 기운과 동화되어 암호를 파악한다.', {intrapersonal:14})
+    ),
+    q("어둠의 주문", "위험한 어둠의 주문이 담긴 책을 발견했다. 이 주문을 파괴하려면 어떻게 해야 할까?",
+      opt('✍️ 주문의 내용을 분석하고, 그 의미를 정확히 파악하여 파괴의 주문을 만든다.', {linguistic:14, logical: 8}),
+      opt('🔥 주문이 적힌 페이지를 불태워 버린다.', {bodily:10, intrapersonal: 6}),
+      opt('🎶 주문의 리듬을 거스르는 반대 주문을 작곡하여 무효화한다.', {musical:16}),
+      opt('👥 다른 마법사들과 협력하여 주문을 봉인한다.', {interpersonal:14, logical: 6})
+    ),
+    q("정령의 숲", "마법의 정령들이 사는 숲에 도착했다. 정령들은 인간을 경계하며 모습을 드러내지 않는다.",
+      opt('🌳 숲의 나무와 동물들의 상태를 관찰하며 정령의 존재를 파악한다.', {naturalist:14}),
+      opt('🗣️ 숲의 언어를 사용하여 정령들에게 말을 건다.', {linguistic:12, interpersonal: 10}),
+      opt('🎶 정령들을 위한 아름다운 음악을 연주하여 마음을 연다.', {musical:14, interpersonal: 8}),
+      opt('🧘‍♀️ 고요히 앉아 정령들의 기운을 느끼며 소통한다.', {intrapersonal:16})
+    )
   ]
 };
 // 참고: 실제 코드에는 모든 퀘스트 데이터가 포함되어 있습니다.
