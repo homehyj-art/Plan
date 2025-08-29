@@ -6,13 +6,21 @@
 <title>📜 다중지능 탐험: 고대의 부름</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{ --brown-text: #4a3a2a; --gold: #c89a4b; --card-bg: rgba(255, 255, 255, 0.85); }
-*{box-sizing:border-box}
+:root{
+    --brown-text: #4a3a2a;
+    --gold: #c89a4b;
+    --card-bg: rgba(255, 255, 255, 0.85);
+}
 
-body{
-    margin:0;
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
     font-family: 'Gowun Dodum', serif;
-    background: url('https://placehold.co/1280x1280/8B4513/FFFFFF?text=Papyrus+Background') no-repeat center center fixed; /* Placeholder image for background */
+    background: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/papyrus-1478204_1280.jpg?alt=media&token=26214300-84c4-42ea-a4b5-65476d0d216a') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     display: flex;
@@ -20,121 +28,308 @@ body{
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
+    position: relative;
+    overflow: hidden;
 }
 
-.wrap{ width:100%; max-width:1200px; }
+/* BGM Fade-in effect */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    transition: background-color 2s ease-in-out;
+}
 
-.header{
+.wrap {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Header & Title */
+.header {
     text-align: center;
     margin-bottom: 20px;
     animation: fadeInDown 1s ease-out;
 }
-.title{
+
+.title {
     font-family: 'Cinzel', serif;
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     color: var(--gold);
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
 }
-.subtitle{ font-family: 'Gowun Dodum'; opacity:0.9; font-size: 1.3rem; color: #f0f0f0; }
 
-.layout{ display:flex; gap:20px; }
-.left, .right{ transition: all 0.5s ease-out; }
-.left{ width:360px; animation: fadeInLeft 1s ease-out; }
-.right{ flex:1; animation: fadeInRight 1s ease-out; }
+.subtitle {
+    font-family: 'Gowun Dodum';
+    opacity: 0.9;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #f0f0f0;
+}
 
-.card{
-    background: rgba(0,0,0,0.6);
+/* Layout */
+.layout {
+    display: flex;
+    gap: 20px;
+}
+
+.left, .right {
+    transition: all 0.5s ease-out;
+}
+
+.left {
+    width: 360px;
+    animation: fadeInLeft 1s ease-out;
+}
+
+.right {
+    flex: 1;
+    animation: fadeInRight 1s ease-out;
+}
+
+/* Card */
+.card {
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
-    border-radius:16px;
+    border-radius: 16px;
     padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,215,102,0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 215, 102, 0.15);
 }
 
-.char-row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-.char{
-    padding:10px;
-    border-radius:10px;
-    background:rgba(0,0,0,0.3);
-    text-align:center;
-    cursor:pointer;
+/* Character Selection */
+.char-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.char {
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    text-align: center;
+    cursor: pointer;
     border: 1px solid transparent;
     transition: all 0.3s ease;
 }
-.char:hover{ transform:translateY(-5px); background:rgba(0,0,0,0.5); border-color: var(--gold); }
-.char .emoji{ font-size:44px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
-.char .name{ color:var(--gold); font-weight:bold; }
-.char.selected{ background:rgba(200,154,75,0.3); border-color: var(--gold); transform: translateY(-5px); }
 
-label{ display:block; color:var(--gold); font-weight:700; margin-bottom:6px; }
-input[type=text]{
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid rgba(255,215,102,0.2);
-    background:rgba(0,0,0,0.3);
-    color:#fff;
-    margin-bottom:10px;
+.char:hover {
+    transform: translateY(-5px);
+    background: rgba(0, 0, 0, 0.5);
+    border-color: var(--gold);
+}
+
+.char.selected {
+    background: rgba(200, 154, 75, 0.3);
+    border-color: var(--gold);
+    transform: translateY(-5px);
+}
+
+/* Form Elements */
+label {
+    display: block;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 102, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    margin-bottom: 10px;
     font-family: 'Gowun Dodum', serif;
 }
-.btn{
-    display:inline-flex;
-    gap:8px;
-    align-items:center;
-    justify-content:center;
-    padding:12px 16px;
-    border-radius:10px;
-    border:none;
-    cursor:pointer;
-    background:linear-gradient(145deg, #b38645, #835e2c);
-    color:#fff;
-    font-weight:bold;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+
+.btn {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(145deg, #b38645, #835e2c);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
     width: 100%;
     font-family: 'Gowun Dodum', serif;
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
+.btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Game & Quest Area */
 #game-card {
-    background: url('https://placehold.co/1280x1280/8B4513/FFFFFF?text=Ancient+Scrolls') no-repeat center center; /* Placeholder for ancient scroll background */
+    background: url('https://firebasestorage.googleapis.com/v0/b/gtemp-a8599.appspot.com/o/ancient_scroll.png?alt=media&token=f0310243-7f3e-4b72-b7e6-23f2113222e4') no-repeat center center;
     background-size: 100% 100%;
     color: var(--brown-text);
     padding: 50px 60px;
     min-height: 550px;
     position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
-.quest-header { text-align: center; margin-bottom: 20px; }
-.quest-header h3 { font-family: 'Cinzel', serif; color: #6a4a2a; margin: 0; font-size: 1.5rem;}
-.quest-text { font-size:1.3rem; line-height:2; min-height: 100px; }
-.options{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:20px; }
-.option{
-    padding:12px;
-    border-radius:10px;
-    background:rgba(189, 168, 133, 0.3);
-    cursor:pointer;
-    border:1px solid rgba(112, 83, 48, 0.3);
-    transition: all .2s ease;
+
+.quest-header {
+    text-align: center;
+    margin-bottom: 20px;
 }
-.option:hover{ transform: scale(1.03); background:rgba(189, 168, 133, 0.5); border-color: var(--brown-text); }
-.option .label{ font-weight:bold; font-size: 1.1rem; }
 
-.stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; color: #fff;}
-.stat{ background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; text-align:center; }
-.bar{ height:10px; background:rgba(255,255,255,0.1); border-radius:6px; margin-top:8px; overflow:hidden; }
-.bar-inner{ height:100%; background:linear-gradient(90deg,var(--gold),#e6b873); width:0%; transition:width .6s; }
+.quest-header h3 {
+    font-family: 'Cinzel', serif;
+    color: #6a4a2a;
+    margin: 0;
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+}
 
-.result-content { color: var(--brown-text); text-align: center; }
-.result-content h3 { font-family: 'Cinzel', serif; color: #6a4a2a; }
+.quest-text {
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    line-height: 2;
+    min-height: 100px;
+}
 
-@keyframes fadeInDown { 0% { opacity:0; transform: translateY(-30px); } 100% { opacity:1; transform: translateY(0); } }
-@keyframes fadeInLeft { 0% { opacity:0; transform: translateX(-50px); } 100% { opacity:1; transform: translateX(0); } }
-@keyframes fadeInRight { 0% { opacity:0; transform: translateX(50px); } 100% { opacity:1; transform: translateX(0); } }
+.options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
 
-@media(max-width:900px){ .layout{flex-direction:column} .left{width:100%} }
+.option {
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(189, 168, 133, 0.3);
+    cursor: pointer;
+    border: 1px solid rgba(112, 83, 48, 0.3);
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    word-break: keep-all;
+    user-select: none;
+}
+
+.option:hover {
+    transform: scale(1.03);
+    background: rgba(189, 168, 133, 0.5);
+    border-color: var(--brown-text);
+}
+
+.option .label {
+    font-weight: bold;
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+    color: #fff;
+}
+
+.stat {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), #e6b873);
+    width: 0%;
+    transition: width 0.6s ease-in-out;
+}
+
+/* Result Area */
+.result-content {
+    color: var(--brown-text);
+    text-align: center;
+}
+
+.result-content h3 {
+    font-family: 'Cinzel', serif;
+    color: #6a4a2a;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: none;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--gold);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+/* Responsive */
+@media(max-width:900px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .left {
+        width: 100%;
+    }
+
+    #game-card {
+        padding: 30px;
+    }
+}
 </style>
 </head>
 <body>
 
+<!-- 오디오 파일은 Mixkit에서 가져왔습니다 -->
 <audio id="bgm" src="https://assets.mixkit.co/sfx/preview/mixkit-calm-music-2200.mp3" loop></audio>
 <audio id="sfx-turn" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1110.mp3"></audio>
 
@@ -159,7 +354,10 @@ input[type=text]{
           <div class="char" data-id="wizard"><div class="emoji">🔮</div><div class="name">신비한 마법사</div></div>
         </div>
         <div style="margin-top:20px;">
-          <button id="btn-start" class="btn" disabled>▶ 모험 시작하기</button>
+          <button id="btn-start" class="btn" disabled>
+            <span id="start-btn-text">▶ 모험 시작하기</span>
+            <div id="start-btn-spinner" class="spinner"></div>
+          </button>
         </div>
       </div>
 
@@ -195,20 +393,20 @@ input[type=text]{
 </div>
 
 <script>
-// 사운드 객체
+// 전역 변수 및 상수 설정
 const sounds = {
     bgm: document.getElementById('bgm'),
     turn: document.getElementById('sfx-turn'),
 };
 sounds.bgm.volume = 0.2; // BGM 볼륨 조절
 
-// 게임 시작 시 BGM 재생 (사용자 인터랙션 후)
-document.body.addEventListener('click', () => {
-    if (sounds.bgm.paused) {
-        sounds.bgm.play().catch(e => console.log("BGM 자동재생이 차단되었습니다."));
-    }
-}, { once: true });
+// HTML 요소 선택을 위한 헬퍼 함수
+const el = id => document.getElementById(id);
 
+// 게임 데이터: 기본 점수 및 플레이어 상태
+const baseScores = {linguistic:50,logical:50,spatial:50,bodily:50,musical:50,interpersonal:50,intrapersonal:50,naturalist:50};
+let scores = {};
+let player = {name:'',clazz:'',charId:'',questIndex:0};
 
 /* ====== 퀘스트 데이터 (서사 강화 버전) ====== */
 function q(title, text, a, b, c, d){ return { title, text, options:[a,b,c,d] }; }
@@ -301,7 +499,7 @@ const quests = {
     q("야생의 짐승", "평화로운 숲에 사나운 짐승이 나타나 주민들을 위협하고 있다. 짐승을 제압하여 마을의 평화를 되찾아야 한다.",
       opt('⚔️ 짐승의 움직임을 파악하고 민첩한 움직임으로 제압한다.', {bodily:16, logical: 6}),
       opt('🗣️ 짐승과 직접 교감하여 그 분노의 원인을 파악한다.', {interpersonal:14, naturalist: 6}),
-      opt(' traps 짐승의 이동 경로를 분석해 함정을 설치한다.', {spatial:12, logical: 8}),
+      opt('🐾 짐승의 이동 경로를 분석해 함정을 설치한다.', {spatial:12, logical: 8}),
       opt('🌳 짐승의 서식지를 파괴하지 않고 자연 친화적인 해결책을 찾는다.', {naturalist:14})
     ),
     q("절벽의 동굴", "전설의 검이 숨겨져 있다는 절벽의 동굴에 도착했다. 동굴은 좁고 위험한 통로로 가득하다. 어떻게 나아갈 것인가?",
@@ -369,27 +567,26 @@ const quests = {
   ]
 };
 
-/* ====== 초기화 및 상태 ======*/
-const baseScores = {linguistic:50,logical:50,spatial:50,bodily:50,musical:50,interpersonal:50,intrapersonal:50,naturalist:50};
-let scores = {};
-let player = {name:'',clazz:'',charId:'',questIndex:0};
-
-const el = id => document.getElementById(id);
-
-function resetGame(){
+/* ====== 초기화 및 상태 관리 함수 ====== */
+function resetGame() {
     scores = JSON.parse(JSON.stringify(baseScores));
-    player={name:'',clazz:'',charId:'',questIndex:0};
+    player = {name:'', clazz:'', charId:'', questIndex:0};
     document.querySelectorAll('.char').forEach(c => c.classList.remove('selected'));
+    
     el('game-area').style.display = 'none';
     el('result-area').style.display = 'none';
     el('pre-game').style.display = 'block';
     el('stats-panel').style.display = 'none';
+    
     el('input-name').value = '';
     el('input-class').value = '';
+    
+    el('start-btn-text').style.display = 'inline';
+    el('start-btn-spinner').style.display = 'none';
+
     checkStartButton();
 }
 
-/* 시작 버튼 활성화/비활성화 체크 */
 function checkStartButton() {
     const name = el('input-name').value.trim();
     const clazz = el('input-class').value.trim();
@@ -397,38 +594,51 @@ function checkStartButton() {
     el('btn-start').disabled = !(name && clazz && isCharSelected);
 }
 
-/* 캐릭터 선택 */
-document.querySelectorAll('.char').forEach(node=>{
+// 이벤트 리스너: 캐릭터 선택
+document.querySelectorAll('.char').forEach(node => {
     node.addEventListener('click', () => {
-        document.querySelectorAll('.char').forEach(c=>c.classList.remove('selected'));
+        document.querySelectorAll('.char').forEach(c => c.classList.remove('selected'));
         node.classList.add('selected');
         player.charId = node.dataset.id;
         checkStartButton();
     });
 });
 
-/* 입력 필드 변경 이벤트 */
+// 이벤트 리스너: 입력 필드 변경
 el('input-name').addEventListener('input', checkStartButton);
 el('input-class').addEventListener('input', checkStartButton);
 
-/* 시작 버튼 */
+// 이벤트 리스너: 게임 시작 버튼
 el('btn-start').addEventListener('click', () => {
-  const name = el('input-name').value.trim();
-  const clazz = el('input-class').value.trim();
-  player.name = name;
-  player.clazz = clazz;
-  player.questIndex = 0;
-  scores = JSON.parse(JSON.stringify(baseScores));
-  
-  el('pre-game').style.display = 'none';
-  el('game-area').style.display = 'block';
-  el('stats-panel').style.display = 'block';
-  renderQuest();
+    const name = el('input-name').value.trim();
+    const clazz = el('input-class').value.trim();
+    
+    if (name && clazz && player.charId) {
+        player.name = name;
+        player.clazz = clazz;
+        player.questIndex = 0;
+        
+        el('start-btn-text').style.display = 'none';
+        el('start-btn-spinner').style.display = 'block';
+        
+        // BGM 재생 (사용자 상호작용 후)
+        sounds.bgm.play().catch(e => console.log("BGM 자동재생이 차단되었습니다."));
+        
+        setTimeout(() => {
+            el('pre-game').style.display = 'none';
+            el('game-area').style.display = 'block';
+            el('stats-panel').style.display = 'block';
+            renderQuest();
+            el('start-btn-text').style.display = 'inline';
+            el('start-btn-spinner').style.display = 'none';
+        }, 1000);
+    }
 });
 
+// 이벤트 리스너: 다시 시작 버튼
 el('btn-restart').addEventListener('click', resetGame);
 
-/* 렌더링 및 진행 */
+/* ====== 게임 렌더링 및 진행 함수 ====== */
 function typeWriter(element, text, callback) {
     let i = 0;
     element.innerHTML = '';
@@ -458,7 +668,7 @@ function renderQuest(){
     el('quest-title').textContent = `📜 Chapter ${player.questIndex + 1}: ${q.title}`;
     
     typeWriter(el('quest-text'), q.text, () => {
-        q.options.forEach((o,i) => {
+        q.options.forEach((o, i) => {
             const div = document.createElement('div');
             div.className = 'option';
             div.innerHTML = `<div class="label">${o.t}</div>`;
@@ -472,7 +682,7 @@ function renderQuest(){
                 setTimeout(() => {
                     renderQuest();
                     optRoot.style.pointerEvents = 'auto';
-                }, 500);
+                }, 1000);
             };
             optRoot.appendChild(div);
         });
@@ -496,7 +706,7 @@ function renderStats(){
         box.className = 'stat';
         box.innerHTML = `
             <div style="font-weight:bold;color:var(--gold)">${mapNames[k]}</div>
-            <div class="bar"><div class="bar-inner" style="width:${score}%"></div></div>
+            <div class="bar"><div class="bar-inner" style="width:${score}%)"></div></div>
         `;
         root.appendChild(box);
     });
@@ -523,6 +733,7 @@ function showResult(){
     el('result-content').innerHTML = resultHTML;
 }
 
+// 초기 게임 상태 설정
 resetGame();
 
 </script>
