@@ -253,6 +253,7 @@
             <h1>잃어버린 지혜를 찾아서</h1>
             <p>고대 아틀란티스 대륙에서 당신의 숨겨진 잠재력을 발견하세요!</p>
             <button class="button" id="start-btn">모험 시작하기</button>
+            <button class="button" id="start-dashboard-btn">교사 대시보드 보기</button>
         </div>
 
         <div id="character-select-screen">
@@ -322,6 +323,7 @@
         const resultScreen = document.getElementById('result-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
         const startBtn = document.getElementById('start-btn');
+        const startDashboardBtn = document.getElementById('start-dashboard-btn');
         const characterCards = document.querySelectorAll('.character-card');
         const selectCharBtn = document.getElementById('select-char-btn');
         const questTitle = document.getElementById('quest-title');
@@ -337,7 +339,7 @@
 
         let selectedCharacter = null;
         let questIndex = 0;
-        let scores = { '언어지능': 0, '논리수학지능': 0, '공간지능': 0, '신체운동지능': 0, '음악지능': 0, '대인관계지능': 0, '개인내적지능': 0, '자연주의지능': 0 };
+        let scores = { '언어지능': 0, '논리수학지능': 0, '공간지능': 0, '신체운동지능': 0, '음악지능': 0, '대인관계지능': 0, '자기성찰지능': 0, '자연친화지능': 0 };
         const totalQuests = 20;
         let studentResults = [];
 
@@ -407,7 +409,7 @@
                 { title: "아틀란티스의 부활", text: "마지막으로 아틀란티스의 부활을 위해 무엇을 할 것인가?", options: [{ text: "자연과의 조화를 통해 아틀란티스를 재건한다.", intelligence: "자연주의지능" }, { text: "아틀란티스의 지혜를 논리적으로 정리하여, 새로운 문명을 건설한다.", intelligence: "논리수학지능" }, { text: "아틀란티스 사람들과 소통하며, 그들의 마음을 하나로 모은다.", intelligence: "대인관계지능" }, { text: "자신을 희생하여, 아틀란티스의 영혼을 깨운다.", intelligence: "개인내적지능" }] }
             ],
             warrior: [
-                { title: "잊혀진 검", text: "훈련 중, 고대의 문장이 새겨진 낡은 검을 발견했다. 검은 당신의 손에 닿자마자 빛을 뿜으며 진동하기 시작한다. 이 검은 무엇을 의미할까?", options: [{ text: "검을 휘둘러 그 힘과 균형을 시험하며, 검의 용도를 파악한다.", intelligence: "신체운동지능" }, { text: "검에 새겨진 고대 문장을 해독하여, 검의 역사와 기원을 알아낸다.", intelligence: "언어지능" }, { text: "검을 자세히 관찰하여, 검을 만든 재료와 기술적 특징을 분석한다.", intelligence: "논리수학지능" }, { text: "검의 진동을 느끼며, 검이 나에게 전하는 감정적 메시지에 집중한다.", intelligence: "개인내적지능" }] },
+                { title: "잃어버린 검", text: "훈련 중, 고대의 문장이 새겨진 낡은 검을 발견했다. 검은 당신의 손에 닿자마자 빛을 뿜으며 진동하기 시작한다. 이 검은 무엇을 의미할까?", options: [{ text: "검을 휘둘러 그 힘과 균형을 시험하며, 검의 용도를 파악한다.", intelligence: "신체운동지능" }, { text: "검에 새겨진 고대 문장을 해독하여, 검의 역사와 기원을 알아낸다.", intelligence: "언어지능" }, { text: "검을 자세히 관찰하여, 검을 만든 재료와 기술적 특징을 분석한다.", intelligence: "논리수학지능" }, { text: "검의 진동을 느끼며, 검이 나에게 전하는 감정적 메시지에 집중한다.", intelligence: "개인내적지능" }] },
                 { title: "전장의 소문", text: "마을 사람들은 북쪽 국경에 어둠의 세력이 출몰한다는 소문을 퍼뜨리고 있다. 당신은 어떻게 행동할까?", options: [{ text: "마을 사람들에게 정확한 소문의 출처와 내용을 물어본다.", intelligence: "대인관계지능" }, { text: "국경 요새의 지도를 입수하고, 예상 경로를 설정한다.", intelligence: "공간지능" }, { text: "소문의 진위를 확인하기 위해, 즉시 북쪽 국경으로 달려간다.", intelligence: "신체운동지능" }, { text: "검을 갈고 닦으며, 다가올 전투에 대비하여 훈련에 매진한다.", intelligence: "개인내적지능" }] },
                 { title: "산맥의 비상", text: "북쪽 산맥으로 향하는 길목에서, 거대한 바위가 길을 막고 있다. 바위에는 '힘이 아닌 지혜로 길을 열어라'는 문구가 새겨져 있다. 어떻게 바위를 옮길까?", options: [{ text: "바위를 직접 밀어내거나 부수어 길을 연다.", intelligence: "신체운동지능" }, { text: "바위의 약점을 분석하고, 지렛대와 같은 도구를 활용하여 옮긴다.", intelligence: "논리수학지능" }, { text: "바위에 쓰여진 문구의 숨겨진 의미를 파악하여, 해법을 찾는다.", intelligence: "언어지능" }, { text: "주변에 있는 다른 모험가들을 모아 함께 힘을 합쳐 바위를 옮긴다.", intelligence: "대인관계지능" }] },
                 { title: "동굴의 함정", text: "산맥의 동굴을 통과하다, 바닥의 이상한 발자국과 흔적들을 발견했다. 이것은 함정일 수 있다. 어떻게 할까?", options: [{ text: "발자국과 흔적의 종류, 방향, 깊이를 분석하여 함정의 종류와 위치를 파악한다.", intelligence: "논리수학지능" }, { text: "조심스럽게 발을 내디뎌, 위험을 감지하는 감각을 최대한 활용한다.", intelligence: "신체운동지능" }, { text: "주변의 새소리나 동물의 움직임을 관찰하여, 안전한 길을 추측한다.", intelligence: "자연주의지능" }, { text: "동료들에게 주의를 주며, 함께 함정을 피할 방법을 논의한다.", intelligence: "대인관계지능" }] },
@@ -565,8 +567,8 @@
             showQuest();
         };
 
-        const showDashboard = () => {
-            switchScreen('result-screen', 'dashboard-screen');
+        const showDashboard = (fromScreenId) => {
+            switchScreen(fromScreenId, 'dashboard-screen');
             const dashboardContent = document.getElementById('dashboard-content');
             
             if (studentResults.length === 0) {
@@ -593,10 +595,11 @@
         };
 
         startBtn.addEventListener('click', startGame);
+        startDashboardBtn.addEventListener('click', () => showDashboard('start-screen'));
         characterCards.forEach(card => card.addEventListener('click', selectCharacter));
         selectCharBtn.addEventListener('click', startQuest);
         restartBtn.addEventListener('click', restartGame);
-        dashboardBtn.addEventListener('click', showDashboard);
+        dashboardBtn.addEventListener('click', () => showDashboard('result-screen'));
         backToHomeBtn.addEventListener('click', goBackToHome);
     </script>
 </body>
